@@ -24,3 +24,10 @@ html {
   overflow: hidden;
   background-color: black;
 }
+
+@font-face {
+  font-family: "PixelCaps";
+  font-style: normal;
+  font-weight: 200;
+  src: local(※), url("/public/fonts/PixelCaps.ttf") format("truetype");
+}
