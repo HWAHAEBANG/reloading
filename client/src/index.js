@@ -7,9 +7,9 @@ import GlitchSplashScreen from "./components/splashScreen/GlitchSplashScreen";
 import PassRoute from "./components/passRoute/PassRoute";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import InputId from "./components/login/InputId";
-import Grafana from "./components/Grafana";
 import NotFound from "./pages/NotFound";
 import InputPw from "./components/login/InputPw";
+import Dashboard from "./components/dashboard/Dashboard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Grafana />,
+        element: <Dashboard />,
       },
     ],
   },

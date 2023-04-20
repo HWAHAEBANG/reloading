@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 export default function GlitchSplashScreen() {
   const navigate = useNavigate();
 
-  setTimeout(() => {
-    navigate("/id");
-  }, 5000);
+  // setTimeout(() => {
+  //   navigate("/id");
+  // }, 5000);
 
   return (
     <div className={styles.content}>

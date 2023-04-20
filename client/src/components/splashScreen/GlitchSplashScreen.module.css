@@ -4,8 +4,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadein-out 5s;
-  opacity: 0;
+  /* animation: fadein-out 5s; */
+  /* opacity: 0; */
+  opacity: 1;
 }
 
 @keyframes fadein-out {
@@ -25,6 +26,7 @@
 
 .box {
   text-align: center;
+  width: 800px;
 }
 
 .content .text {
@@ -55,15 +57,16 @@
   left: 3px;
   /* text-shadow: -2px 0 red; */
   animation: glitch-1 2s linear infinite reverse;
-  text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
-    0 0 100px #03e9f4;
+  /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+    0 0 100px #03e9f4; */
 }
+
 .content .text:after {
   left: -3px;
   /* text-shadow: -2px 0 blue; */
   animation: glitch-2 2s linear infinite reverse;
-  text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
-    0 0 100px #03e9f4;
+  /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+    0 0 100px #03e9f4; */
 }
 
 .content .subText {

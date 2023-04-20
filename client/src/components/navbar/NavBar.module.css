@@ -1,0 +1,15 @@
+.mainContainer {
+  position: absolute;
+  height: 100%;
+  width: 320px;
+  background-color: darkslategray;
+  box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000,
+    -4px -4px 15px 7px rgba(0, 0, 0, 0);
+  padding: 40px;
+  padding-top: 150px; /* 임시 */
+  color: white;
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

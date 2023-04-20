@@ -1,0 +1,17 @@
+.mainContainer {
+  display: flex;
+}
+
+.subContainer {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  box-shadow: -10px 0px 80px -7px #000000, 10px 0px 13px -7px #000000,
+    -4px -4px 15px 7px rgba(0, 0, 0, 0);
+  transform-origin: left;
+  transition: all 0.3s ease-in-out;
+}
+
+.showNavBar {
+  transform: perspective(200px) rotateY(-2deg) translate(300px) scale(0.95);
+}
