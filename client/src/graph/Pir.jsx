@@ -37,6 +37,7 @@ export default function Pir() {
   const options = {
     chart: {
       zoomType: "xy",
+      backgroundColor: "transparent",
     },
     title: {
       text: "PIR :  ",
@@ -141,6 +142,11 @@ export default function Pir() {
         },
       },
     ],
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+      },
+    },
   };
 
   return (

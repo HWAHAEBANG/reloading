@@ -37,6 +37,7 @@ export default function Hai() {
   const options = {
     chart: {
       zoomType: "xy",
+      backgroundColor: "transparent",
     },
     title: {
       text: "HAI : Housing Affordability Index ",
@@ -141,6 +142,11 @@ export default function Hai() {
         },
       },
     ],
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+      },
+    },
   };
 
   return (

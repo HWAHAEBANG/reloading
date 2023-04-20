@@ -4,7 +4,7 @@
   width: 100%;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 10px;
+  gap: 30px;
   padding: 20px;
   background: rgb(0, 0, 0);
   background: linear-gradient(
@@ -23,7 +23,7 @@
   font-size: 2rem;
   color: white;
   /* background-color: #0077cc; */
-  border: 1px solid mediumaquamarine;
+  border: 1px solid mediumaquamarine; /* 나중에 색 바꾸고 투명도 주셈 */
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
