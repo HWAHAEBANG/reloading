@@ -12,14 +12,34 @@ solidGauge(Highcharts);
 darkUnica(Highcharts);
 
 export default function UnsoldHouse() {
-  const [data, setData] = useState();
+  const [unsoldHouseData, setUnsoldHouseData] = useState();
+  const [housePriceIndexData, setHousePriceIndexData] = useState();
+  const [rentalPriceIndexData, setRentalPriceIndexData] = useState();
 
   useEffect(() => {
     axios
       .get(`http://localhost:5000/unsoldHouse`, { withCredentials: true })
       .then((response) => {
+        // console.log("확인1", response.data.data);
+        setUnsoldHouseData(response.data.data);
+      });
+
+    axios
+      .get(`http://localhost:5000/housePriceIndexAroundSeoul`, {
+        withCredentials: true,
+      })
+      .then((response) => {
         console.log("확인2", response.data.data);
-        setData(response.data.data);
+        setHousePriceIndexData(response.data.data);
+      });
+
+    axios
+      .get(`http://localhost:5000/rentalPriceIndexAroundSeoul`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("확인3", response.data.data);
+        setRentalPriceIndexData(response.data.data);
       });
   }, []);
 
@@ -90,23 +110,26 @@ export default function UnsoldHouse() {
     series: [
       {
         type: "area",
-        name: "USD to EUR",
-        data: data,
+        name: "미분양 물량",
+        data: unsoldHouseData,
+        tooltip: {
+          valueSuffix: "호",
+        },
       },
       {
         type: "line",
-        name: "전년도 대비 증감율",
+        name: "수도권 아파트 매매지수",
         yAxis: 1,
-        data: data,
+        data: housePriceIndexData,
         tooltip: {
           valueSuffix: "%",
         },
       },
       {
         type: "line",
-        name: "전년도 대비 증감율",
+        name: "수도권 아파트 전세지수",
         yAxis: 1,
-        data: data,
+        data: rentalPriceIndexData,
         tooltip: {
           valueSuffix: "%",
         },

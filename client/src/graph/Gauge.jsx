@@ -66,7 +66,7 @@ export default function Gauge() {
     series: [
       {
         name: "Speed",
-        data: [80],
+        data: [190],
         tooltip: {
           valueSuffix: " km/h",
         },

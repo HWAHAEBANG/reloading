@@ -30,6 +30,12 @@ app.use("/unsoldHouse", UNSOLDHOUSE);
 const USERS = require("./router/users.js");
 app.use("/users", USERS);
 
+const HOUSE_PRICE_INDEX_AROUND_SEOUL = require("./router/housePriceIndexAroundSeoul.js");
+app.use("/housePriceIndexAroundSeoul", HOUSE_PRICE_INDEX_AROUND_SEOUL);
+
+const RENTAL_PRICE_INDEX_AROUND_SEOUL = require("./router/rentalPriceIndexAroundSeoul.js");
+app.use("/rentalPriceIndexAroundSeoul", RENTAL_PRICE_INDEX_AROUND_SEOUL);
+
 // ========================================
 
 app.listen(PORT, () => {
