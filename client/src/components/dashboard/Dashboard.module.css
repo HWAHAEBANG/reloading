@@ -6,12 +6,12 @@
   grid-template-rows: repeat(3, 1fr);
   gap: 30px;
   padding: 20px;
-  background: rgb(0, 0, 0);
-  background: linear-gradient(
+  background: rgba(0, 0, 0, 0.2);
+  /* background: linear-gradient(
     229deg,
     rgba(0, 0, 0, 1) 0%,
     rgba(33, 36, 37, 1) 100%
-  );
+  ); */
   /* background-color: aquamarine; */
   box-sizing: border-box;
 }

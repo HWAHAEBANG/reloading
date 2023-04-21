@@ -6,7 +6,8 @@ import Pir from "../../graph/Pir";
 import PriceChangeRate from "../../graph/PriceChangeRate";
 import Gauge from "../../graph/Gauge";
 import PolarChart from "../../graph/PolarChart";
-import RentalPriceIndex from "../../graph/RentalPriceIndex";
+import AmountAndPrice from "../../graph/AmountAndPrice";
+import JeonsePriceRatio from "../../graph/JeonsePriceRatio";
 
 // 현재 서울 기준으로 하였음 추후 리팩토링 필요할 수도.
 export default function Dashboard() {
@@ -25,7 +26,9 @@ export default function Dashboard() {
       <div className={`${styles.box} ${styles.box5}`}>
         <Pir />
       </div>
-      <div className={`${styles.box} ${styles.box6}`}>Box 6</div>
+      <div className={`${styles.box} ${styles.box6}`}>
+        <AmountAndPrice />
+      </div>
       <div className={`${styles.box} ${styles.box7}`}>Box 7</div>
       <div className={`${styles.box} ${styles.box8}`}>
         <PriceChangeRate />
@@ -34,7 +37,7 @@ export default function Dashboard() {
         <UnsoldHouse />
       </div>
       <div className={`${styles.box} ${styles.box10}`}>
-        <RentalPriceIndex />
+        <JeonsePriceRatio />
       </div>
     </div>
   );

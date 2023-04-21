@@ -20,7 +20,6 @@ export default function UnsoldHouse() {
     axios
       .get(`http://localhost:5000/unsoldHouse`, { withCredentials: true })
       .then((response) => {
-        // console.log("확인1", response.data.data);
         setUnsoldHouseData(response.data.data);
       });
 
@@ -29,7 +28,6 @@ export default function UnsoldHouse() {
         withCredentials: true,
       })
       .then((response) => {
-        console.log("확인2", response.data.data);
         setHousePriceIndexData(response.data.data);
       });
 
@@ -38,10 +36,18 @@ export default function UnsoldHouse() {
         withCredentials: true,
       })
       .then((response) => {
-        console.log("확인3", response.data.data);
         setRentalPriceIndexData(response.data.data);
       });
   }, []);
+
+  const getAverage = (arr) => {
+    const sum = arr.reduce((acc, cur) => acc + cur[1], 0);
+    const avg = sum / arr.length;
+    return avg;
+  };
+
+  const standard =
+    unsoldHouseData && unsoldHouseData.map((item) => [item[0], 15000]);
 
   const options = {
     chart: {
@@ -132,6 +138,15 @@ export default function UnsoldHouse() {
         data: rentalPriceIndexData,
         tooltip: {
           valueSuffix: "%",
+        },
+      },
+      {
+        type: "line",
+        name: "너나위님 기준",
+        yAxis: 0,
+        data: standard,
+        tooltip: {
+          valueSuffix: "호",
         },
       },
     ],

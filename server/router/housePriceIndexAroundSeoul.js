@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-const PRICE_INDEX_KEY = process.env.PRICE_INDEX_KEY;
+const KOSIS_KEY = process.env.KOSIS_KEY;
 // router.use()
 
 router.get("/", (req, res) => {
   axios
     .get(
-      `https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=${PRICE_INDEX_KEY}&itmId=sales+&objL1=01+&objL2=a1+&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=200311&endPrdDe=202302&orgId=408&tblId=DT_40803_N0001`
+      `https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=${KOSIS_KEY}&itmId=sales+&objL1=01+&objL2=a1+&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=200311&endPrdDe=202302&orgId=408&tblId=DT_40803_N0001`
     )
     .then((response) => {
       const data = response.data.map((item) => {

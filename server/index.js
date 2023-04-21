@@ -30,11 +30,23 @@ app.use("/unsoldHouse", UNSOLDHOUSE);
 const USERS = require("./router/users.js");
 app.use("/users", USERS);
 
+const HOUSE_PRICE_INDEX_SEOUL = require("./router/housePriceIndexSeoul.js");
+app.use("/housePriceIndexSeoul", HOUSE_PRICE_INDEX_SEOUL);
+
+const RENTAL_PRICE_INDEX_SEOUL = require("./router/rentalPriceIndexSeoul.js");
+app.use("/rentalPriceIndexSeoul", RENTAL_PRICE_INDEX_SEOUL);
+
 const HOUSE_PRICE_INDEX_AROUND_SEOUL = require("./router/housePriceIndexAroundSeoul.js");
 app.use("/housePriceIndexAroundSeoul", HOUSE_PRICE_INDEX_AROUND_SEOUL);
 
 const RENTAL_PRICE_INDEX_AROUND_SEOUL = require("./router/rentalPriceIndexAroundSeoul.js");
 app.use("/rentalPriceIndexAroundSeoul", RENTAL_PRICE_INDEX_AROUND_SEOUL);
+
+const JEONSE_PRICE_RATIO = require("./router/jeonsePriceRatio.js");
+app.use("/jeonsePriceRatio", JEONSE_PRICE_RATIO);
+
+const PRICE_CHANGE_RATE = require("./router/priceChangeRate.js");
+app.use("/priceChangeRate", PRICE_CHANGE_RATE);
 
 // ========================================
 

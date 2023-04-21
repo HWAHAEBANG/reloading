@@ -10,7 +10,7 @@ highchartsMore(Highcharts);
 solidGauge(Highcharts);
 darkUnica(Highcharts);
 
-export default function Pir() {
+export default function AmountAndPrice() {
   // const [categories, setCategories] = useState();
   const [pirData, setPirData] = useState();
   const [housePriceIndexData, setHousePriceIndexData] = useState();
@@ -34,7 +34,7 @@ export default function Pir() {
    * 배열 + 숫자 가 연산되어 NaN가 나오기 때문이다.
    */
 
-  // 중첩배열용
+  // 재사용 불가
   const getAverage = (arr) => {
     const sum = arr.reduce((acc, cur) => acc + cur[1], 0);
     const avg = sum / arr.length;
@@ -47,6 +47,9 @@ export default function Pir() {
       item[0],
       parseFloat(getAverage(pirData).toFixed(1)),
     ]);
+
+  console.log("pirData", pirData);
+  console.log("avg", avg);
 
   useEffect(() => {
     axios
@@ -84,11 +87,11 @@ export default function Pir() {
       backgroundColor: "transparent",
     },
     title: {
-      text: "PIR : 연소득대비 주택 가격 비율",
+      text: "서울 아파트 거래량과 가격지수",
     },
-    subtitle: {
-      text: "Price to Income Ratio",
-    },
+    // subtitle: {
+    //   text: "Price to Income Ratio",
+    // },
     xAxis: {
       type: "datetime",
     },
@@ -178,49 +181,51 @@ export default function Pir() {
       },
     },
     series: [
+      // {
+      //   name: "서울 PIR",
+      //   type: "area",
+      //   yAxis: 1,
+      //   data: pirData,
+      //   tooltip: {
+      //     valueSuffix: "", //" mm"
+      //   },
+      // },
+      // {
+      //   name: "서울 전세가율",
+      //   type: "spline",
+      //   // yAxis: 1,
+      //   data: jeonsePriceRatioData,
+      //   tooltip: {
+      //     valueSuffix: "%", //" mm"
+      //   },
+      // },
       {
-        name: "서울 아파트 PIR", // 아직아님
-        type: "area",
+        name: "서울 매매 지수", // 지역이름 변수로 놓자
+        type: "spline",
         yAxis: 1,
-        data: pirData,
-        tooltip: {
-          valueSuffix: "", //" mm"
-        },
-      },
-      {
-        name: "서울 아파트 전세가율",
-        type: "spline",
-        // yAxis: 1,
-        data: jeonsePriceRatioData,
-        tooltip: {
-          valueSuffix: "%", //" mm"
-        },
-      },
-      {
-        name: "서울 아파트 매매 지수", // 지역이름 변수로 놓자
-        type: "spline",
         data: housePriceIndexData,
         tooltip: {
           valueSuffix: "%",
         },
       },
       {
-        name: "서울 아파트 전세 지수", // 지역이름 변수로 놓자
+        name: "서울 전세 지수", // 지역이름 변수로 놓자
         type: "spline",
+        yAxis: 1,
         data: rentalPriceIndexData,
         tooltip: {
           valueSuffix: "%",
         },
       },
-      {
-        name: "PIR평균", // 지역이름 변수로 놓자
-        type: "spline",
-        yAxis: 1, // 이거 있으면 좌측 눈금 따라가나보다!
-        data: avg,
-        tooltip: {
-          valueSuffix: "", //" mm"
-        },
-      },
+      // {
+      //   name: "PIR평균", // 지역이름 변수로 놓자
+      //   type: "spline",
+      //   yAxis: 1, // 이거 있으면 좌측 눈금 따라가나보다!
+      //   data: avg,
+      //   tooltip: {
+      //     valueSuffix: "", //" mm"
+      //   },
+      // },
     ],
     // plotOptions: {
     //   series: {

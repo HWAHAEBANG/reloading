@@ -1,5 +1,14 @@
 .mainContainer {
   display: flex;
+  /* background-color: red; */
+  width: 100vw;
+  height: 100vh;
+  /* background-image: url(../public/image/back2.jpg); */
+  background: linear-gradient(
+    229deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(33, 36, 37, 1) 100%
+  );
 }
 
 .subContainer {

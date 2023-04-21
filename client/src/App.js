@@ -7,13 +7,15 @@ import TopBar from "./components/topbar/TopBar";
 import NavBar from "./components/navbar/NavBar";
 import styles from "./App.module.css";
 import { useState } from "react";
+import ReactPlayer from "react-player";
 
 function App() {
   const [showNav, setShowNav] = useState(false);
 
   return (
     <div className={styles.mainContainer}>
-      <NavBar setShowNav={setShowNav} /> {/* 메뉴 늘렀을 때 사라져야하므로 */}
+      <NavBar showNav={showNav} setShowNav={setShowNav} />{" "}
+      {/* 메뉴 늘렀을 때 사라져야하므로 */}
       <div
         className={`${styles.subContainer} ${showNav ? styles.showNavBar : ""}`}
       >

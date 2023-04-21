@@ -1,15 +1,53 @@
 .mainContainer {
   position: absolute;
   height: 100%;
-  width: 320px;
-  background-color: darkslategray;
+  width: 237px;
+  /* background-color: darkslategray; */
   box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000,
     -4px -4px 15px 7px rgba(0, 0, 0, 0);
   padding: 40px;
   padding-top: 150px; /* 임시 */
   color: white;
-  font-size: 30px;
-  display: flex;
+  font-size: 20px;
+  display: none;
   flex-direction: column;
   gap: 20px;
+}
+
+/* .visible {
+} */
+
+.contents {
+  display: flex;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu1 {
+  color: red;
+  /* background-color: red; */
+}
+
+.menu2 {
+  color: blue;
+  /* background-color: red; */
+}
+
+.menu3 {
+  color: purple;
+  /* background-color: red; */
 }

@@ -40,10 +40,10 @@ export default function Hai() {
       backgroundColor: "transparent",
     },
     title: {
-      text: "HAI : Housing Affordability Index ",
+      text: "HAI : 연소득대비 주택 가격 비율 ",
     },
     subtitle: {
-      text: "주택 부담 지수",
+      text: "Housing Affordability Index",
     },
     xAxis: [
       {
