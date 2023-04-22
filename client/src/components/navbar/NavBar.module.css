@@ -1,26 +1,82 @@
 .mainContainer {
   position: absolute;
   height: 100%;
-  width: 237px;
+  width: 317px;
   /* background-color: darkslategray; */
-  box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000,
-    -4px -4px 15px 7px rgba(0, 0, 0, 0);
-  padding: 40px;
-  padding-top: 150px; /* 임시 */
+  /* box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000,
+    -4px -4px 15px 7px rgba(0, 0, 0, 0); */
+  padding: 80px 40px 40px 40px;
+  box-sizing: border-box;
   color: white;
   font-size: 20px;
   display: none;
   flex-direction: column;
+  /* justify-content: space-around; */
   gap: 20px;
 }
 
-/* .visible {
-} */
+.userInfoSection {
+  /* background-color: red; */
+}
 
-.contents {
+.userInfo {
+  display: flex;
+  align-items: center;
+}
+
+.userInfo p {
+  font-size: 12px;
+}
+
+.userInfo p span {
+  font-size: 20px;
+}
+
+.userInfo {
+  display: flex;
+}
+
+.buttonList {
+  display: flex;
+  justify-content: end;
+  font-size: 15px;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.buttonList div {
+  background-color: rgba(0, 0, 0, 0.7);
+  filter: invert();
+  padding: 3px 15px;
+  border-radius: 5px;
+}
+
+.buttonList div:hover {
+  background-color: rgba(0, 0, 0);
+  cursor: pointer;
+}
+
+.avatarContainer {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.avatar {
+  width: 60px;
+}
+
+.alternativeAvartarIcon {
+  margin-right: 20px;
+  font-size: 60px;
+}
+
+.innerContainer {
   display: flex;
   animation-name: fadeIn;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   animation-timing-function: ease-out;
   animation-delay: 0s;
   animation-fill-mode: both;
@@ -37,17 +93,51 @@
   }
 }
 
-.menu1 {
+.menuSection {
+  flex: 1;
+}
+
+.menuList {
+  margin-top: 20px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  /* background-color: aqua; */
+}
+
+.menuList:hover {
+  transform: translate(5px, 0);
+}
+
+.menuList:hover :first-child {
+  color: #44a9a8;
+}
+
+.menuList p {
+  margin-left: 20px;
+}
+
+.otherLinkSection {
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linkList:hover {
+  transform: scale(1.01);
+  transform-origin: left;
+}
+
+.linkList a {
+  margin-left: 10px;
+}
+
+.linkList:nth-child(2) :first-child {
   color: red;
-  /* background-color: red; */
 }
-
-.menu2 {
-  color: blue;
-  /* background-color: red; */
-}
-
-.menu3 {
-  color: purple;
-  /* background-color: red; */
+.linkList:nth-child(3) :first-child {
+  color: greenyellow;
 }

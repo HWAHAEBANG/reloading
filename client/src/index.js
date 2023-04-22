@@ -10,6 +10,16 @@ import InputId from "./components/login/InputId";
 import NotFound from "./pages/NotFound";
 import InputPw from "./components/login/InputPw";
 import Dashboard from "./components/dashboard/Dashboard";
+import DashboardSection from "./pages/DashboardSection";
+import AboutUsSection from "./pages/AboutUsSection";
+import AllChartsSection from "./pages/AllChartsSection";
+import MyChartsSection from "./pages/MyChartsSection";
+import TopicNewsSection from "./pages/TopicNewsSection";
+import LoginSection from "./pages/LoginSection";
+import SignupSection from "./pages/SignupSection";
+import FindIdSection from "./pages/FindIdSection";
+import FindPwSection from "./pages/FindPwSection";
+import EditUserInfoSection from "./pages/EditUserInfoSection";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -19,26 +29,67 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
+      // {
+      //   index: true,
+      //   path: "/",
+      //   element: <GlitchSplashScreen />,
+      // },
+      // {
+      //   path: "/id",
+      //   element: <InputId />,
+      // },
+      // {
+      //   path: "/pw",
+      //   element: <InputPw />,
+      // },
+      // {
+      //   path: "/pass",
+      //   element: <PassRoute />,
+      // },
+      // {
+      //   path: "/dashboard",
+      //   element: <Dashboard />,
+      // },
       {
         index: true,
         path: "/",
-        element: <GlitchSplashScreen />,
+        element: <DashboardSection />,
       },
       {
-        path: "/id",
-        element: <InputId />,
+        path: "/aboutUs",
+        element: <AboutUsSection />,
       },
       {
-        path: "/pw",
-        element: <InputPw />,
+        path: "/allCharts",
+        element: <AllChartsSection />,
       },
       {
-        path: "/pass",
-        element: <PassRoute />,
+        path: "/myCharts",
+        element: <MyChartsSection />,
       },
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/topicNews",
+        element: <TopicNewsSection />,
+      },
+      {
+        path: "/login",
+        element: <LoginSection />,
+      },
+      {
+        path: "/login/findId",
+        element: <FindIdSection />,
+      },
+      {
+        path: "/login/findPw",
+        element: <FindPwSection />,
+      },
+      {
+        path: "/signup",
+        element: <SignupSection />,
+      },
+      {
+        path: "/editUserInfo",
+        element: <EditUserInfoSection />,
       },
     ],
   },

@@ -1,0 +1,25 @@
+.mainContainer {
+  width: 100%;
+  height: 95%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.subContainer {
+  width: 100%;
+  height: 0%;
+  border-radius: 15px;
+  border: 1px solid mediumaquamarine;
+  animation: boxExtend 0.5s forwards;
+}
+
+@keyframes boxExtend {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
