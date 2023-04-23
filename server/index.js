@@ -48,6 +48,9 @@ app.use("/jeonsePriceRatio", JEONSE_PRICE_RATIO);
 const PRICE_CHANGE_RATE = require("./router/priceChangeRate.js");
 app.use("/priceChangeRate", PRICE_CHANGE_RATE);
 
+const NEWS_SEARCH = require("./router/newsSearch.js");
+app.use("/newsSearch", NEWS_SEARCH);
+
 // ========================================
 
 app.listen(PORT, () => {

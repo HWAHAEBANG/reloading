@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./NavBar.module.css";
 import {
   BsFillBellFill,
@@ -16,16 +16,18 @@ import { AiOutlineBarChart } from "react-icons/ai";
 import Background from "../ui/Background";
 import { Link } from "react-router-dom";
 
-const MENU = [
-  "Dashboard",
-  "About Us",
-  "All Charts",
-  "My Charts",
-  "Topic News",
-  "Notification",
-];
+export default function NavBar({ showNav, setShowNav }) {
+  const [autoClose, setAutoClose] = useState(true);
 
-export default function NavBar({ showNav }) {
+  const handleChecked = (e) => {
+    setAutoClose(e.target.checked);
+  };
+
+  //autoClose가 true일 때, 버튼누르면 setShowNav(false)로
+  const handleEnter = () => {
+    autoClose && setShowNav(false);
+  };
+
   return (
     <div
       className={`${styles.mainContainer} ${
@@ -68,52 +70,61 @@ export default function NavBar({ showNav }) {
         </div>
       </div>
       <hr />
+      <label>
+        <span className={styles.toggleName}>자동 닫기</span>
+        <input
+          onChange={handleChecked}
+          defaultChecked={autoClose}
+          role='switch'
+          type='checkbox'
+        />
+      </label>
       <div className={styles.menuSection}>
         <Link to='/'>
-          <div className={styles.menuList}>
+          <div className={styles.menuList} onClick={handleEnter}>
             <MdSpaceDashboard />
             <p>Dashboard</p>
           </div>
         </Link>
         <Link to='/aboutUs'>
-          <div className={styles.menuList}>
+          <div className={styles.menuList} onClick={handleEnter}>
             <IoIosPeople />
             <p>About Us</p>
           </div>
         </Link>
         <Link to='/allCharts'>
-          <div className={styles.menuList}>
+          <div className={styles.menuList} onClick={handleEnter}>
             <AiOutlineBarChart />
             <p>All Charts</p>
           </div>
         </Link>
         <Link to='/myCharts'>
-          <div className={styles.menuList}>
+          <div className={styles.menuList} onClick={handleEnter}>
             <BsFillChatLeftHeartFill />
             <p>My Charts</p>
           </div>
         </Link>
         <Link to='/topicNews'>
-          <div className={styles.menuList}>
+          <div className={styles.menuList} onClick={handleEnter}>
             <ImNewspaper />
             <p>Topic News</p>
           </div>
         </Link>
       </div>
       <dir className={styles.otherLinkSection}>
-        <div className={styles.linkList}>
+        <div className={styles.linkList} onClick={handleEnter}>
           <IoIosHome />
           <a href='https://www.weolbu.com/' target='_blank'>
             공식 홈페이지
           </a>
         </div>
-        <div className={styles.linkList}>
+        <div className={styles.linkList} onClick={handleEnter}>
           <BsYoutube />
           <a href='https://www.youtube.com/@weolbu_official' target='_blank'>
             월급쟁이 부자들TV
           </a>
         </div>
-        <div className={styles.linkList}>
+        <div className={styles.linkList} onClick={handleEnter}>
           <IoIosCafe />
           <a href='https://cafe.naver.com/wecando7' target='_blank'>
             월급쟁이 부자들 네이버 카페

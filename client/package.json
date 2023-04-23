@@ -19,6 +19,7 @@
     "react-three-fiber": "^6.0.13",
     "react-typewriter-effect": "^1.1.0",
     "three": "^0.151.3",
+    "timeago.js": "^4.0.2",
     "use-sound": "^4.0.1",
     "web-vitals": "^2.1.0"
   },

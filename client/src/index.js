@@ -29,27 +29,6 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      // {
-      //   index: true,
-      //   path: "/",
-      //   element: <GlitchSplashScreen />,
-      // },
-      // {
-      //   path: "/id",
-      //   element: <InputId />,
-      // },
-      // {
-      //   path: "/pw",
-      //   element: <InputPw />,
-      // },
-      // {
-      //   path: "/pass",
-      //   element: <PassRoute />,
-      // },
-      // {
-      //   path: "/dashboard",
-      //   element: <Dashboard />,
-      // },
       {
         index: true,
         path: "/",

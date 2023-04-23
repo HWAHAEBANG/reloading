@@ -44,6 +44,18 @@ export default function Gauge() {
       plotBands: [
         {
           from: 0,
+          to: 40,
+          color: "#4282ef", // blue
+          thickness: 20,
+        },
+        {
+          from: 40,
+          to: 80,
+          color: "#42c4ef", // sky
+          thickness: 20,
+        },
+        {
+          from: 80,
           to: 120,
           color: "#55BF3B", // green
           thickness: 20,
