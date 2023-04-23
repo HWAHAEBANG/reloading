@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./TopicNews.module.css";
 import axios from "axios";
 import { formatAgo } from "../../util/date";
+import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 
 const RECOMMEND_KEYWORD = [
   "부동산",
@@ -18,6 +19,11 @@ export default function TopicNews() {
   const [selectedKeyword, setSelectedKeyword] = useState("");
   const [articles, setArticles] = useState([]);
 
+  //select =============================================
+  const [sortVisible, setSortVisible] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("정확도순");
+  // ===================================================
+
   useEffect(() => {
     const randomIndex = Math.floor(
       (Math.random() * 10) % RECOMMEND_KEYWORD.length
@@ -28,13 +34,16 @@ export default function TopicNews() {
   useEffect(() => {
     if (!selectedKeyword) return;
     axios
-      .get(`http://localhost:5000/newsSearch?keyword=${selectedKeyword}`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://localhost:5000/newsSearch?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setArticles(response.data.data);
       });
-  }, [selectedKeyword]);
+  }, [selectedKeyword, selectedSort]);
 
   const handleKeyword = (e) => {
     setKeyword(e.target.value);
@@ -48,6 +57,13 @@ export default function TopicNews() {
     }
   };
 
+  // select ====================================
+  const handleSelectSort = (e) => {
+    setSelectedSort(e.target.innerText);
+    setSortVisible((prev) => !prev);
+  };
+  // -------====================================
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
@@ -59,26 +75,61 @@ export default function TopicNews() {
               value={keyword}
               onChange={handleKeyword}
               onKeyUp={handleSubmit}
+              placeholder='키워드를 입력해주세요.'
             />
             <button className={styles.inputBtn} onClick={handleSubmit}>
               검 색
             </button>
           </div>
-          <div className={styles.recommendArea}>
-            <p> 추천 검색어 </p>
-            {RECOMMEND_KEYWORD.map((item, index) => (
+          <div className={styles.sortArea}>
+            <div className={styles.recommendBox}>
+              <p> 추천 검색어 </p>
+              {RECOMMEND_KEYWORD.map((item, index) => (
+                <div
+                  key={index}
+                  className={`${styles.recommend} ${
+                    selectedKeyword.toUpperCase() === item ? styles.active : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedKeyword(item);
+                  }}
+                >
+                  #{item}
+                </div>
+              ))}
+            </div>
+            <div className='selectBox'>
               <div
-                key={index}
-                className={`${styles.recommend} ${
-                  selectedKeyword.toUpperCase() === item ? styles.active : ""
-                }`}
-                onClick={() => {
-                  setSelectedKeyword(item);
-                }}
+                className='pl on'
+                onClick={() => setSortVisible((prev) => !prev)}
               >
-                #{item}
+                {selectedSort}
+                {sortVisible ? <TiArrowSortedUp /> : <TiArrowSortedDown />}
               </div>
-            ))}
+              <ul
+                className={sortVisible ? "listbox  visible" : "listbox"}
+                id='listbox'
+              >
+                <li onClick={handleSelectSort}>
+                  <div className='list'>정확도순</div>
+                </li>
+                <li onClick={handleSelectSort}>
+                  <div className='list'>최신순</div>
+                </li>
+              </ul>
+            </div>
+            {/* <form className='selectBox'>
+              <select id='sort' className='select'>
+                <option value='sim'>정확도순</option>
+                <option value='date'>최신순</option>
+                <span class='icoArrow'>
+                  <img
+                    src='https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png'
+                    alt=''
+                  />
+                </span>
+              </select>
+            </form> */}
           </div>
           <div className={`${styles.resultArea} scrollBar`}>
             <div className={styles.articlesContainer}>

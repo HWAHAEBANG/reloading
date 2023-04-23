@@ -38,6 +38,7 @@ html {
   src: local(※), url("/public/fonts/PixelCaps.ttf") format("truetype");
 }
 
+/* / 스크롤바 커스텀 ==================================== */
 .scrollBar {
   height: 510px;
   overflow-y: scroll;
@@ -58,3 +59,87 @@ html {
 .scrollBar::-webkit-scrollbar-track {
   background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
 }
+/* ============================================== */
+/* 드롭다운 커스텀 ================================ */
+/* reset */
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* design */
+
+.selectbox {
+  margin: 150px auto;
+}
+
+.pl {
+  display: flex;
+  justify-content: space-between;
+  width: 110px;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 12px 13px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: black;
+  background-color: #ffffff;
+  /* background: url(./img/Polygon_up.png) 93% no-repeat; 화살표 이미지 삽입 */
+  appearance: none;
+  text-align: left;
+}
+.pl:focus {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid mediumaquamarine;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: 3px solid rgb(198, 251, 234);
+  border-radius: 10px;
+}
+
+.listbox {
+  z-index: 9;
+  position: absolute;
+  width: 110px;
+  list-style: none;
+  background: #ffffff;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  margin-top: 9px;
+  display: none;
+}
+
+.list {
+  border: none;
+  color: black;
+  /* background-color: red; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 7px 10px;
+  margin: 5px 7px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.list:hover {
+  background: rgb(198, 251, 234);
+  width: 95px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.visible {
+  display: block;
+}
+/* ============================================== */

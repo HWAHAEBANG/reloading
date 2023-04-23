@@ -7,11 +7,13 @@ const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID;
 const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET;
 
 router.get("/", (req, res) => {
+  const sort = req.query.selectedSort === "정확도순" ? "sim" : "date";
+
   axios
     .get("https://openapi.naver.com/v1/search/news.json", {
       params: {
         query: req.query.keyword,
-        sort: "sim", // 인기 뉴스 순
+        sort: sort,
         display: 100,
         start: 1,
       },
