@@ -3,6 +3,7 @@ import styles from "./TopicNews.module.css";
 import axios from "axios";
 import { formatAgo } from "../../util/date";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
+import { FiSearch } from "react-icons/fi";
 
 const RECOMMEND_KEYWORD = [
   "부동산",
@@ -78,7 +79,7 @@ export default function TopicNews() {
               placeholder='키워드를 입력해주세요.'
             />
             <button className={styles.inputBtn} onClick={handleSubmit}>
-              검 색
+              <FiSearch />
             </button>
           </div>
           <div className={styles.sortArea}>
@@ -118,18 +119,6 @@ export default function TopicNews() {
                 </li>
               </ul>
             </div>
-            {/* <form className='selectBox'>
-              <select id='sort' className='select'>
-                <option value='sim'>정확도순</option>
-                <option value='date'>최신순</option>
-                <span class='icoArrow'>
-                  <img
-                    src='https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png'
-                    alt=''
-                  />
-                </span>
-              </select>
-            </form> */}
           </div>
           <div className={`${styles.resultArea} scrollBar`}>
             <div className={styles.articlesContainer}>

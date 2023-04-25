@@ -11,6 +11,10 @@ export default function Gauge() {
       plotBorderWidth: 0,
       plotShadow: false,
       backgroundColor: "transparent",
+      style: {
+        width: "100%",
+        height: "100%",
+      },
     },
 
     title: {

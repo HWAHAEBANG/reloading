@@ -38,6 +38,10 @@ export default function Hai() {
     chart: {
       zoomType: "xy",
       backgroundColor: "transparent",
+      style: {
+        width: "100%",
+        height: "100%",
+      },
     },
     title: {
       text: "HAI : 연소득대비 주택 가격 비율 ",

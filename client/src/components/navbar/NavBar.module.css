@@ -136,10 +136,10 @@
 }
 
 .linkList:nth-child(2) :first-child {
-  color: red;
+  color: rgb(202, 24, 24);
 }
 .linkList:nth-child(3) :first-child {
-  color: greenyellow;
+  color: rgb(0, 152, 18);
 }
 
 label {

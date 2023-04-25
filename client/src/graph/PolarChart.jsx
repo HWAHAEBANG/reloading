@@ -24,10 +24,17 @@ export default function PolarChart() {
       polar: true,
       type: "line",
       backgroundColor: "transparent",
+      style: {
+        width: "100%",
+        height: "100%",
+      },
     },
     title: {
-      text: "Budget vs spending",
-      x: -80,
+      text: "핵심 지표별 진행 상황",
+      x: -0,
+    },
+    subtitle: {
+      text: "중심에서 멀수록 투자 적기",
     },
     pane: {
       size: "80%",
@@ -54,12 +61,13 @@ export default function PolarChart() {
       pointFormat:
         "<span style='color:{series.color}'>{series.name}: <b>${point.y:,.0f}</b><br/>",
     },
-    // legend: {
-    //   align: "right",
-    //   verticalAlign: "top",
-    //   y: 70,
-    //   layout: "vertical",
-    // },
+    legend: {
+      enabled: false,
+      align: "right",
+      verticalAlign: "top",
+      y: 70,
+      layout: "vertical",
+    },
     series: [
       {
         name: "Allocated Budget",
