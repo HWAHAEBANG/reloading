@@ -20,6 +20,7 @@ import SignupSection from "./pages/SignupSection";
 import FindIdSection from "./pages/FindIdSection";
 import FindPwSection from "./pages/FindPwSection";
 import EditUserInfoSection from "./pages/EditUserInfoSection";
+import ChartDetail from "./components/chart-detail/ChartDetail";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/editUserInfo",
         element: <EditUserInfoSection />,
+      },
+      {
+        path: "/allCharts/:id",
+        element: <ChartDetail />,
       },
     ],
   },

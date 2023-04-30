@@ -13,12 +13,12 @@ export default function Gauge() {
       backgroundColor: "transparent",
       style: {
         width: "100%",
-        height: "100%",
+        height: "50%",
       },
     },
 
     title: {
-      text: "Speedometer",
+      text: "시장 과열 척도",
     },
 
     pane: {
@@ -26,14 +26,14 @@ export default function Gauge() {
       endAngle: 89.9,
       background: null,
       center: ["50%", "75%"],
-      size: "110%",
+      size: "90%",
     },
 
     // the value axis
     yAxis: {
-      min: 0,
-      max: 200,
-      tickPixelInterval: 72,
+      min: -100,
+      max: 100,
+      tickPixelInterval: 45,
       tickPosition: "inside",
       tickColor: Highcharts.defaultOptions.chart.backgroundColor || "#FFFFFF",
       tickLength: 20,
@@ -47,32 +47,32 @@ export default function Gauge() {
       },
       plotBands: [
         {
-          from: 0,
-          to: 40,
+          from: -100,
+          to: -60,
           color: "#4282ef", // blue
           thickness: 20,
         },
         {
-          from: 40,
-          to: 80,
+          from: -60,
+          to: -20,
           color: "#42c4ef", // sky
           thickness: 20,
         },
         {
-          from: 80,
-          to: 120,
+          from: -20,
+          to: 20,
           color: "#55BF3B", // green
           thickness: 20,
         },
         {
-          from: 120,
-          to: 160,
+          from: 20,
+          to: 60,
           color: "#DDDF0D", // yellow
           thickness: 20,
         },
         {
-          from: 160,
-          to: 200,
+          from: 60,
+          to: 100,
           color: "#DF5353", // red
           thickness: 20,
         },
@@ -82,12 +82,12 @@ export default function Gauge() {
     series: [
       {
         name: "Speed",
-        data: [190],
+        data: [-60],
         tooltip: {
-          valueSuffix: " km/h",
+          valueSuffix: "", // km/h
         },
         dataLabels: {
-          format: "{y} km/h",
+          format: "{y}", //km/ha
           borderWidth: 0,
           color:
             (Highcharts.defaultOptions.title &&

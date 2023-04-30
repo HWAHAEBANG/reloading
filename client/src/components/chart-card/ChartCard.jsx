@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import styles from "./ChartCard.module.css";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
-export default function ChartCard() {
+export default function ChartCard({
+  data,
+  data: { id, thumbnail, title, subTitle, description },
+}) {
+  const navigate = useNavigate();
+  const enter = () => {
+    navigate(`/allCharts/${id}`, { state: { data: data } });
+  };
+
   const [onLike, setOnLike] = useState(false);
-  const handleOnLike = () => {
+  const handleOnLike = (e) => {
+    e.stopPropagation();
     setOnLike((prev) => !prev);
   };
 
@@ -12,8 +22,11 @@ export default function ChartCard() {
 
   // const randomIndex = 4;
 
+  console.log("확인", data);
+
   return (
     <div
+      onClick={enter}
       className={
         randomIndex === 0
           ? `${styles.maincontainer0}`
@@ -39,16 +52,13 @@ export default function ChartCard() {
         )}
       </div>
       <div className={styles.chartImgArea}>
-        <img src={process.env.PUBLIC_URL + "/image/test.png"} alt='' />{" "}
-        {/* 여기 */}
+        <img src={thumbnail} alt='' /> {/* 여기 */}
       </div>
       <div className={styles.textArea}>
         <div className={styles.titleContainer}>
-          <div className={styles.title}>전세가율</div>
+          <div className={styles.title}>{title}</div>
         </div>
-        <p className={styles.description}>
-          간단한간단한간단한간단한간단한간단한 요약 설명
-        </p>
+        <p className={styles.description}>{subTitle}</p>
       </div>
     </div>
   );

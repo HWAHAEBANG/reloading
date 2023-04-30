@@ -54,6 +54,9 @@
 
 .imgSection {
   width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* height: 100px; */
   /* background-color: red; */
 }

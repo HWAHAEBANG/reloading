@@ -3,6 +3,7 @@ import styles from "./AboutUs.module.css";
 import Hai from "../../graph/Hai";
 import Gauge from "../../graph/Gauge";
 import PolarChart from "../../graph/PolarChart";
+import SpiderWebDemo from "../ui/SpiderWebDemo";
 
 export default function AboutUs() {
   return (
@@ -11,10 +12,13 @@ export default function AboutUs() {
         <div className={`${styles.inner} scrollBar`}>
           <div className={styles.wholeContentsArea}>
             <div className={styles.pageIntroArea}>
-              <PolarChart />
-              {/* <div className={styles.textSection}>
+              <div className={styles.imgSection}>
+                <SpiderWebDemo />
+              </div>
+              <div className={styles.textSection}>
                 <p>
-                  기회는 다시 돌아온다. <br />그 날을 위해 "재장전"하라!
+                  기회는 다시 돌아온다. <br />그 날을 위해 <span>"재장전"</span>
+                  하라!
                 </p>
                 <p>
                   <span>"Reloading"</span>은 우리 말로 <span>"재장전"</span>을
@@ -37,8 +41,6 @@ export default function AboutUs() {
                 </p>
                 <span></span>
               </div>
-              <div className={styles.imgSection}>
-                </div> */}
               {/* <img
                   src={process.env.PUBLIC_URL + "/image/bullet.png"}
                   alt='bullet'

@@ -85,6 +85,8 @@ export default function AmountAndPrice() {
     chart: {
       zoomType: "xy",
       backgroundColor: "transparent",
+      // width: "100%", ?
+      // height: "100%", ?
     },
     title: {
       text: "서울 아파트 거래량과 가격지수",

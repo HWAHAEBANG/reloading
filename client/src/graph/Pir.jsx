@@ -5,6 +5,7 @@ import highchartsMore from "highcharts/highcharts-more";
 import solidGauge from "highcharts/modules/solid-gauge";
 import darkUnica from "highcharts/themes/dark-unica";
 import axios from "axios";
+import { MdHeight } from "react-icons/md";
 
 highchartsMore(Highcharts);
 solidGauge(Highcharts);
@@ -82,6 +83,10 @@ export default function Pir() {
     chart: {
       zoomType: "xy",
       backgroundColor: "transparent",
+      style: {
+        width: "100%",
+        height: "250px",
+      },
     },
     title: {
       text: "PIR : 연소득대비 주택 가격 비율",

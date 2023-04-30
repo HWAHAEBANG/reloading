@@ -63,11 +63,11 @@ export default function MyCharts() {
         </div>
         <div className={`${styles.inner} scrollBar`}>
           <div className={styles.wholeContentsArea}>
+            {/* <ChartCard />
             <ChartCard />
             <ChartCard />
             <ChartCard />
-            <ChartCard />
-            <ChartCard />
+            <ChartCard /> */}
           </div>
         </div>
       </div>

@@ -36,11 +36,11 @@ export default function Hai() {
 
   const options = {
     chart: {
-      zoomType: "xy",
+      // zoomType: "xy",
       backgroundColor: "transparent",
       style: {
         width: "100%",
-        height: "100%",
+        height: "250px",
       },
     },
     title: {

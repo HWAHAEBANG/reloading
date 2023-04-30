@@ -3,6 +3,8 @@ import styles from "./AllCharts.module.css";
 import ChartCard from "../chart-card/ChartCard";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
+import { mockData } from "../../data/mockdata";
+import { Navigate } from "react-router-dom";
 
 export default function AllCharts() {
   //select =============================================
@@ -63,31 +65,10 @@ export default function AllCharts() {
         </div>
         <div className={`${styles.inner} scrollBar`}>
           <div className={styles.wholeContentsArea}>
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
-            <ChartCard />
+            {mockData &&
+              mockData.chartData.map((data) => (
+                <ChartCard key={data.id} data={data} />
+              ))}
           </div>
         </div>
       </div>
