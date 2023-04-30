@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./AboutUs.module.css";
 import Hai from "../../graph/Hai";
 import Gauge from "../../graph/Gauge";
-import PolarChart from "../../graph/PolarChart";
+import SpiderWeb from "../../graph/SpiderWeb";
 import SpiderWebDemo from "../ui/SpiderWebDemo";
 
 export default function AboutUs() {

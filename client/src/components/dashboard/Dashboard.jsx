@@ -5,7 +5,7 @@ import UnsoldHouse from "../../graph/UnsoldHouse";
 import Pir from "../../graph/Pir";
 import PriceChangeRate from "../../graph/PriceChangeRate";
 import Gauge from "../../graph/Gauge";
-import PolarChart from "../../graph/PolarChart";
+import SpiderWeb from "../../graph/SpiderWeb";
 import AmountAndPrice from "../../graph/AmountAndPrice";
 import JeonsePriceRatio from "../../graph/JeonsePriceRatio";
 
@@ -17,7 +17,7 @@ export default function Dashboard() {
         <Hai />
       </div>
       <div className={`${styles.box} ${styles.box2}`}>
-        <PolarChart />
+        <SpiderWeb />
       </div>
       <div className={`${styles.box} ${styles.box3}`}>
         <Gauge />

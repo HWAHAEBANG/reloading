@@ -9,7 +9,7 @@ darkUnica(Highcharts);
 // polar 차트를 사용하기 위해 highcharts-more 라이브러리 추가
 highchartsMore(Highcharts);
 
-export default function PolarChart() {
+export default function SpiderWeb() {
   useEffect(() => {
     // 차트 생성 후 DOM에 추가
     const chart = Highcharts.chart("polar-container", options);

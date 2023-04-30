@@ -52,7 +52,8 @@ export default function ChartCard({
         )}
       </div>
       <div className={styles.chartImgArea}>
-        <img src={thumbnail} alt='' /> {/* 여기 */}
+        <img src={`${process.env.PUBLIC_URL} ${thumbnail}`} alt='' />
+        {/* "+" 필요없음 */}
       </div>
       <div className={styles.textArea}>
         <div className={styles.titleContainer}>
