@@ -7,7 +7,7 @@ import { FiSearch } from "react-icons/fi";
 export default function MyCharts() {
   //select =============================================
   const [sortVisible, setSortVisible] = useState(false);
-  const [selectedSort, setSelectedSort] = useState("정확도순");
+  const [selectedSort, setSelectedSort] = useState("인기순");
   // ===================================================
   // select ====================================
   const handleSelectSort = (e) => {

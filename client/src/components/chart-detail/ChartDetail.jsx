@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import styles from "./ChartDetail.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IoArrowBackCircle } from "react-icons/io5";
 const Pir = lazy(() => import("../../graph/Pir"));
 const Hai = lazy(() => import("../../graph/Hai"));
 const UnsoldHouse = lazy(() => import("../../graph/UnsoldHouse"));
@@ -24,7 +25,7 @@ const componentMapping = {
 export default function ChartDetail() {
   const navigate = useNavigate();
 
-  const goToList = () => {
+  const backToList = () => {
     navigate("/allCharts");
   };
 
@@ -40,15 +41,15 @@ export default function ChartDetail() {
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
         <div className={styles.inner}>
-          <button className={styles.back} onClick={goToList}>
-            목록
-          </button>
+          <IoArrowBackCircle
+            className={styles.backToList}
+            onClick={backToList}
+          />
+
           <div className={styles.chartArea}>
-            <div className={styles.alignHelper}>
-              <Suspense fallback={<div>Loading...</div>}>
-                <Component />
-              </Suspense>
-            </div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Component />
+            </Suspense>
           </div>
           <div className={styles.desciptionArea}>
             <div className={styles.descriptionSection}>

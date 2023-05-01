@@ -32,10 +32,10 @@ export default function SpiderWeb() {
       text: "핵심 지표별 진행 상황",
       x: 0,
     },
-    subtitle: {
-      text: "중심에서 멀수록 투자 적기",
-      x: 0,
-    },
+    // subtitle: {
+    //   text: "중심에서 멀수록 투자 적기",
+    //   x: 0,
+    // },
     pane: {
       size: "80%",
     },

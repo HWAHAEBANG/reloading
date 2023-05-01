@@ -83,7 +83,6 @@ export default function Pir() {
     chart: {
       zoomType: "xy",
       backgroundColor: "transparent",
-      margin: [0, 0, 0, 0],
       style: {
         width: "100%",
         height: "100%",

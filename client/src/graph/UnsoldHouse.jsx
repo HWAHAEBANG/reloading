@@ -53,7 +53,7 @@ export default function UnsoldHouse() {
     chart: {
       zoomType: "x",
       backgroundColor: "transparent",
-      // height: "100%", // 필요없음. 아니 없어야됨
+      // height: "90%", // 필요없음. 아니 없어야됨
       // width: "100%",
     },
     title: {

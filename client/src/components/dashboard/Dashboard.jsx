@@ -8,37 +8,57 @@ import Gauge from "../../graph/Gauge";
 import SpiderWeb from "../../graph/SpiderWeb";
 import AmountAndPrice from "../../graph/AmountAndPrice";
 import JeonsePriceRatio from "../../graph/JeonsePriceRatio";
+import { Link } from "react-router-dom";
 
 // 현재 서울 기준으로 하였음 추후 리팩토링 필요할 수도.
 export default function Dashboard() {
   return (
     <div className={styles.gridContainer}>
-      <div className={`${styles.box} ${styles.box1}`}>
+      <Link to='/allCharts/hai' className={`${styles.box} ${styles.box1}`}>
         <Hai />
-      </div>
-      <div className={`${styles.box} ${styles.box2}`}>
+      </Link>
+      <Link
+        to='/allCharts/spiderWeb'
+        className={`${styles.box} ${styles.box2}`}
+      >
         <SpiderWeb />
-      </div>
-      <div className={`${styles.box} ${styles.box3}`}>
+      </Link>
+      <Link to='/allCharts/gauge' className={`${styles.box} ${styles.box3}`}>
         <Gauge />
-      </div>
-      <div className={`${styles.box} ${styles.box4}`}>Box 4</div>
-      <div className={`${styles.box} ${styles.box5}`}>
+      </Link>
+      <Link to='/allCharts' className={`${styles.box} ${styles.box4}`}>
+        Box 4
+      </Link>
+      <Link to='/allCharts/pir' className={`${styles.box} ${styles.box5}`}>
         <Pir />
-      </div>
-      <div className={`${styles.box} ${styles.box6}`}>
+      </Link>
+      <Link
+        to='/allCharts/amountAndPrice'
+        className={`${styles.box} ${styles.box6}`}
+      >
         <AmountAndPrice />
-      </div>
-      <div className={`${styles.box} ${styles.box7}`}>Box 7</div>
-      <div className={`${styles.box} ${styles.box8}`}>
+      </Link>
+      <Link to='/allCharts' className={`${styles.box} ${styles.box7}`}>
+        Box 7
+      </Link>
+      <Link
+        to='/allCharts/priceChangeRate'
+        className={`${styles.box} ${styles.box8}`}
+      >
         <PriceChangeRate />
-      </div>
-      <div className={`${styles.box} ${styles.box9}`}>
+      </Link>
+      <Link
+        to='/allCharts/unsoldHouse'
+        className={`${styles.box} ${styles.box9}`}
+      >
         <UnsoldHouse />
-      </div>
-      <div className={`${styles.box} ${styles.box10}`}>
+      </Link>
+      <Link
+        to='/allCharts/jeonsePriceRatio'
+        className={`${styles.box} ${styles.box10}`}
+      >
         <JeonsePriceRatio />
-      </div>
+      </Link>
     </div>
   );
 }

@@ -13,7 +13,7 @@ export default function Gauge() {
       backgroundColor: "transparent",
       style: {
         width: "100%",
-        height: "50%",
+        height: "100%",
       },
     },
 
@@ -26,7 +26,7 @@ export default function Gauge() {
       endAngle: 89.9,
       background: null,
       center: ["50%", "75%"],
-      size: "90%",
+      size: "80%",
     },
 
     // the value axis
