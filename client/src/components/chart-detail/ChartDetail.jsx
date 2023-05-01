@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import styles from "./ChartDetail.module.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const Pir = lazy(() => import("../../graph/Pir"));
 const Hai = lazy(() => import("../../graph/Hai"));
 const UnsoldHouse = lazy(() => import("../../graph/UnsoldHouse"));
@@ -22,19 +22,57 @@ const componentMapping = {
 };
 
 export default function ChartDetail() {
+  const navigate = useNavigate();
+
+  const goToList = () => {
+    navigate("/allCharts");
+  };
+
   const {
-    state: { data },
+    state: {
+      data: { id, title, subTitle, description, youtubeUrl, startSecond },
+    },
   } = useLocation();
 
-  const Component = componentMapping[data.id];
+  const Component = componentMapping[id];
 
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Component />
-        </Suspense>
-        {/* {data.title} */}
+        <div className={styles.inner}>
+          <button className={styles.back} onClick={goToList}>
+            목록
+          </button>
+          <div className={styles.chartArea}>
+            <div className={styles.alignHelper}>
+              <Suspense fallback={<div>Loading...</div>}>
+                <Component />
+              </Suspense>
+            </div>
+          </div>
+          <div className={styles.desciptionArea}>
+            <div className={styles.descriptionSection}>
+              <p>{title}</p>
+              <p>{description}</p>
+            </div>
+            <div className={styles.youtubeSection}>
+              {youtubeUrl ? (
+                <iframe
+                  id='player'
+                  type='text/html'
+                  width='100%'
+                  height='100%'
+                  src={`https://www.youtube.com/embed/${youtubeUrl}?start=${startSecond}`}
+                  frameBorder='0'
+                  title={title}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+          {/* {data.title} */}
+        </div>
       </div>
     </div>
   );

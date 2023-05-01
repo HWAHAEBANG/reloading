@@ -53,8 +53,8 @@ export default function UnsoldHouse() {
     chart: {
       zoomType: "x",
       backgroundColor: "transparent",
-      // height: "250px", ?
-      // width: "100%",?
+      // height: "100%", // 필요없음. 아니 없어야됨
+      // width: "100%",
     },
     title: {
       text: "수도권 미분양 물량 추이",

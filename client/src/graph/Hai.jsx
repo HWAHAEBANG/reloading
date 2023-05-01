@@ -5,6 +5,7 @@ import highchartsMore from "highcharts/highcharts-more";
 import solidGauge from "highcharts/modules/solid-gauge";
 import darkUnica from "highcharts/themes/dark-unica";
 import axios from "axios";
+import { FcLeft } from "react-icons/fc";
 
 highchartsMore(Highcharts);
 solidGauge(Highcharts);
@@ -36,11 +37,17 @@ export default function Hai() {
 
   const options = {
     chart: {
-      // zoomType: "xy",
+      zoomType: "xy",
       backgroundColor: "transparent",
       style: {
+        // position: "absolute",
+        // top: 0,
+        // left: 0,
         width: "100%",
-        height: "250px",
+        height: "100%",
+        // margin: "0",
+        // height: (3 / 4) * 200 + "%",
+        // backgroundColor: "red",
       },
     },
     title: {

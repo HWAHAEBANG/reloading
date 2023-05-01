@@ -23,3 +23,85 @@
     height: 100%;
   }
 }
+
+.inner {
+  position: relative;
+  height: 100%;
+  padding: 30px;
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px;
+}
+
+.chartArea {
+  width: 100%;
+  height: 45%;
+  display: inline-block;
+  /* padding-top: 100px; */
+  /* position: relative; */
+  /* height: 100%; */
+  /* display: flex; */
+  /* align-items: center; */
+  /* padding: 20px; */
+  /* background-color: aliceblue; */
+}
+
+.desciptionArea {
+  display: flex;
+  /* flex-direction: column; */
+  width: 100%;
+  height: 55%;
+  /* padding: 20px; */
+  flex-shrink: 0;
+  /* background-color: red; */
+}
+
+.descriptionSection {
+  height: 100%;
+  width: 59%;
+  padding: 20px;
+  /* background-color: red; */
+}
+
+.descriptionSection p:nth-child(1) {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 60px;
+  color: rgb(147, 193, 178);
+}
+
+.descriptionSection p:nth-child(2) {
+  font-size: 15px;
+  line-height: 30px;
+}
+
+.youtubeSection {
+  height: 100%;
+  width: 41%;
+  position: relative;
+  padding: 20px;
+  /* background-color: blue; */
+}
+
+/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .desciptionArea {
+    flex-direction: column;
+  }
+
+  .youtubeSection {
+    width: 100%;
+  }
+
+  .descriptionSection {
+    width: 100%;
+    /* padding: 20px; */
+    /* background-color: red; */
+  }
+}

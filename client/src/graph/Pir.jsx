@@ -83,10 +83,27 @@ export default function Pir() {
     chart: {
       zoomType: "xy",
       backgroundColor: "transparent",
+      margin: [0, 0, 0, 0],
       style: {
         width: "100%",
-        height: "250px",
+        height: "100%",
       },
+    },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            // maxWidth: 1024,
+          },
+          chartOptions: {
+            xAxis: {
+              labels: {
+                step: 4, // x축 눈금 간격 조정
+              },
+            },
+          },
+        },
+      ],
     },
     title: {
       text: "PIR : 연소득대비 주택 가격 비율",

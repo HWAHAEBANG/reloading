@@ -9,7 +9,7 @@ import { Navigate } from "react-router-dom";
 export default function AllCharts() {
   //select =============================================
   const [sortVisible, setSortVisible] = useState(false);
-  const [selectedSort, setSelectedSort] = useState("정확도순");
+  const [selectedSort, setSelectedSort] = useState("인기순");
   // ===================================================
   // select ====================================
   const handleSelectSort = (e) => {
