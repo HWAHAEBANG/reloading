@@ -24,7 +24,7 @@ app.use(express.static("build"));
 // 루트 경로로 들어왔을 때 다음 파일을 보낸다.
 app.get("/", (req, res) => {
   res.sendFile(__dirname, "/build/index.html");
-  // 해당하는 파일 경로를 정어운다,  __dirname는 루트경로를 의미
+  // 해당하는 파일 경로를 정어운다,  __dirname는 루트경로를 의미/
 });
 
 const HAI = require("./router/hai.js");
