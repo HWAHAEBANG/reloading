@@ -8,7 +8,9 @@ export default function JeonsePriceRatio() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/jeonsePriceRatio`, { withCredentials: true })
+      .get(`https://reloading1.herokuapp.com/jeonsePriceRatio`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setJeonsePriceRatioData(response.data.data);
       });

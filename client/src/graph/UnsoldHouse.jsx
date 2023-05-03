@@ -18,13 +18,15 @@ export default function UnsoldHouse() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/unsoldHouse`, { withCredentials: true })
+      .get(`https://reloading1.herokuapp.com/unsoldHouse`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setUnsoldHouseData(response.data.data);
       });
 
     axios
-      .get(`http://localhost:5000/housePriceIndexAroundSeoul`, {
+      .get(`https://reloading1.herokuapp.com/housePriceIndexAroundSeoul`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -32,7 +34,7 @@ export default function UnsoldHouse() {
       });
 
     axios
-      .get(`http://localhost:5000/rentalPriceIndexAroundSeoul`, {
+      .get(`https://reloading1.herokuapp.com/rentalPriceIndexAroundSeoul`, {
         withCredentials: true,
       })
       .then((response) => {

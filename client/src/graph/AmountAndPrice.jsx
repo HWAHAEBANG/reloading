@@ -53,13 +53,13 @@ export default function AmountAndPrice() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/pir`, { withCredentials: true })
+      .get(`https://reloading1.herokuapp.com/pir`, { withCredentials: true })
       .then((response) => {
         setPirData(response.data.data);
       });
 
     axios
-      .get(`http://localhost:5000/housePriceIndexSeoul`, {
+      .get(`https://reloading1.herokuapp.com/housePriceIndexSeoul`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -67,7 +67,7 @@ export default function AmountAndPrice() {
       });
 
     axios
-      .get(`http://localhost:5000/rentalPriceIndexSeoul`, {
+      .get(`https://reloading1.herokuapp.com/rentalPriceIndexSeoul`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -75,7 +75,9 @@ export default function AmountAndPrice() {
       });
 
     axios
-      .get(`http://localhost:5000/jeonsePriceRatio`, { withCredentials: true })
+      .get(`https://reloading1.herokuapp.com/jeonsePriceRatio`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setJeonsePriceRatioData(response.data.data);
       });

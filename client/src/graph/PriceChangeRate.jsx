@@ -10,7 +10,7 @@ export default function PriceChangeRate() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/priceChangeRate`, {
+      .get(`https://reloading1.herokuapp.com/priceChangeRate`, {
         withCredentials: true,
       })
       .then((response) => {
