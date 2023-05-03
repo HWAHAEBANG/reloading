@@ -1,0 +1,16 @@
+{
+  "name": "reloading",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/HWAHAEBANG/reloading.git",
+  "author": "화해방 <bcl0206@naver.com>",
+  "license": "MIT",
+  "scripts": {
+    "client-build": "cd client && yarn install --immutable && yarn build && cd ../",
+    "server-build": "cd server && yarn install --immutable --dev && cd ../",
+    "heroku-prebuild": "yarn run client-build  && yarn run server-build &&  mv ./client/build ./server/build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && yarn start",
+    "dev": "nodemon index.js"
+  }
+}
