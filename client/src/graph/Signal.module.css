@@ -1,0 +1,83 @@
+.mainContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inner {
+  text-align: center;
+}
+
+.title {
+  position: relative;
+  font-size: 20px;
+  text-align: center;
+}
+
+.label {
+  position: absolute;
+  right: 0;
+  font-size: 12px;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  text-align: left;
+  margin-top: 70px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.counter {
+  background-color: mediumaquamarine;
+  color: black;
+  padding: 2px 5px;
+  /* border-radius: 5px; */
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.symptom {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.symptom span {
+}
+
+.situation {
+  display: flex;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  font-size: 12px;
+}
+
+.text p:nth-child(1) {
+  /* color: red; */
+  color: #00ff4c;
+  font-weight: 100;
+}
+
+.text p:nth-child(2) {
+  color: rgb(238, 30, 30);
+  font-weight: 100;
+  /* color: blue; */
+}
+
+.greenLamp {
+  color: red;
+}
+
+.greenLamp {
+  color: red;
+}

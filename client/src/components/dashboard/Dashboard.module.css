@@ -16,13 +16,12 @@
   box-sizing: border-box;
   animation: boxExtend 0.5s forwards;
   grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: auto;
-  grid-gap: 20px;
+  grid-template-rows: repeat(10, 1fr);
+  grid-gap: 15px;
 }
 
 .box {
   position: relative;
-  /* display: flex; */
   justify-content: center;
   align-items: center;
   font-size: 2rem;
@@ -37,6 +36,7 @@
   transform: scale(1.02);
 }
 
+/* x축: 10칸, y축: 10칸 */
 .box1 {
   /* hai */
   grid-column: 1 / 3;
@@ -44,17 +44,18 @@
 }
 .box2 {
   /* 스파이더 */
-  grid-column: 9/ 11;
-  grid-row: 1/5;
+  grid-column: 7/ 9;
+  grid-row: 1/6;
 }
 .box3 {
   /* 게이지 */
-  grid-column: 3 / 5;
-  grid-row: 5/6;
+  grid-column: 9/ 11;
+  grid-row: 1/5;
+  padding-top: 40px;
 }
 .box4 {
   grid-column: 3 / 5;
-  grid-row: 1/5;
+  grid-row: 1/3;
 }
 .box5 {
   /* pir */
@@ -63,8 +64,8 @@
 }
 .box6 {
   /* 거래량 */
-  grid-column: 7/ 9;
-  grid-row: 1/6;
+  grid-column: 3 / 5;
+  grid-row: 1 / 6;
 }
 .box7 {
   /* 신호등 */

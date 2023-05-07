@@ -52,23 +52,23 @@ const router = createBrowserRouter([
         element: <TopicNewsSection />,
       },
       {
-        path: "/login",
+        path: "/users/login",
         element: <LoginSection />,
       },
       {
-        path: "/login/findId",
+        path: "/users/findId",
         element: <FindIdSection />,
       },
       {
-        path: "/login/findPw",
+        path: "/users/findPw",
         element: <FindPwSection />,
       },
       {
-        path: "/signup",
+        path: "/users/signup",
         element: <SignupSection />,
       },
       {
-        path: "/editUserInfo",
+        path: "/users/editUserInfo",
         element: <EditUserInfoSection />,
       },
       {

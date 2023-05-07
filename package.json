@@ -12,5 +12,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd server && yarn start",
     "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "mysql": "^2.18.1"
   }
 }

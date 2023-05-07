@@ -58,7 +58,7 @@ export default function NavBar({ showNav, setShowNav }) {
           </div>
         </div>
         <div className={styles.buttonList}>
-          <Link to='/editUserInfo'>
+          <Link to='/users/editUserInfo'>
             <div>
               &nbsp;
               <FaUserEdit />

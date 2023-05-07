@@ -6,72 +6,90 @@ export default function Gauge() {
   const options = {
     chart: {
       type: "gauge",
+      backgroundColor: "transparent",
       plotBackgroundColor: null,
       plotBackgroundImage: null,
       plotBorderWidth: 0,
       plotShadow: false,
-      backgroundColor: "transparent",
-      style: {
-        width: "100%",
-        height: "100%",
-      },
     },
-
     title: {
-      text: "시장 과열 척도",
+      text: "부동산 시장 과열 지수",
+      floating: true,
+      x: 0, // x값을 설정하여 가로 방향으로 이동시킵니다.
+      y: 10, // y값을 설정하여 세로 방향으로 이동시킵니다.
     },
-
     pane: {
-      startAngle: -90,
-      endAngle: 89.9,
-      background: null,
-      center: ["50%", "75%"],
+      startAngle: -100,
+      endAngle: 100,
+      background: [
+        {
+          borderWidth: 0,
+          backgroundColor: "transparent",
+          outerRadius: "109%",
+          innerRadius: "107%",
+        },
+        {
+          borderWidth: 0,
+          backgroundColor: "transparent",
+          outerRadius: "107%",
+          innerRadius: "105%",
+        },
+        {
+          borderWidth: 0,
+          backgroundColor: "transparent",
+          outerRadius: "79%",
+          innerRadius: "77%",
+        },
+      ],
       size: "80%",
     },
 
-    // the value axis
+    // 차트 데이터 설정
     yAxis: {
-      min: -100,
+      min: 0,
       max: 100,
-      tickPixelInterval: 45,
-      tickPosition: "inside",
-      tickColor: Highcharts.defaultOptions.chart.backgroundColor || "#FFFFFF",
-      tickLength: 20,
-      tickWidth: 2,
-      minorTickInterval: null,
+      lineColor: "#FFF",
+      tickColor: "#FFF",
+      minorTickColor: "#FFF",
+      offset: -25,
+      lineWidth: 2,
       labels: {
-        distance: 20,
+        distance: -20,
+        rotation: "auto",
         style: {
-          fontSize: "14px",
+          color: "#FFF",
         },
       },
+      tickLength: 5,
+      minorTickLength: 5,
+      endOnTick: false,
       plotBands: [
         {
-          from: -100,
-          to: -60,
+          from: 0,
+          to: 20,
           color: "#4282ef", // blue
           thickness: 20,
         },
         {
-          from: -60,
-          to: -20,
+          from: 20,
+          to: 40,
           color: "#42c4ef", // sky
           thickness: 20,
         },
         {
-          from: -20,
-          to: 20,
+          from: 40,
+          to: 60,
           color: "#55BF3B", // green
           thickness: 20,
         },
         {
-          from: 20,
-          to: 60,
+          from: 60,
+          to: 80,
           color: "#DDDF0D", // yellow
           thickness: 20,
         },
         {
-          from: 60,
+          from: 80,
           to: 100,
           color: "#DF5353", // red
           thickness: 20,
@@ -82,35 +100,145 @@ export default function Gauge() {
     series: [
       {
         name: "Speed",
-        data: [-60],
+        data: [30],
         tooltip: {
-          valueSuffix: "", // km/h
+          valueSuffix: " km/h",
         },
-        dataLabels: {
-          format: "{y}", //km/ha
-          borderWidth: 0,
-          color:
-            (Highcharts.defaultOptions.title &&
-              Highcharts.defaultOptions.title.style &&
-              Highcharts.defaultOptions.title.style.color) ||
-            "#333333",
-          style: {
-            fontSize: "16px",
-          },
-        },
+        // 차트 색상 설정
         dial: {
-          radius: "80%",
-          backgroundColor: "gray",
-          baseWidth: 12,
-          baseLength: "0%",
+          backgroundColor: "#666",
+          baseLength: "80%",
+          baseWidth: 2,
+          radius: "100%",
           rearLength: "0%",
+          topWidth: 1,
+          borderColor: "#DDD",
+          borderWidth: 1,
+          pivotRadius: 5,
+          pivotBackgroundColor: "#FFF",
+          pivotBorderColor: "#000",
+          pivotBorderWidth: 2,
         },
         pivot: {
-          backgroundColor: "gray",
+          backgroundColor: "#DDD",
           radius: 6,
+        },
+        dataLabels: {
+          enabled: false,
         },
       },
     ],
   };
+
   return <HighchartsReact highcharts={Highcharts} options={options} />;
 }
+
+// const options = {
+//   chart: {
+//     type: "gauge",
+//     plotBackgroundColor: null,
+//     plotBackgroundImage: null,
+//     plotBorderWidth: 0,
+//     plotShadow: false,
+//     backgroundColor: "transparent",
+//     style: {
+//       width: "100%",
+//       height: "100%",
+//     },
+//   },
+
+//   title: {
+//     text: "시장 과열 척도",
+//   },
+
+//   pane: {
+//     startAngle: -90,
+//     endAngle: 89.9,
+//     background: null,
+//     center: ["50%", "75%"],
+//     size: "80%",
+//   },
+
+//   // the value axis
+//   yAxis: {
+//     min: 0,
+//     max: 100,
+//     tickPixelInterval: 45,
+//     tickPosition: "inside",
+//     tickColor: Highcharts.defaultOptions.chart.backgroundColor || "#FFFFFF",
+//     tickLength: 20,
+//     tickWidth: 2,
+//     minorTickInterval: null,
+//     labels: {
+//       distance: 20,
+//       style: {
+//         fontSize: "14px",
+//       },
+//     },
+// plotBands: [
+//   {
+//     from: 0,
+//     to: 20,
+//     color: "#4282ef", // blue
+//     thickness: 20,
+//   },
+//   {
+//     from: 20,
+//     to: 40,
+//     color: "#42c4ef", // sky
+//     thickness: 20,
+//   },
+//   {
+//     from: 40,
+//     to: 60,
+//     color: "#55BF3B", // green
+//     thickness: 20,
+//   },
+//   {
+//     from: 60,
+//     to: 80,
+//     color: "#DDDF0D", // yellow
+//     thickness: 20,
+//   },
+//   {
+//     from: 80,
+//     to: 100,
+//     color: "#DF5353", // red
+//     thickness: 20,
+//   },
+// ],
+// },
+
+//   series: [
+//     {
+//       name: "Speed",
+//       data: [20],
+//       tooltip: {
+//         valueSuffix: "", // km/h
+//       },
+//       dataLabels: {
+//         format: "{y}", //km/ha
+//         borderWidth: 0,
+//         color:
+//           (Highcharts.defaultOptions.title &&
+//             Highcharts.defaultOptions.title.style &&
+//             Highcharts.defaultOptions.title.style.color) ||
+//           "#333333",
+//         style: {
+//           fontSize: "16px",
+//         },
+//       },
+//       dial: {
+//         radius: "80%",
+//         backgroundColor: "gray",
+//         baseWidth: 12,
+//         baseLength: "0%",
+//         rearLength: "0%",
+//       },
+//       pivot: {
+//         backgroundColor: "gray",
+//         radius: 6,
+//       },
+//     },
+//   ],
+// };

@@ -36,7 +36,7 @@ export default function TopicNews() {
     if (!selectedKeyword) return;
     axios
       .get(
-        `https://reloading1.herokuapp.com/newsSearch?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/newsSearch?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
         {
           withCredentials: true,
         }

@@ -39,7 +39,11 @@ export default function AboutUs() {
                   되겠습니다
                   <br />
                 </p>
-                <span></span>
+                <span>
+                  시장은 예측할 수 없습니다! 다만... 시장에 영향을 미치는 것은
+                  수많은 요인이 있고 보조지표로만 참고.. 시장반등의 신호 보다는
+                  증상을 알자
+                </span>
               </div>
               {/* <img
                   src={process.env.PUBLIC_URL + "/image/bullet.png"}

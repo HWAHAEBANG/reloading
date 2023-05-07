@@ -24,13 +24,14 @@ export default function SpiderWeb() {
       type: "line",
       backgroundColor: "transparent",
       style: {
-        width: "100%",
-        height: "250px",
+        // width: "100%",
+        // height: "260",
       },
     },
     title: {
       text: "핵심 지표별 진행 상황",
       x: 0,
+      y: 25,
     },
     // subtitle: {
     //   text: "중심에서 멀수록 투자 적기",

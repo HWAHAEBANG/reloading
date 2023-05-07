@@ -18,25 +18,34 @@ export default function UnsoldHouse() {
 
   useEffect(() => {
     axios
-      .get(`https://reloading1.herokuapp.com/unsoldHouse`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/unsoldHouse`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setUnsoldHouseData(response.data.data);
       });
 
     axios
-      .get(`https://reloading1.herokuapp.com/housePriceIndexAroundSeoul`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/housePriceIndexAroundSeoul`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setHousePriceIndexData(response.data.data);
       });
 
     axios
-      .get(`https://reloading1.herokuapp.com/rentalPriceIndexAroundSeoul`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/rentalPriceIndexAroundSeoul`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setRentalPriceIndexData(response.data.data);
       });

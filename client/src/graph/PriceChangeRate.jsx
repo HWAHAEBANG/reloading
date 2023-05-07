@@ -10,9 +10,12 @@ export default function PriceChangeRate() {
 
   useEffect(() => {
     axios
-      .get(`https://reloading1.herokuapp.com/priceChangeRate`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/priceChangeRate`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         // console.log("확인1", response.data.data);
         setPriceChangeRateData(response.data.data);

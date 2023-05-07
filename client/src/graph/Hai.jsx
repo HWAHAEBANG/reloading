@@ -27,7 +27,10 @@ export default function Hai() {
 
   useEffect(() => {
     axios
-      .get(`https://reloading1.herokuapp.com/hai`, { withCredentials: true })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/hai`,
+        { withCredentials: true }
+      )
       .then((response) => {
         console.log("확인", response.data);
         setCategories(response.data.categories);

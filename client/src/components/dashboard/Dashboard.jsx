@@ -9,6 +9,7 @@ import SpiderWeb from "../../graph/SpiderWeb";
 import AmountAndPrice from "../../graph/AmountAndPrice";
 import JeonsePriceRatio from "../../graph/JeonsePriceRatio";
 import { Link } from "react-router-dom";
+import Signal from "../../graph/Signal";
 
 // 현재 서울 기준으로 하였음 추후 리팩토링 필요할 수도.
 export default function Dashboard() {
@@ -26,9 +27,9 @@ export default function Dashboard() {
       <Link to='/allCharts/gauge' className={`${styles.box} ${styles.box3}`}>
         <Gauge />
       </Link>
-      <Link to='/allCharts' className={`${styles.box} ${styles.box4}`}>
+      {/* <Link to='/allCharts' className={`${styles.box} ${styles.box4}`}>
         Box 4
-      </Link>
+      </Link> */}
       <Link to='/allCharts/pir' className={`${styles.box} ${styles.box5}`}>
         <Pir />
       </Link>
@@ -39,7 +40,7 @@ export default function Dashboard() {
         <AmountAndPrice />
       </Link>
       <Link to='/allCharts' className={`${styles.box} ${styles.box7}`}>
-        Box 7
+        <Signal />
       </Link>
       <Link
         to='/allCharts/priceChangeRate'

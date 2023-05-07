@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./MyCharts.module.css";
 import ChartCard from "../chart-card/ChartCard";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
+import axios from "axios";
 
 export default function MyCharts() {
   //select =============================================
@@ -15,6 +16,23 @@ export default function MyCharts() {
     setSortVisible((prev) => !prev);
   };
   // -------====================================
+
+  const [test, setTest] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/test`
+      )
+      .then((response) => {
+        if (response.data.length === 0) {
+          setTest(`일치하는 정보가 없습니다.`);
+        } else setTest(`귀하의 이름은는"${response.data[0].title}" 입니다.`);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <div className={styles.mainContainer}>
@@ -63,6 +81,7 @@ export default function MyCharts() {
         </div>
         <div className={`${styles.inner} scrollBar`}>
           <div className={styles.wholeContentsArea}>
+            {test && test}
             {/* <ChartCard />
             <ChartCard />
             <ChartCard />

@@ -53,31 +53,43 @@ export default function AmountAndPrice() {
 
   useEffect(() => {
     axios
-      .get(`https://reloading1.herokuapp.com/pir`, { withCredentials: true })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/pir`,
+        { withCredentials: true }
+      )
       .then((response) => {
         setPirData(response.data.data);
       });
 
     axios
-      .get(`https://reloading1.herokuapp.com/housePriceIndexSeoul`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/housePriceIndexSeoul`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setHousePriceIndexData(response.data.data);
       });
 
     axios
-      .get(`https://reloading1.herokuapp.com/rentalPriceIndexSeoul`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/rentalPriceIndexSeoul`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setRentalPriceIndexData(response.data.data);
       });
 
     axios
-      .get(`https://reloading1.herokuapp.com/jeonsePriceRatio`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/jeonsePriceRatio`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setJeonsePriceRatioData(response.data.data);
       });
