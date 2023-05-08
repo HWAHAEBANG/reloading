@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AllCharts.module.css";
 import ChartCard from "../chart-card/ChartCard";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
-import { mockData } from "../../data/mockdata";
-import { Navigate } from "react-router-dom";
+// import { mockData } from "../../data/mockdata";
+import axios from "axios";
 
 export default function AllCharts() {
   //select =============================================
@@ -17,6 +17,24 @@ export default function AllCharts() {
     setSortVisible((prev) => !prev);
   };
   // -------====================================
+
+  const [chartsData, setChartsData] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/allCharts`)
+      .then((response) => {
+        if (response.data.length === 0) {
+          return;
+          // setChartsData(`일치하는 정보가 없습니다.`);
+        } else setChartsData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  console.log("디비연결 이상무", chartsData);
 
   return (
     <div className={styles.mainContainer}>
@@ -65,10 +83,8 @@ export default function AllCharts() {
         </div>
         <div className={`${styles.inner} scrollBar`}>
           <div className={styles.wholeContentsArea}>
-            {mockData &&
-              mockData.chartData.map((data) => (
-                <ChartCard key={data.id} data={data} />
-              ))}
+            {chartsData &&
+              chartsData.map((data) => <ChartCard key={data.id} data={data} />)}
           </div>
         </div>
       </div>

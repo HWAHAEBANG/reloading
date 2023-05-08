@@ -27,6 +27,13 @@ app.get("/", (req, res) => {
   // 해당하는 파일 경로를 정어운다,  __dirname는 루트경로를 의미/
 });
 
+const USERS = require("./router/users.js");
+app.use("/users", USERS);
+
+const ALL_CHARTS = require("./router/allCharts.js");
+app.use("/allCharts", ALL_CHARTS);
+
+// chart ==================================
 const HAI = require("./router/hai.js");
 app.use("/hai", HAI);
 
@@ -35,9 +42,6 @@ app.use("/pir", PIR);
 
 const UNSOLDHOUSE = require("./router/unsoldHouse.js");
 app.use("/unsoldHouse", UNSOLDHOUSE);
-
-const USERS = require("./router/users.js");
-app.use("/users", USERS);
 
 const HOUSE_PRICE_INDEX_SEOUL = require("./router/housePriceIndexSeoul.js");
 app.use("/housePriceIndexSeoul", HOUSE_PRICE_INDEX_SEOUL);

@@ -27,12 +27,9 @@ export default function Hai() {
 
   useEffect(() => {
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/hai`,
-        { withCredentials: true }
-      )
+      .get(`http://localhost:5000/hai`, { withCredentials: true })
       .then((response) => {
-        console.log("확인", response.data);
+        // console.log("확인", response.data);
         setCategories(response.data.categories);
         setData(response.data.data);
       });

@@ -6,16 +6,13 @@ import axios from "axios";
 export default function PriceChangeRate() {
   const [priceChangeRateData, setPriceChangeRateData] = useState();
 
-  console.log(priceChangeRateData);
+  // console.log(priceChangeRateData);
 
   useEffect(() => {
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/priceChangeRate`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/priceChangeRate`, {
+        withCredentials: true,
+      })
       .then((response) => {
         // console.log("확인1", response.data.data);
         setPriceChangeRateData(response.data.data);

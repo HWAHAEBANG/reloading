@@ -48,48 +48,36 @@ export default function AmountAndPrice() {
       parseFloat(getAverage(pirData).toFixed(1)),
     ]);
 
-  console.log("pirData", pirData);
-  console.log("avg", avg);
+  // console.log("pirData", pirData);
+  // console.log("avg", avg);
 
   useEffect(() => {
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/pir`,
-        { withCredentials: true }
-      )
+      .get(`http://localhost:5000/pir`, { withCredentials: true })
       .then((response) => {
         setPirData(response.data.data);
       });
 
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/housePriceIndexSeoul`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/housePriceIndexSeoul`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setHousePriceIndexData(response.data.data);
       });
 
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/rentalPriceIndexSeoul`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/rentalPriceIndexSeoul`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setRentalPriceIndexData(response.data.data);
       });
 
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/jeonsePriceRatio`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/jeonsePriceRatio`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setJeonsePriceRatioData(response.data.data);
       });

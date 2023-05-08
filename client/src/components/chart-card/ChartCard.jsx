@@ -22,7 +22,7 @@ export default function ChartCard({
 
   // const randomIndex = 4;
 
-  console.log("확인", data);
+  // console.log("확인", data);
 
   return (
     <div

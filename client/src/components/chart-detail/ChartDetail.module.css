@@ -37,8 +37,6 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 50px;
-  height: 50px;
   font-size: 50px;
   opacity: 0.8;
   cursor: pointer;
@@ -46,6 +44,47 @@
 
 .backToList:hover {
   opacity: 1;
+}
+
+.sourceArea {
+  z-index: 99;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.sourceIcon {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 30px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.sourceBox {
+  position: absolute;
+  display: none;
+  bottom: 0;
+  left: 40px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.sourceArea:hover .sourceBox {
+  display: inline-block;
+}
+
+.sourceBox p {
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.sourceBox p:nth-child(1) {
+  font-size: 14px;
+  color: rgb(147, 193, 178);
+  margin-bottom: 5px;
 }
 
 .chartArea {
@@ -76,17 +115,31 @@
   height: 100%;
   width: 60%;
   padding: 0 20px;
+  /* display: flex; 유튜브 영상  없으면 발동하도록 추후 설정*/
   /* background-color: purple; */
 }
 
-.descriptionSection p:nth-child(1) {
+.descriptionTitle {
   font-size: 30px;
   font-weight: 700;
   line-height: 60px;
   color: rgb(147, 193, 178);
 }
 
-.descriptionSection p:nth-child(2) {
+.descriptionContent {
+  font-size: 15px;
+  line-height: 30px;
+}
+
+.helperTitle {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  color: rgb(147, 193, 178);
+  margin-top: 20px;
+}
+
+.helperContent {
   font-size: 15px;
   line-height: 30px;
 }

@@ -21,9 +21,7 @@ export default function MyCharts() {
 
   useEffect(() => {
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/test`
-      )
+      .get(`http://localhost:5000/users/test`)
       .then((response) => {
         if (response.data.length === 0) {
           setTest(`일치하는 정보가 없습니다.`);

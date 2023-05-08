@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import styles from "./ChartDetail.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { IoArrowBackCircle } from "react-icons/io5";
+import { IoInformationCircleSharp, IoArrowBackCircle } from "react-icons/io5";
 const Pir = lazy(() => import("../../graph/Pir"));
 const Hai = lazy(() => import("../../graph/Hai"));
 const UnsoldHouse = lazy(() => import("../../graph/UnsoldHouse"));
@@ -31,9 +31,21 @@ export default function ChartDetail() {
 
   const {
     state: {
-      data: { id, title, subTitle, description, youtubeUrl, startSecond },
+      data: {
+        id,
+        title,
+        subTitle,
+        description,
+        youtubeUrl,
+        startSecond,
+        helperText,
+        dataSources, // 문자열 상태의 배열이다.
+      },
     },
   } = useLocation();
+
+  console.log("왜안됨", dataSources);
+  console.log("왜안됨", typeof dataSources);
 
   const Component = componentMapping[id];
 
@@ -45,7 +57,15 @@ export default function ChartDetail() {
             className={styles.backToList}
             onClick={backToList}
           />
-
+          <div className={styles.sourceArea}>
+            <IoInformationCircleSharp className={styles.sourceIcon} />
+            <div className={styles.sourceBox}>
+              <p>데이터별 출처 & 업데이트 일자</p>
+              {JSON.parse(dataSources).map((dataSourse) => (
+                <p>{dataSourse && dataSourse}</p>
+              ))}
+            </div>
+          </div>
           <div className={styles.chartArea}>
             <Suspense fallback={<div>Loading...</div>}>
               <Component />
@@ -53,8 +73,15 @@ export default function ChartDetail() {
           </div>
           <div className={styles.desciptionArea}>
             <div className={styles.descriptionSection}>
-              <p>{title}</p>
-              <p>{description}</p>
+              <div className={styles.descriptionBox}>
+                <p className={styles.descriptionTitle}>{title}</p>
+                <p className={styles.descriptionContent}>{description}</p>
+              </div>
+              <div className={styles.helperBox}>
+                <p className={styles.helperTitle}> 차트보는 방법</p>
+                <p className={styles.helperContent}>{helperText}</p>
+              </div>
+              <p>{IoInformationCircleSharp}</p>
             </div>
             <div className={styles.youtubeSection}>
               {youtubeUrl ? (
@@ -72,7 +99,6 @@ export default function ChartDetail() {
               )}
             </div>
           </div>
-          {/* {data.title} */}
         </div>
       </div>
     </div>

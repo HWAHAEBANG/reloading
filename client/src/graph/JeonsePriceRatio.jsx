@@ -8,12 +8,9 @@ export default function JeonsePriceRatio() {
 
   useEffect(() => {
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/jeonsePriceRatio`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/jeonsePriceRatio`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setJeonsePriceRatioData(response.data.data);
       });
