@@ -47,7 +47,7 @@ export default function ChartDetail() {
   console.log("왜안됨", dataSources);
   console.log("왜안됨", typeof dataSources);
 
-  const Component = componentMapping[id];
+  const Component = () => componentMapping[id];
 
   return (
     <div className={styles.mainContainer}>
@@ -61,14 +61,15 @@ export default function ChartDetail() {
             <IoInformationCircleSharp className={styles.sourceIcon} />
             <div className={styles.sourceBox}>
               <p>데이터별 출처 & 업데이트 일자</p>
-              {JSON.parse(dataSources).map((dataSourse) => (
-                <p>{dataSourse && dataSourse}</p>
+              {JSON.parse(dataSources).map((dataSourse, index) => (
+                <p key={index}>{dataSourse && dataSourse}</p>
               ))}
             </div>
           </div>
           <div className={styles.chartArea}>
             <Suspense fallback={<div>Loading...</div>}>
               <Component />
+              {/* {Component()} */}
             </Suspense>
           </div>
           <div className={styles.desciptionArea}>
