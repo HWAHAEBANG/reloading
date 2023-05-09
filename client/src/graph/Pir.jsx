@@ -57,7 +57,7 @@ export default function Pir() {
       });
 
     axios
-      .get(`http://localhost:5000/housePriceIndexSeoul`, {
+      .get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -65,7 +65,7 @@ export default function Pir() {
       });
 
     axios
-      .get(`http://localhost:5000/rentalPriceIndexSeoul`, {
+      .get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul `, {
         withCredentials: true,
       })
       .then((response) => {
@@ -73,7 +73,7 @@ export default function Pir() {
       });
 
     axios
-      .get(`http://localhost:5000/jeonsePriceRatio`, {
+      .get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
         withCredentials: true,
       })
       .then((response) => {

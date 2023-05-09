@@ -27,7 +27,7 @@ export default function Hai() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/hai`, { withCredentials: true })
+      .get(`http://localhost:5000/allCharts/hai`, { withCredentials: true })
       .then((response) => {
         // console.log("확인", response.data);
         setCategories(response.data.categories);

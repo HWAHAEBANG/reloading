@@ -10,7 +10,7 @@ export default function PriceChangeRate() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/priceChangeRate`, {
+      .get(`http://localhost:5000/allCharts/priceChangeRate`, {
         withCredentials: true,
       })
       .then((response) => {

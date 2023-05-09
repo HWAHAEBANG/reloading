@@ -1,5 +1,10 @@
 import React from "react";
+import GlitchSplashScreen from "../components/splashScreen/GlitchSplashScreen";
 
 export default function LoginSection() {
-  return <div>로그인</div>;
+  return (
+    <div>
+      <GlitchSplashScreen />
+    </div>
+  );
 }

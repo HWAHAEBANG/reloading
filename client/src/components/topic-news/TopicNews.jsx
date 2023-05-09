@@ -36,7 +36,7 @@ export default function TopicNews() {
     if (!selectedKeyword) return;
     axios
       .get(
-        `http://localhost:5000/newsSearch?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
+        `http://localhost:5000/topicNews?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
         {
           withCredentials: true,
         }

@@ -27,42 +27,53 @@ app.get("/", (req, res) => {
   // 해당하는 파일 경로를 정어운다,  __dirname는 루트경로를 의미/
 });
 
-const USERS = require("./router/users.js");
-app.use("/users", USERS);
+// page ===================================
 
 const ALL_CHARTS = require("./router/allCharts.js");
 app.use("/allCharts", ALL_CHARTS);
 
+// const My_CHARTS = require("./router/myCharts.js");
+// app.use("/myCharts", My_CHARTS);
+
+const USERS = require("./router/users.js");
+app.use("/users", USERS);
+
+const TOPIC_NEWS = require("./router/topicNews.js");
+app.use("/topicNews", TOPIC_NEWS);
+
 // chart ==================================
 const HAI = require("./router/hai.js");
-app.use("/hai", HAI);
+app.use("/allCharts/hai", HAI);
 
 const PIR = require("./router/pir.js");
-app.use("/pir", PIR);
+app.use("/allCharts/pir", PIR);
 
 const UNSOLDHOUSE = require("./router/unsoldHouse.js");
-app.use("/unsoldHouse", UNSOLDHOUSE);
+app.use("/allCharts/unsoldHouse", UNSOLDHOUSE);
 
 const HOUSE_PRICE_INDEX_SEOUL = require("./router/housePriceIndexSeoul.js");
-app.use("/housePriceIndexSeoul", HOUSE_PRICE_INDEX_SEOUL);
+app.use("/allCharts/housePriceIndexSeoul", HOUSE_PRICE_INDEX_SEOUL);
 
-const RENTAL_PRICE_INDEX_SEOUL = require("./router/rentalPriceIndexSeoul.js");
-app.use("/rentalPriceIndexSeoul", RENTAL_PRICE_INDEX_SEOUL);
+const JEONSE_PRICE_INDEX_SEOUL = require("./router/JeonsePriceIndexSeoul.js"); // 파일명수정 필요
+app.use("/allCharts/JeonsePriceIndexSeoul", JEONSE_PRICE_INDEX_SEOUL);
 
 const HOUSE_PRICE_INDEX_AROUND_SEOUL = require("./router/housePriceIndexAroundSeoul.js");
-app.use("/housePriceIndexAroundSeoul", HOUSE_PRICE_INDEX_AROUND_SEOUL);
+app.use(
+  "/allCharts/housePriceIndexAroundSeoul",
+  HOUSE_PRICE_INDEX_AROUND_SEOUL
+);
 
-const RENTAL_PRICE_INDEX_AROUND_SEOUL = require("./router/rentalPriceIndexAroundSeoul.js");
-app.use("/rentalPriceIndexAroundSeoul", RENTAL_PRICE_INDEX_AROUND_SEOUL);
+const JEONSE_PRICE_INDEX_AROUND_SEOUL = require("./router/JeonsePriceIndexAroundSeoul.js");
+app.use(
+  "/allCharts/JeonsePriceIndexAroundSeoul",
+  JEONSE_PRICE_INDEX_AROUND_SEOUL
+);
 
 const JEONSE_PRICE_RATIO = require("./router/jeonsePriceRatio.js");
-app.use("/jeonsePriceRatio", JEONSE_PRICE_RATIO);
+app.use("/allCharts/jeonsePriceRatio", JEONSE_PRICE_RATIO);
 
 const PRICE_CHANGE_RATE = require("./router/priceChangeRate.js");
-app.use("/priceChangeRate", PRICE_CHANGE_RATE);
-
-const NEWS_SEARCH = require("./router/newsSearch.js");
-app.use("/newsSearch", NEWS_SEARCH);
+app.use("/allCharts/priceChangeRate", PRICE_CHANGE_RATE);
 
 // ========================================
 

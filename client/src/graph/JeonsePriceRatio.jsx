@@ -8,7 +8,7 @@ export default function JeonsePriceRatio() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/jeonsePriceRatio`, {
+      .get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
         withCredentials: true,
       })
       .then((response) => {

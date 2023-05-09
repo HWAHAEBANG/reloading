@@ -52,22 +52,6 @@ const router = createBrowserRouter([
         element: <TopicNewsSection />,
       },
       {
-        path: "/users/login",
-        element: <LoginSection />,
-      },
-      {
-        path: "/users/findId",
-        element: <FindIdSection />,
-      },
-      {
-        path: "/users/findPw",
-        element: <FindPwSection />,
-      },
-      {
-        path: "/users/signup",
-        element: <SignupSection />,
-      },
-      {
         path: "/users/editUserInfo",
         element: <EditUserInfoSection />,
       },
@@ -76,6 +60,22 @@ const router = createBrowserRouter([
         element: <ChartDetail />,
       },
     ],
+  },
+  {
+    path: "/users/login",
+    element: <LoginSection />,
+  },
+  {
+    path: "/users/findId",
+    element: <FindIdSection />,
+  },
+  {
+    path: "/users/findPw",
+    element: <FindPwSection />,
+  },
+  {
+    path: "/users/signup",
+    element: <SignupSection />,
   },
 ]);
 

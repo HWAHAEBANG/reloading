@@ -18,7 +18,7 @@ export default function UnsoldHouse() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/unsoldHouse`, {
+      .get(`http://localhost:5000/allCharts/unsoldHouse`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -26,7 +26,7 @@ export default function UnsoldHouse() {
       });
 
     axios
-      .get(`http://localhost:5000/housePriceIndexAroundSeoul`, {
+      .get(`http://localhost:5000/allCharts/housePriceIndexAroundSeoul`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -34,7 +34,7 @@ export default function UnsoldHouse() {
       });
 
     axios
-      .get(`http://localhost:5000/rentalPriceIndexAroundSeoul`, {
+      .get(`http://localhost:5000/allCharts/JeonsePriceIndexAroundSeoul`, {
         withCredentials: true,
       })
       .then((response) => {
