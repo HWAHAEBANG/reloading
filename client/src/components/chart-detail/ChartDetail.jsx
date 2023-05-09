@@ -44,10 +44,7 @@ export default function ChartDetail() {
     },
   } = useLocation();
 
-  console.log("왜안됨", dataSources);
-  console.log("왜안됨", typeof dataSources);
-
-  const Component = () => componentMapping[id];
+  const Component = componentMapping[id];
 
   return (
     <div className={styles.mainContainer}>
@@ -69,7 +66,6 @@ export default function ChartDetail() {
           <div className={styles.chartArea}>
             <Suspense fallback={<div>Loading...</div>}>
               <Component />
-              {/* {Component()} */}
             </Suspense>
           </div>
           <div className={styles.desciptionArea}>

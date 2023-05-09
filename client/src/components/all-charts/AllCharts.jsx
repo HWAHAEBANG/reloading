@@ -11,15 +11,14 @@ export default function AllCharts() {
   const [sortVisible, setSortVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState("인기순");
   // ===================================================
-  // select ====================================
+  // select ============================================
   const handleSelectSort = (e) => {
     setSelectedSort(e.target.innerText);
     setSortVisible((prev) => !prev);
   };
-  // -------====================================
-
+  // ===================================================
+  // fetch data ========================================
   const [chartsData, setChartsData] = useState();
-
   useEffect(() => {
     axios
       .get(`http://localhost:5000/allCharts`)
@@ -35,7 +34,29 @@ export default function AllCharts() {
   }, []);
 
   console.log("디비연결 이상무", chartsData);
+  // ===================================================
+  // search filter ===================================== // 블로그 포스팅
+  const [keyword, setKeyword] = useState("");
+  const handleKeyword = (e) => {
+    setKeyword(e.target.value);
+  };
 
+  const [filteredChartsData, setFilteredChartsData] = useState(chartsData);
+
+  useEffect(() => {
+    chartsData && keyword
+      ? setFilteredChartsData(
+          chartsData.filter((data) =>
+            data.title
+              .toLowerCase()
+              .replace(/\s/g, "")
+              .includes(keyword.toLowerCase().replace(/\s/g, ""))
+          )
+        )
+      : setFilteredChartsData(chartsData);
+  }, [chartsData, keyword]);
+
+  // ===================================================
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
@@ -46,7 +67,7 @@ export default function AllCharts() {
               className={styles.inputBox}
               type='text'
               // value={keyword}
-              // onChange={handleKeyword}
+              onChange={handleKeyword}
               // onKeyUp={handleSubmit}
               placeholder='키워드를 입력해주세요.'
             />
@@ -83,8 +104,10 @@ export default function AllCharts() {
         </div>
         <div className={`${styles.inner} scrollBar`}>
           <div className={styles.wholeContentsArea}>
-            {chartsData &&
-              chartsData.map((data) => <ChartCard key={data.id} data={data} />)}
+            {filteredChartsData &&
+              filteredChartsData.map((data) => (
+                <ChartCard key={data.id} data={data} />
+              ))}
           </div>
         </div>
       </div>
