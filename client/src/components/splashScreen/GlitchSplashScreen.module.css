@@ -18,10 +18,6 @@
   /* position: relative; 임시 */
   top: 0;
   left: 0;
-  /* transform: translate(-50%, -50%); */
-  /* align-items: center; */
-  /* animation: fadein 2s; */
-  /* background-color: red; */
   width: 465px;
   height: 100px;
   display: flex;
@@ -40,7 +36,7 @@
   margin-left: 15px;
   margin-bottom: 15px;
   font-size: 20px;
-  transition: 1s;
+  transition: 0.5s;
   color: mediumaquamarine;
   backface-visibility: hidden;
 }
@@ -52,7 +48,7 @@
   border-radius: 5px;
   box-sizing: border-box;
   backface-visibility: hidden;
-  transition: 1s;
+  transition: 0.51s;
 }
 .idInputContainer {
   z-index: 3;
@@ -78,7 +74,7 @@
   top: 16px;
   left: 48px;
   backface-visibility: hidden;
-  transition: 1s;
+  transition: 0.51s;
 }
 .idBlock1 {
   position: absolute;
@@ -107,11 +103,6 @@
   /* position: relative; 임시 */
   top: 0;
   left: 0;
-  /* transform: translate(-50%, -50%); */
-  /* align-items: center; */
-  /* opacity: 1; */
-  /* animation: fadein 2s; */
-  /* background-color: red; */
   width: 465px;
   height: 100px;
   /* background-color: blue; */
@@ -131,7 +122,7 @@
   margin-left: 15px;
   margin-bottom: 15px;
   font-size: 20px;
-  transition: 1s;
+  transition: 0.51s;
   color: mediumaquamarine;
   backface-visibility: hidden;
   transform: rotateY(180deg);
@@ -143,7 +134,7 @@
   border: 1px solid #fff;
   border-radius: 5px;
   box-sizing: border-box;
-  transition: 1s;
+  transition: 0.51s;
   backface-visibility: hidden;
   transform: rotateY(180deg);
 }
@@ -170,7 +161,7 @@
   position: absolute;
   top: 16px;
   left: 48px;
-  transition: 1s;
+  transition: 0.51s;
   backface-visibility: hidden;
   transform: rotateY(-180deg);
 }
@@ -195,7 +186,18 @@
   animation: move-right 2s;
 }
 /* ============================================================================= */
-@keyframes fadein {
+/* .GrantText {
+  position: absolute;
+  opacity: 1;
+  letter-spacing: 5px;
+} */
+/* ============================================================================= */
+/* .WelcomeText {
+  position: absolute;
+  opacity: 0;
+} */
+/* ============================================================================= */
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -203,6 +205,30 @@
     opacity: 1;
   }
 }
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* @keyframes fade-in-out-access {
+  0% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+} */
 
 @keyframes move-left {
   from {
@@ -254,6 +280,10 @@
 }
 
 /* ============================================================================= */
+.rightPwTpye1ForLogin {
+  animation: fade-out 0.5s forwards;
+}
+
 /* ============================================================================= */
 
 /* glitch effect ======================================================== */
@@ -263,13 +293,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* animation: fadein-out 5s; */
+  /* animation: fade-in-out 5s; */
   /* opacity: 0; */
   opacity: 1;
   /* background-color: red; */
 }
 
-@keyframes fadein-out {
+@keyframes fade-in-out {
   from {
     opacity: 0;
   }

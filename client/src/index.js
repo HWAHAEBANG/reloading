@@ -21,6 +21,7 @@ import FindIdSection from "./pages/FindIdSection";
 import FindPwSection from "./pages/FindPwSection";
 import EditUserInfoSection from "./pages/EditUserInfoSection";
 import ChartDetail from "./components/chart-detail/ChartDetail";
+import Access from "./components/splashScreen/Access";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
   {
     path: "/users/login",
     element: <LoginSection />,
+  },
+  {
+    path: "/users/access",
+    element: <Access />,
   },
   {
     path: "/users/findId",

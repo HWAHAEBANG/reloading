@@ -172,7 +172,6 @@
 .maincontainer0 > span {
   position: absolute;
   display: flex;
-  border-radius: 50%;
 }
 
 .maincontainer0 span:nth-child(1) {
@@ -234,7 +233,6 @@
 .maincontainer1 > span {
   position: absolute;
   display: flex;
-  border-radius: 50%; /* 효과 거의 없음 */
 }
 
 .maincontainer1 span:nth-child(1) {
@@ -296,7 +294,6 @@
 .maincontainer2 > span {
   position: absolute;
   display: flex;
-  border-radius: 50%;
 }
 
 .maincontainer2 span:nth-child(1) {
@@ -358,7 +355,6 @@
 .maincontainer3 > span {
   position: absolute;
   display: flex;
-  border-radius: 50%;
 }
 
 .maincontainer3 span:nth-child(1) {
@@ -420,7 +416,6 @@
 .maincontainer4 > span {
   position: absolute;
   display: flex;
-  border-radius: 50%;
 }
 
 .maincontainer4 span:nth-child(1) {

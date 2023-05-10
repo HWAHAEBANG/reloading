@@ -51,7 +51,7 @@ export default function Pir() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/pir`, { withCredentials: true })
+      .get(`http://localhost:5000/allCharts/pir`, { withCredentials: true })
       .then((response) => {
         setPirData(response.data.data);
       });
