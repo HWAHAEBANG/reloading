@@ -8,6 +8,7 @@ import NavBar from "./components/navbar/NavBar";
 import styles from "./App.module.css";
 import { useState } from "react";
 import ReactPlayer from "react-player";
+import axios from "axios";
 
 function App() {
   const [showNav, setShowNav] = useState(false);

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TypeWriterEffect from "react-typewriter-effect";
 import useSound from "use-sound";
 import { Howl } from "howler";
+import axios from "axios";
 
 export default function GlitchSplashScreen() {
   // input 태그 자동 포커스 ===============
@@ -17,24 +18,115 @@ export default function GlitchSplashScreen() {
 
   const navigate = useNavigate();
 
+  const [inputId, setInputId] = useState("");
+  const [inputPw, setInputPw] = useState("");
+
+  const handleInputId = (e) => {
+    setInputId(e.target.value);
+  };
+
+  const handleInputPw = (e) => {
+    setInputPw(e.target.value);
+  };
+
+  console.log("아이디 검문소", inputId);
+  console.log("비밀번호 검문소", inputPw);
+
   const [existingId, setExistingId] = useState(false);
   const [rightPw, setRightPw] = useState(false);
 
+  const handleSubmitId = () => {
+    axios
+      .post(`http://localhost:5000/users/idCheck`, {
+        // url: "http://localhost:5000/users/idCheck", // 안되는뎅
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputId: inputId, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
+      .then((response) => {
+        console.log("존재하는 계정입니다.");
+        setExistingId(true);
+        pwInputRef.current.focus();
+      })
+      .catch((error) => {
+        console.log("에러코드", error.response.status, error.response.data);
+      });
+  };
+
+  const handleSubmitPw = () => {
+    axios
+      .post(`http://localhost:5000/users/pwCheck`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputId: inputId,
+          inputPw: inputPw,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          if (response.data.length === 0) {
+            console.log("존재하지 않는 비번입니다.");
+          } else {
+            console.log("존재하는 비번입니다.");
+            setRightPw(true);
+            setTimeout(() => {
+              navigate("/users/access");
+            }, 500);
+            setInputId(""); // 혹시 남아있을까봐
+            setInputPw(""); // 혹시 남아있을까봐
+          }
+          console.log(response);
+        } else {
+          console.log("Not 200", response);
+        }
+        //
+
+        //
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const idCheck = (e) => {
     if (e.key === "Enter") {
-      setExistingId(true);
-      pwInputRef.current.focus();
+      handleSubmitId();
     }
   };
 
   const pwCheck = (e) => {
     if (e.key === "Enter") {
-      setRightPw(true);
-      setTimeout(() => {
-        navigate("/users/access");
-      }, 500);
+      handleSubmitPw();
     }
   };
+  // test ==================================================================
+  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState({});
+
+  const accessToken = () => {
+    axios.get(`http://localhost:5000/users/accesstoken`, {
+      method: "GET",
+      withCredentials: true,
+    });
+  };
+
+  const refreshToken = () => {
+    axios.get(`http://localhost:5000/users/refreshtoken`, {
+      method: "GET",
+      withCredentials: true,
+    });
+  };
+
+  const logout = () => {
+    axios.post(`http://localhost:5000/users/logout`, {
+      method: "POST",
+      withCredentials: true,
+    });
+  };
+  // ======================================================================
 
   // sound effect =======================================================
   const [startSound, setStartSound] = useState(false);
@@ -116,7 +208,17 @@ export default function GlitchSplashScreen() {
               type='text'
               ref={idInputRef}
               onKeyDown={idCheck}
+              onChange={handleInputId}
             />
+            <button onClick={accessToken} style={{ cursor: "pointer" }}>
+              액세스
+            </button>
+            <button onClick={refreshToken} style={{ cursor: "pointer" }}>
+              리프레쉬
+            </button>
+            <button onClick={logout} style={{ cursor: "pointer" }}>
+              로그아웃
+            </button>
             <div className={styles.idBlock1}></div>
           </div>
           <div className={styles.idBlock2}></div>
@@ -166,6 +268,7 @@ export default function GlitchSplashScreen() {
               type='password'
               ref={pwInputRef}
               onKeyDown={pwCheck}
+              onChange={handleInputPw}
             />
             <div className={styles.pwBlock1}></div>
           </div>

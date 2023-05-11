@@ -2,9 +2,15 @@ import React from "react";
 import styles from "./TopBar.module.css";
 import { IoMdArrowDropright, IoMdArrowDropleft } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function TopBar({ showNav, setShowNav }) {
+  const navigate = useNavigate();
+
+  const enter = () => {
+    navigate("/users/login");
+  };
+
   return (
     <div className={styles.container}>
       <div
@@ -26,6 +32,7 @@ export default function TopBar({ showNav, setShowNav }) {
           />
         </a>
       </div>
+      <button onClick={enter}>login</button>
     </div>
   );
 }

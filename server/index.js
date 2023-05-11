@@ -4,11 +4,19 @@ require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 //==========================================
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(express.json()); // 왜필요?
+app.use(express.json()); // 왜필요? json 형식의 데이터를 통신하기 위해서.
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"], // 사용할 메서드
+    credentials: true, // 사용자와 클라이언트 서버간에 쿠키를 사용해서 통신을 할 것이기 떄문에.
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
