@@ -3,12 +3,35 @@ import styles from "./TopBar.module.css";
 import { IoMdArrowDropright, IoMdArrowDropleft } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUserInfoAction, logoutAction } from "../../redux";
+import axios from "axios";
 
 export default function TopBar({ showNav, setShowNav }) {
   const navigate = useNavigate();
 
   const enter = () => {
     navigate("/users/login");
+  };
+
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const userInfo = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    axios
+      .post(`http://localhost:5000/users/logout`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
+      .then((Response) => {
+        dispatch(logoutAction());
+        dispatch(clearUserInfoAction());
+        navigate("/users/login");
+      });
   };
 
   return (
@@ -32,7 +55,16 @@ export default function TopBar({ showNav, setShowNav }) {
           />
         </a>
       </div>
-      <button onClick={enter}>login</button>
+      <button onClick={enter}>임시포탈</button>
+      {isLoggedIn.isLoggedIn ? (
+        <button className={styles.logoutBtn} onClick={logout}>
+          Logout
+        </button>
+      ) : (
+        <button className={styles.logoutBtn} onClick={enter}>
+          Login
+        </button>
+      )}
     </div>
   );
 }

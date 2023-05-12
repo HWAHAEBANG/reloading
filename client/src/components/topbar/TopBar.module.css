@@ -90,6 +90,20 @@
     0 0 100px #03e9f4; */
 }
 
+.logoutBtn {
+  background: none;
+  padding: 5px 10px;
+  color: mediumaquamarine;
+  border: 1px solid mediumaquamarine;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: mediumaquamarine;
+  color: #000000;
+}
+
 @keyframes glitch-1 {
   0% {
     clip: rect(16.5px, auto, 12.625px, 3.75px);

@@ -3,9 +3,12 @@ import styles from "./Access.module.css";
 import TypeWriterEffect from "react-typewriter-effect";
 import { BsPlusLg } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Access() {
   const navigate = useNavigate();
+
+  const userInfo = useSelector((state) => state.userInfo);
 
   setTimeout(() => {
     navigate("/");
@@ -46,7 +49,9 @@ export default function Access() {
             }}
             startDelay={4000}
             // cursorColor={"#03e9f4"}
-            text='HELLO, 화해방'
+            text={`HELLO, ${
+              userInfo && userInfo.userInfo && userInfo.userInfo.name
+            }`}
             typeSpeed={20}
             // scrollArea={myAppRef}
           />

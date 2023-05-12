@@ -22,6 +22,8 @@ import FindPwSection from "./pages/FindPwSection";
 import EditUserInfoSection from "./pages/EditUserInfoSection";
 import ChartDetail from "./components/chart-detail/ChartDetail";
 import Access from "./components/splashScreen/Access";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -86,7 +88,9 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 

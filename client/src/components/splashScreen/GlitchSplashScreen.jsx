@@ -5,6 +5,8 @@ import TypeWriterEffect from "react-typewriter-effect";
 import useSound from "use-sound";
 import { Howl } from "howler";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAction, setUserInfoAction } from "../../redux";
 
 export default function GlitchSplashScreen() {
   // input 태그 자동 포커스 ===============
@@ -33,7 +35,7 @@ export default function GlitchSplashScreen() {
   console.log("비밀번호 검문소", inputPw);
 
   const [existingId, setExistingId] = useState(false);
-  const [rightPw, setRightPw] = useState(false);
+  const [correctPw, setCorrectPw] = useState(false);
 
   const handleSubmitId = () => {
     axios
@@ -71,7 +73,7 @@ export default function GlitchSplashScreen() {
             console.log("존재하지 않는 비번입니다.");
           } else {
             console.log("존재하는 비번입니다.");
-            setRightPw(true);
+            setCorrectPw(true);
             setTimeout(() => {
               navigate("/users/access");
             }, 500);
@@ -102,16 +104,26 @@ export default function GlitchSplashScreen() {
       handleSubmitPw();
     }
   };
-  // test ==================================================================
-  const [isLogin, setIsLogin] = useState(false);
-  const [user, setUser] = useState({});
+  // 회원가입 여부와 회원정보 리덕스에 저장  =======================================
+  const dispatch = useDispatch();
 
-  const accessToken = () => {
-    axios.get(`http://localhost:5000/users/accesstoken`, {
-      method: "GET",
-      withCredentials: true,
-    });
-  };
+  useEffect(() => {
+    // const accessToken = () => {
+    axios
+      .get(`http://localhost:5000/users/accesstoken`, {
+        method: "GET",
+        withCredentials: true,
+      })
+      .then((response) => {
+        // setIsLogin(true);
+        dispatch(loginAction(true));
+        dispatch(setUserInfoAction(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // };
+  }, [correctPw]);
 
   const refreshToken = () => {
     axios.get(`http://localhost:5000/users/refreshtoken`, {
@@ -120,12 +132,6 @@ export default function GlitchSplashScreen() {
     });
   };
 
-  const logout = () => {
-    axios.post(`http://localhost:5000/users/logout`, {
-      method: "POST",
-      withCredentials: true,
-    });
-  };
   // ======================================================================
 
   // sound effect =======================================================
@@ -143,7 +149,7 @@ export default function GlitchSplashScreen() {
     <div className={styles.mainContainer}>
       <div
         className={
-          rightPw
+          correctPw
             ? `${styles.logoArea} ${styles.rightPwTpye1ForLogin}`
             : styles.logoArea
         }
@@ -159,7 +165,7 @@ export default function GlitchSplashScreen() {
       {/* ============================================ */}
       <div
         className={
-          rightPw
+          correctPw
             ? `${styles.loginArea} ${styles.rightPwTpye1ForLogin}`
             : styles.loginArea
         }
@@ -210,15 +216,6 @@ export default function GlitchSplashScreen() {
               onKeyDown={idCheck}
               onChange={handleInputId}
             />
-            <button onClick={accessToken} style={{ cursor: "pointer" }}>
-              액세스
-            </button>
-            <button onClick={refreshToken} style={{ cursor: "pointer" }}>
-              리프레쉬
-            </button>
-            <button onClick={logout} style={{ cursor: "pointer" }}>
-              로그아웃
-            </button>
             <div className={styles.idBlock1}></div>
           </div>
           <div className={styles.idBlock2}></div>
@@ -276,6 +273,23 @@ export default function GlitchSplashScreen() {
         </div>
       </div>
       {/* ====================================================================== */}
+      {/* <div>
+        <button onClick={accessToken} style={{ cursor: "pointer" }}>
+          액세스
+        </button>
+        <button onClick={refreshToken} style={{ cursor: "pointer" }}>
+          리프레쉬
+        </button>
+        <button onClick={logout} style={{ cursor: "pointer" }}>
+          로그아웃
+        </button>
+      </div>
+      {isLoggedIn.isLoggedIn ? (
+        <p>{`반갑습니다. ${userInfo.userInfo.name}님`}</p>
+      ) : (
+        <p>로그아웃 상태</p>
+      )
+      } */}
     </div>
   );
 }

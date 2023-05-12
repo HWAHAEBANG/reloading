@@ -15,6 +15,7 @@ import { GrBarChart } from "react-icons/gr";
 import { AiOutlineBarChart } from "react-icons/ai";
 import Background from "../ui/Background";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function NavBar({ showNav, setShowNav }) {
   const [autoClose, setAutoClose] = useState(true);
@@ -27,6 +28,8 @@ export default function NavBar({ showNav, setShowNav }) {
   const handleEnter = () => {
     autoClose && setShowNav(false);
   };
+
+  const userInfo = useSelector((state) => state.userInfo);
 
   return (
     <div
@@ -53,7 +56,10 @@ export default function NavBar({ showNav, setShowNav }) {
             <p>
               환영합니다.
               <br />
-              <span>화해방</span>님
+              <span>
+                {userInfo && userInfo.userInfo && userInfo.userInfo.name}
+              </span>
+              님
             </p>
           </div>
         </div>

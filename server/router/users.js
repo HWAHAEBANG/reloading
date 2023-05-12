@@ -42,7 +42,7 @@ router.post("/idCheck", (req, res) => {
   const sqlQuery = `SELECT id FROM users WHERE id = ?;`;
   db.query(sqlQuery, [inputId], (err, result) => {
     if (err) res.status(500).json(err);
-    if (result.length === 0) {
+    if (result[0].length === 0) {
       res.status(403).json("Not Exist ID");
     } else {
       res.send(result);
@@ -57,7 +57,7 @@ router.post("/pwCheck", (req, res) => {
   const sqlQuery = `SELECT * FROM users WHERE id = ? AND pw = ?;`;
   db.query(sqlQuery, [inputId, inputPw], (err, result) => {
     if (err) res.status(500).json(err);
-    if (result.length === 0) {
+    if (result[0].length === 0) {
       res.status(403).json("Wrong Password");
     } else {
       // access Token 발급
@@ -70,7 +70,7 @@ router.post("/pwCheck", (req, res) => {
         },
         process.env.ACCESS_SECRET,
         {
-          expiresIn: "30m", // 유효기간 30분
+          expiresIn: "1m", // 유효기간 30분
           issuer: "HHB", // 발행자
         }
       );
@@ -96,17 +96,19 @@ router.post("/pwCheck", (req, res) => {
 
       // token 전송 (쿠키를 통해)
       res.cookie("accessToken", accessToken, {
-        // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
-        secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
+        // domain:
+        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
-        sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
+        // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
       });
 
       res.cookie("refreshToken", refreshToken, {
-        // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
-        secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값, , false 줬더니 쿠키 안옴;
+        // domain:
+        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값, , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
-        sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
+        // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
       });
 
       res.status(200).json("Login Success");
@@ -114,6 +116,7 @@ router.post("/pwCheck", (req, res) => {
   });
 });
 
+// 클라이언트에서 로그인 안되어있을 때 쿠키 보고 요청 안하도록 리팩토링 요망
 router.get("/accesstoken", (req, res) => {
   const token = req.cookies.accessToken;
   const data = jwt.verify(token, process.env.ACCESS_SECRET);
@@ -151,7 +154,7 @@ router.get("/refreshtoken", (req, res) => {
           },
           process.env.ACCESS_SECRET,
           {
-            expiresIn: "30m", // 유효기간 30분
+            expiresIn: "1m", // 유효기간 30분
             issuer: "HHB", // 발행자
           }
         );
@@ -159,9 +162,9 @@ router.get("/refreshtoken", (req, res) => {
         // token 전송 (쿠키를 통해)
         res.cookie("accessToken", accessToken, {
           // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
-          secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
+          // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
           httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
-          sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
+          // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
         });
 
         res.status(200).json("Access Token Recreated");
@@ -171,11 +174,45 @@ router.get("/refreshtoken", (req, res) => {
     }
   });
 });
-router.get("/login/success", (req, res) => {});
+
+// router.get("/success", (req, res) => {
+//     // 추후 다른 요청들도 try catch 문으로 리팩토링 요망.
+//     try {
+//       const token = req.cookies.accessToken;
+//       const data = jwt.verify(token, process.env.ACCESS_SECRET);
+
+//       const sqlQuery = `SELECT * FROM users WHERE id = ?;`;
+//       db.query(sqlQuery, [data.id], (err, result) => {
+//         if (err) res.status(500).json(err);p
+//         } else {
+//           console.log(result);
+//           const { pw, ...others } = result[0];
+//           res.status(200).json(others);
+//         }
+//       });
+
+//     } catch (error) {
+//       res.status(500).json(error);
+//     }
+// });
+
 router.post("/logout", (req, res) => {
   // 추후 다른 요청들도 try catch 문으로 리팩토링 요망.
   try {
-    res.cookie("accessToken", "");
+    const presentId = req.body.data.presentId;
+    const sqlQuery = `UPDATE users SET refresh_token = null WHERE id = ?;`;
+    db.query(sqlQuery, [presentId], (err, result) => {
+      if (err) res.status(500).json(err);
+      res.status(200).json("Access Token Is Deleted");
+    });
+
+    res.cookie("accessToken", "", {
+      // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+      // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
+      httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
+      // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
+    });
+
     res.status(200).json("Logout Seuccess");
   } catch (error) {
     res.status(500).json(error);
