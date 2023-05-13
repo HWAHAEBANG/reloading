@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 5000;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const authMiddleware = require("./middlewares/authMiddleware.js");
 
 //==========================================
 
@@ -38,7 +39,7 @@ app.get("/", (req, res) => {
 // page ===================================
 
 const ALL_CHARTS = require("./router/allCharts.js");
-app.use("/allCharts", ALL_CHARTS);
+app.use("/allCharts", authMiddleware, ALL_CHARTS);
 
 // const My_CHARTS = require("./router/myCharts.js");
 // app.use("/myCharts", My_CHARTS);
@@ -47,7 +48,7 @@ const USERS = require("./router/users.js");
 app.use("/users", USERS);
 
 const TOPIC_NEWS = require("./router/topicNews.js");
-app.use("/topicNews", TOPIC_NEWS);
+app.use("/topicNews", authMiddleware, TOPIC_NEWS);
 
 // chart ==================================
 const HAI = require("./router/hai.js");
@@ -60,20 +61,30 @@ const UNSOLDHOUSE = require("./router/unsoldHouse.js");
 app.use("/allCharts/unsoldHouse", UNSOLDHOUSE);
 
 const HOUSE_PRICE_INDEX_SEOUL = require("./router/housePriceIndexSeoul.js");
-app.use("/allCharts/housePriceIndexSeoul", HOUSE_PRICE_INDEX_SEOUL);
+app.use(
+  "/allCharts/housePriceIndexSeoul",
+
+  HOUSE_PRICE_INDEX_SEOUL
+);
 
 const JEONSE_PRICE_INDEX_SEOUL = require("./router/JeonsePriceIndexSeoul.js"); // 파일명수정 필요
-app.use("/allCharts/JeonsePriceIndexSeoul", JEONSE_PRICE_INDEX_SEOUL);
+app.use(
+  "/allCharts/JeonsePriceIndexSeoul",
+
+  JEONSE_PRICE_INDEX_SEOUL
+);
 
 const HOUSE_PRICE_INDEX_AROUND_SEOUL = require("./router/housePriceIndexAroundSeoul.js");
 app.use(
   "/allCharts/housePriceIndexAroundSeoul",
+
   HOUSE_PRICE_INDEX_AROUND_SEOUL
 );
 
 const JEONSE_PRICE_INDEX_AROUND_SEOUL = require("./router/JeonsePriceIndexAroundSeoul.js");
 app.use(
   "/allCharts/JeonsePriceIndexAroundSeoul",
+
   JEONSE_PRICE_INDEX_AROUND_SEOUL
 );
 
@@ -81,6 +92,7 @@ const JEONSE_PRICE_RATIO = require("./router/jeonsePriceRatio.js");
 app.use("/allCharts/jeonsePriceRatio", JEONSE_PRICE_RATIO);
 
 const PRICE_CHANGE_RATE = require("./router/priceChangeRate.js");
+
 app.use("/allCharts/priceChangeRate", PRICE_CHANGE_RATE);
 
 // ========================================

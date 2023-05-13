@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./GlitchSplashScreen.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TypeWriterEffect from "react-typewriter-effect";
 import useSound from "use-sound";
 import { Howl } from "howler";
@@ -17,11 +17,23 @@ export default function GlitchSplashScreen() {
     idInputRef.current.focus();
   }, []);
   // ===================================
+  const [alertMessage, setAlertMessage] = useState("");
 
   const navigate = useNavigate();
 
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
+
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+
+  /** 굳이 한번 더 변수를 저장하는 이유
+   * 아이디를 입력하고 엔터를 누른 뒤 빠르게 비밀 번호를 이어서 입력 할 경우,
+   * 비밀번호로 커서 넘어가기 전에 입력되어, 잘못 된 아이디가 전송됨.
+   * 이를 방지하기 위해, 엔터를 누르는 순간의 input 값을 저장해두도록 별도의 변수를 저장한것.
+   */
+
+  const [finalInputValue, setFinalInputValue] = useState({ id: "", pw: "" });
 
   const handleInputId = (e) => {
     setInputId(e.target.value);
@@ -30,9 +42,6 @@ export default function GlitchSplashScreen() {
   const handleInputPw = (e) => {
     setInputPw(e.target.value);
   };
-
-  console.log("아이디 검문소", inputId);
-  console.log("비밀번호 검문소", inputPw);
 
   const [existingId, setExistingId] = useState(false);
   const [correctPw, setCorrectPw] = useState(false);
@@ -51,8 +60,10 @@ export default function GlitchSplashScreen() {
         console.log("존재하는 계정입니다.");
         setExistingId(true);
         pwInputRef.current.focus();
+        setAlertMessage("");
       })
       .catch((error) => {
+        setAlertMessage("존재하지 않는 계정입니다.");
         console.log("에러코드", error.response.status, error.response.data);
       });
   };
@@ -68,28 +79,21 @@ export default function GlitchSplashScreen() {
         },
       })
       .then((response) => {
-        if (response.status === 200) {
-          if (response.data.length === 0) {
-            console.log("존재하지 않는 비번입니다.");
-          } else {
-            console.log("존재하는 비번입니다.");
-            setCorrectPw(true);
-            setTimeout(() => {
-              navigate("/users/access");
-            }, 500);
-            setInputId(""); // 혹시 남아있을까봐
-            setInputPw(""); // 혹시 남아있을까봐
-          }
-          console.log(response);
-        } else {
-          console.log("Not 200", response);
-        }
-        //
+        console.log("존재하는 비번입니다.");
+        setAlertMessage("");
+        getAccessToken();
+        getRefreshToken();
 
-        //
+        // setCorrectPw(true);
+        setTimeout(() => {
+          navigate("/users/access");
+        }, 500);
+        setInputId(""); // 혹시 남아있을까봐
+        setInputPw(""); // 혹시 남아있을까봐
       })
       .catch((error) => {
-        console.log(error);
+        console.log("비밀번호가 일치하지 않습니다.");
+        setAlertMessage("비밀번호가 일치하지 않습니다.");
       });
   };
 
@@ -105,10 +109,8 @@ export default function GlitchSplashScreen() {
     }
   };
   // 회원가입 여부와 회원정보 리덕스에 저장  =======================================
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // const accessToken = () => {
+  const getAccessToken = () => {
     axios
       .get(`http://localhost:5000/users/accesstoken`, {
         method: "GET",
@@ -122,10 +124,9 @@ export default function GlitchSplashScreen() {
       .catch((error) => {
         console.log(error);
       });
-    // };
-  }, [correctPw]);
+  };
 
-  const refreshToken = () => {
+  const getRefreshToken = () => {
     axios.get(`http://localhost:5000/users/refreshtoken`, {
       method: "GET",
       withCredentials: true,
@@ -149,7 +150,7 @@ export default function GlitchSplashScreen() {
     <div className={styles.mainContainer}>
       <div
         className={
-          correctPw
+          isLoggedIn.isLoggedIn
             ? `${styles.logoArea} ${styles.rightPwTpye1ForLogin}`
             : styles.logoArea
         }
@@ -165,7 +166,7 @@ export default function GlitchSplashScreen() {
       {/* ============================================ */}
       <div
         className={
-          correctPw
+          isLoggedIn.isLoggedIn
             ? `${styles.loginArea} ${styles.rightPwTpye1ForLogin}`
             : styles.loginArea
         }
@@ -271,8 +272,17 @@ export default function GlitchSplashScreen() {
           </div>
           <div className={styles.pwBlock2}></div>
         </div>
+        <p className={styles.alert}>{alertMessage}</p>
       </div>
       {/* ====================================================================== */}
+
+      <p className={styles.link}>
+        Forgot <Link to='/users/findId'>ID</Link> or{" "}
+        <Link to='/users/findPw'>Password?</Link>
+      </p>
+      <p className={styles.link}>
+        Not Yet registered? <Link to='/users/signUp'>Sign up</Link>
+      </p>
       {/* <div>
         <button onClick={accessToken} style={{ cursor: "pointer" }}>
           액세스
