@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
 import { Link } from "react-router-dom";
 import RegexInfoBoxForRegister from "../ui/RegexInfoBoxForRegister";
+import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
+import { uploadImage } from "../../api/cloudynary";
 
 export default function Signup() {
   const [inputValue, setInputValue] = useState({
@@ -22,6 +24,14 @@ export default function Signup() {
     profileImage: "",
     agree: false,
   });
+
+  // 시진파일 URL get
+  const getImgUrl = (e) => {
+    console.log(e);
+    uploadImage(e.target.files && e.target.files[0]).then((url) => {
+      setInputValue((prevState) => ({ ...prevState, profileImage: url }));
+    });
+  };
 
   // 정규식 모음 객체
   const inputRegexs = {
@@ -51,7 +61,7 @@ export default function Signup() {
           }));
         } else {
           // 정규식에 부합하지 않는 경우
-          // 입력값이 존재하는 하지만 정규식에 부합하지 않는 경우
+          // 입력값이 존재하긴 하지만 정규식에 부합하지 않는 경우
           if (e.target.value) {
             setInputValue((prevState) => ({ ...prevState, validId: false }));
             setAlertMessage((prevState) => ({
@@ -75,6 +85,38 @@ export default function Signup() {
       // ===================================================================================================
       // PW 입력값 검증 =====================================================================================
       case "pw":
+        // +추가) 비밀번호가 확인까지 이미 입력된 상태에서, 비밀번호를 지울 경우 핸들링
+        if (inputValue.pwCheck && inputValue.pwCheck !== e.target.value) {
+          setInputValue((prevState) => ({
+            ...prevState,
+            correctPwCheck: false,
+          }));
+          setAlertMessage((prevState) => ({
+            ...prevState,
+            pwCheck: "비밀번호가 일치하지 않습니다.",
+          }));
+          setPassMessage((prevState) => ({
+            ...prevState,
+            pwCheck: "",
+          }));
+          // ++추가) 비밀번호가 확인까지 이미 입력된 상태에서, 비밀번호를 지웠다가 다시 입력할 경우
+        } else if (
+          inputValue.pwCheck &&
+          inputValue.pwCheck === e.target.value
+        ) {
+          setInputValue((prevState) => ({
+            ...prevState,
+            correctPwCheck: true,
+          }));
+          setAlertMessage((prevState) => ({
+            ...prevState,
+            pwCheck: "",
+          }));
+          setPassMessage((prevState) => ({
+            ...prevState,
+            pwCheck: "비밀번호가 일치합니다.",
+          }));
+        }
         // 정규식에 부합하는 경우
         if (inputRegexs.pwRegex.test(e.target.value)) {
           setInputValue((prevState) => ({ ...prevState, validPw: true }));
@@ -88,7 +130,7 @@ export default function Signup() {
           }));
         } else {
           // 정규식에 부합하지 않는 경우
-          // 입력값이 존재하는 하지만 정규식에 부합하지 않는 경우
+          // 입력값이 존재하긴 하지만 정규식에 부합하지 않는 경우
           if (e.target.value) {
             setInputValue((prevState) => ({ ...prevState, validPw: false }));
             setAlertMessage((prevState) => ({
@@ -114,21 +156,38 @@ export default function Signup() {
       case "pwCheck":
         // 비밀번호 입력값과 일치하는 경우
         if (inputValue.pw === e.target.value) {
-          setInputValue((prevState) => ({
-            ...prevState,
-            correctPwCheck: true,
-          }));
-          setPassMessage((prevState) => ({
-            ...prevState,
-            pwCheck: "비밀번호가 일치합니다.",
-          }));
-          setAlertMessage((prevState) => ({
-            ...prevState,
-            pwCheck: "",
-          }));
+          // 입력값도 있고, 비밀번호 입력값과 일치하는 경우.
+          if (e.target.value) {
+            setInputValue((prevState) => ({
+              ...prevState,
+              correctPwCheck: true,
+            }));
+            setPassMessage((prevState) => ({
+              ...prevState,
+              pwCheck: "비밀번호가 일치합니다.",
+            }));
+            setAlertMessage((prevState) => ({
+              ...prevState,
+              pwCheck: "",
+            }));
+          } else {
+            // (특수 케이스) 입력값이 없는데 비밀번호 입력값이 없어서 일치하는 경우 (놓치기 쉬운 케이스)
+            setInputValue((prevState) => ({
+              ...prevState,
+              correctPwCheck: false, // 불일치로 간주
+            }));
+            setPassMessage((prevState) => ({
+              ...prevState,
+              pwCheck: "",
+            }));
+            setAlertMessage((prevState) => ({
+              ...prevState,
+              pwCheck: "",
+            }));
+          }
         } else {
           // 비밀번호 입력값과 일치하지 않는 경우
-          // 입력값이 존재하는 하지만 비밀번호와 일치하지 않는 경우
+          // 입력값이 존재하긴 하지만 비밀번호와 일치하지 않는 경우
           if (e.target.value) {
             setInputValue((prevState) => ({
               ...prevState,
@@ -174,7 +233,7 @@ export default function Signup() {
           }));
         } else {
           // 정규식에 부합하지 않는 경우
-          // 입력값이 존재하는 하지만 정규식에 부합하지 않는 경우
+          // 입력값이 존재하긴 하지만 정규식에 부합하지 않는 경우
           if (e.target.value) {
             setInputValue((prevState) => ({
               ...prevState,
@@ -221,16 +280,22 @@ export default function Signup() {
   // 입력 조건 (정규식)설명 텍스트
   const REGEX_INFO = {
     id: [
-      "영문자로 시작",
-      "영문자, 숫자, 하이픈(-), 언더바(_)를 사용",
-      "3~20자 이내",
+      "계정 정책",
+      "- 영문자로 시작",
+      "- 영문자, 숫자, 하이픈(-), 언더바(_)를 사용",
+      "- 3~20자 이내",
     ],
     pw: [
-      "최소 8자 이상",
-      "최소한 하나의 대문자, 하나의 소문자, 하나의 숫자, 하나의 특수문자를 포함",
-      "공백은 허용하지 않음",
+      "비밀번호 정책",
+      "- 최소 8자 이상",
+      "- 최소한 하나의 대문자, 하나의 소문자, 하나의 숫자, 하나의 특수문자를 포함",
+      "- 공백은 허용하지 않음",
     ],
-    nickname: ["영어 대/소문자, 숫자, 한글 자모음 조합", "2~10자 이내"],
+    nickname: [
+      "닉네임 정책",
+      "- 영어 대/소문자, 숫자, 한글 자모음 조합",
+      "- 2~10자 이내",
+    ],
   };
 
   /**
@@ -281,47 +346,99 @@ export default function Signup() {
   });
 
   //test zone ==========================================================
-
   const dupIdToggle = () => {
-    setInputValue({
-      ...inputValue,
-      nonIdDuplication: true,
-    });
-    alert("사용할 수 있는 아이디 입니다.");
+    if (inputValue.validId) {
+      setInputValue({
+        ...inputValue,
+        nonIdDuplication: true,
+      });
+      alert("사용할 수 있는 아이디 입니다.");
 
-    setPassMessage((prevState) => ({
-      ...prevState,
-      id: "사용할 수 있는 아이디 입니다.",
-    }));
-    // setAlertMessage((prevState) => ({
-    //   ...prevState,
-    //   id: "사용할 수 없는 아이디 입니다.",
-    // }));
+      setPassMessage((prevState) => ({
+        ...prevState,
+        id: "사용할 수 있는 아이디 입니다.",
+      }));
+      // setAlertMessage((prevState) => ({
+      //   ...prevState,
+      //   id: "사용할 수 없는 아이디 입니다.",
+      // }));
+    } else {
+      setAlertMessage((prevState) => ({
+        ...prevState,
+        id: "사용할 수 없는 아이디 입니다.",
+      }));
+    }
   };
 
   const dupNicknameToggle = () => {
-    setInputValue({
-      ...inputValue,
-      nonNicknameDuplication: true,
-    });
-    alert("사용할 수 있는 닉네임 입니다.");
-    setPassMessage((prevState) => ({
-      ...prevState,
-      nickname: "사용할 수 있는 닉네임 입니다.",
-    }));
-    // setAlertMessage((prevState) => ({
-    //   ...prevState,
-    //   nickname: "사용할 수 없는 닉네임 입니다.",
-    // }));
+    if (inputValue.validNickname) {
+      setInputValue({
+        ...inputValue,
+        nonNicknameDuplication: true,
+      });
+      alert("사용할 수 있는 닉네임 입니다.");
+      setPassMessage((prevState) => ({
+        ...prevState,
+        nickname: "사용할 수 있는 닉네임 입니다.",
+      }));
+      // setAlertMessage((prevState) => ({
+      //   ...prevState,
+      //   nickname: "사용할 수 없는 닉네임 입니다.",
+      // }));
+    } else {
+      setAlertMessage((prevState) => ({
+        ...prevState,
+        nickname: "사용할 수 없는 닉네임입니다.",
+      }));
+    }
   };
 
   console.log("검증", inputValue);
-
   //test tool end=======================================================
+
+  //select =============================================
+  const [sortVisible, setSortVisible] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("도메인 선택");
+
+  console.log("검문소", selectedSort);
+  // ===================================================
+  // select ============================================
+  const handleSelectSort = (e) => {
+    setSelectedSort(e.target.innerText);
+    setSortVisible((prev) => !prev);
+  };
+  // -------===========================================
+  //이메일 선택 옵션 ======================================
+  const EMAIL_DOMAINS = [
+    { label: "gmail.com", value: "@gmail.com" },
+    { label: "naver.com", value: "@naver.com" },
+    { label: "daum.net", value: "@daum.net" },
+    { label: "hanmail.net", value: "@hanmail.net" },
+    { label: "hotmail.com", value: "@hotmail.com" },
+    { label: "yahoo.com", value: "@yahoo.com" },
+    { label: "nate.com", value: "@nate.com" },
+    { label: "kakao.com", value: "@kakao.com" },
+    // { label: "icloud.com", value: "@icloud.com" },
+    // { label: "outlook.com", value: "@outlook.com" },
+  ];
+  //======================================================
+
+  useEffect(() => {
+    const selectedObj = EMAIL_DOMAINS.find(
+      (item) => item.label === selectedSort
+    );
+    if (selectedObj) {
+      setInputValue((preState) => ({
+        ...preState,
+        emailAdress: selectedObj.value,
+      }));
+    }
+  }, [selectedSort]);
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
-        <div className={styles.videoSection}>
+        <div className={styles.pictureArea}>
           <div className={styles.apartmentBox}>
             <img
               className={styles.pngApartment}
@@ -341,16 +458,21 @@ export default function Signup() {
             />
           </div>
         </div>
-        <div className={styles.inputSection}>
+        <div className={styles.inputArea}>
           <h1 className={styles.title}>Welcome to RE:ROADING</h1>
+
           <h2 className={styles.subTitle}>Creat your accout</h2>
-          <div className={styles.inputBox}>
-            <div>
-              <label htmlFor='id'>ID * </label>
-              {/* <RegexInfoBoxForRegister textArray={REGEX_INFO.id} /> */}
-              <span className={styles.alertMessage}>{alertMessage.id}</span>
-              <span className={styles.passMessage}>{passMessage.id}</span>
-              <div>
+          <div className={styles.inputSection}>
+            <div className={styles.wholeBox}>
+              <div className={styles.itemNameBox}>
+                <label className={styles.itemName} htmlFor='id'>
+                  ID *
+                </label>
+                <RegexInfoBoxForRegister textArray={REGEX_INFO.id} />
+                <span className={styles.alertMessage}>{alertMessage.id}</span>
+                <span className={styles.passMessage}>{passMessage.id}</span>
+              </div>
+              <div className={styles.itemInputBox}>
                 <input
                   className={
                     inputValue.id
@@ -363,71 +485,100 @@ export default function Signup() {
                   value={inputValue.id}
                   onChange={handleInputValue}
                 />
-                <button onClick={dupIdToggle}>중복 확인</button>
+                <button className={styles.dupBtn} onClick={dupIdToggle}>
+                  중복 확인
+                </button>
               </div>
             </div>
-            <div>
-              <label htmlFor='pw'>Password *</label>
-              <span className={styles.alertMessage}>{alertMessage.pw}</span>
-              <span className={styles.passMessage}>{passMessage.pw}</span>
-              <input
-                className={
-                  inputValue.pw
-                    ? `${styles.input}  ${styles.filled}`
-                    : styles.input
-                }
-                type='password'
-                id='pw'
-                name='pw'
-                value={inputValue.pw}
-                onChange={handleInputValue}
-              />
-            </div>
-            <div>
-              <label htmlFor='pwCheck'>Password Check *</label>
-              <span className={styles.alertMessage}>
-                {alertMessage.pwCheck}
-              </span>
-              <span className={styles.passMessage}>{passMessage.pwCheck}</span>
-              <input
-                className={
-                  inputValue.pwCheck
-                    ? `${styles.input}  ${styles.filled}`
-                    : styles.input
-                }
-                type='password'
-                id='pwCheck'
-                name='pwCheck'
-                value={inputValue.pwCheck}
-                onChange={handleInputValue}
-              />
-            </div>
-
-            <div>
-              <label htmlFor='name'>Fullname *</label>
-              <input
-                className={
-                  inputValue.name
-                    ? `${styles.input}  ${styles.filled}`
-                    : styles.input
-                }
-                type='text'
-                id='name'
-                name='name'
-                value={inputValue.name}
-                onChange={handleInputValue}
-              />
-            </div>
-            <div>
-              <label htmlFor='nickname'>Nickname *</label>
-              <span className={styles.alertMessage}>
-                {alertMessage.nickname}
-              </span>
-              <span className={styles.passMessage}>{passMessage.nickname}</span>
-              <div>
+            <div className={styles.wholeBox}>
+              <div className={styles.itemNameBox}>
+                <label className={styles.itemName} htmlFor='pw'>
+                  Password *
+                </label>
+                <RegexInfoBoxForRegister textArray={REGEX_INFO.pw} />
+                <span className={styles.alertMessage}>{alertMessage.pw}</span>
+                <span className={styles.passMessage}>{passMessage.pw}</span>
+              </div>
+              <div className={styles.itemInputBox}>
                 <input
                   className={
-                    inputValue.id
+                    inputValue.pw
+                      ? `${styles.input}  ${styles.filled}`
+                      : styles.input
+                  }
+                  type='password'
+                  id='pw'
+                  name='pw'
+                  value={inputValue.pw}
+                  onChange={handleInputValue}
+                />
+              </div>
+            </div>
+            <div className={styles.wholeBox}>
+              <div className={styles.itemNameBox}>
+                <label className={styles.itemName} htmlFor='pwCheck'>
+                  Password Check *
+                </label>
+                <span className={styles.alertMessage}>
+                  {alertMessage.pwCheck}
+                </span>
+                <span className={styles.passMessage}>
+                  {passMessage.pwCheck}
+                </span>
+              </div>
+              <div className={styles.itemInputBox}>
+                <input
+                  className={
+                    inputValue.pwCheck
+                      ? `${styles.input}  ${styles.filled}`
+                      : styles.input
+                  }
+                  type='password'
+                  id='pwCheck'
+                  name='pwCheck'
+                  value={inputValue.pwCheck}
+                  onChange={handleInputValue}
+                />
+              </div>
+            </div>
+            <div className={styles.wholeBox}>
+              <div className={styles.itemNameBox}>
+                <label className={styles.itemName} htmlFor='name'>
+                  Fullname *
+                </label>
+              </div>
+              <div className={styles.itemInputBox}>
+                <input
+                  className={
+                    inputValue.name
+                      ? `${styles.input}  ${styles.filled}`
+                      : styles.input
+                  }
+                  type='text'
+                  id='name'
+                  name='name'
+                  value={inputValue.name}
+                  onChange={handleInputValue}
+                />
+              </div>
+            </div>
+            <div className={styles.wholeBox}>
+              <div className={styles.itemNameBox}>
+                <label className={styles.itemName} htmlFor='nickname'>
+                  Nickname *
+                </label>
+                <RegexInfoBoxForRegister textArray={REGEX_INFO.nickname} />
+                <span className={styles.alertMessage}>
+                  {alertMessage.nickname}
+                </span>
+                <span className={styles.passMessage}>
+                  {passMessage.nickname}
+                </span>
+              </div>
+              <div className={styles.itemInputBox}>
+                <input
+                  className={
+                    inputValue.nickname
                       ? `${styles.input}  ${styles.filled}`
                       : styles.input
                   }
@@ -437,26 +588,22 @@ export default function Signup() {
                   value={inputValue.nickname}
                   onChange={handleInputValue}
                 />
-                <button onClick={dupNicknameToggle}>중복 확인</button>
+                <button className={styles.dupBtn} onClick={dupNicknameToggle}>
+                  중복 확인
+                </button>
               </div>
-              {/* <input
-                className={
-                  inputValue.nickname
-                    ? `${styles.input}  ${styles.filled}`
-                    : styles.input
-                }
-                type='text'
-                id='nickname'
-                name='nickname'
-                value={inputValue.nickname}
-                onChange={handleInputValue}
-              /> */}
             </div>
-            <div>
-              <label htmlFor='emailId'>E-mail *</label>
-              <span className={styles.alertMessage}>{alertMessage.email}</span>
-              <span className={styles.passMessage}>{passMessage.email}</span>
-              <div>
+            <div className={styles.wholeBox}>
+              <div className={styles.itemNameBox}>
+                <label className={styles.itemName} htmlFor='emailId'>
+                  E-mail *
+                </label>
+                <span className={styles.alertMessage}>
+                  {alertMessage.email}
+                </span>
+                <span className={styles.passMessage}>{passMessage.email}</span>
+              </div>
+              <div className={styles.itemInputBox}>
                 <input
                   className={
                     inputValue.emailId
@@ -470,7 +617,26 @@ export default function Signup() {
                   onChange={handleInputValue}
                 />
                 <span className={styles.at}>@</span>
-                <input
+                <div className='selectBox'>
+                  <div
+                    className='pl on'
+                    onClick={() => setSortVisible((prev) => !prev)}
+                  >
+                    {selectedSort}
+                    {sortVisible ? <TiArrowSortedUp /> : <TiArrowSortedDown />}
+                  </div>
+                  <ul
+                    className={sortVisible ? "listbox  visible" : "listbox"}
+                    id='listbox'
+                  >
+                    {EMAIL_DOMAINS.map((item, index) => (
+                      <li key={index} onClick={handleSelectSort}>
+                        <div className='list'>{item.label}</div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* <input
                   className={
                     inputValue.emailAdress
                       ? `${styles.input}  ${styles.filled}`
@@ -480,23 +646,36 @@ export default function Signup() {
                   name='emailAdress'
                   value={inputValue.emailAdress}
                   onChange={handleInputValue}
-                />
+                /> */}
               </div>
             </div>
-            <div>
-              <label htmlFor='profileImage'>Profile Image </label>
-              <input
-                className={
-                  inputValue.profileImage
-                    ? `${styles.input}  ${styles.filled}`
-                    : styles.input
-                }
-                type='file'
-                id='profileImage'
-                name='profileImage'
-                value={inputValue.profileImage}
-                onChange={handleInputValue}
-              />
+            <div className={styles.wholeBox}>
+              <div className={styles.itemNameBox}>
+                <label className={styles.itemName} htmlFor='profileImage'>
+                  Profile Image
+                </label>
+              </div>
+              {/* 커스텀 input file 태그 ============================== */}
+              <div className={styles.filebox}>
+                <input // 파일의 이름을 보여주는 input태그
+                  className={styles.uploadName}
+                  id='profileImage'
+                  value={inputValue.profileImage}
+                  readOnly
+                  disabled
+                />
+                <label htmlFor='file'>
+                  {/* 파일 선택 버튼 역할 */}
+                  <span>파일 찾기</span>
+                </label>
+                <input // 실제로 업로드를 해주는 input 택그
+                  type='file'
+                  id='file'
+                  onChange={getImgUrl}
+                  name='profileImage'
+                />
+              </div>
+              {/* test ============================== */}
             </div>
           </div>
           <div className={styles.agreeBox}>
@@ -506,14 +685,16 @@ export default function Signup() {
               name='agree'
               onChange={handleInputValue}
             />
-            <label htmlFor='agree'>개인정보 수집 및 이용에 대한 동의 *</label>
+            <label className={styles.itemName} htmlFor='agree'>
+              개인정보 수집 및 이용에 대한 동의 *
+            </label>
             <span className={styles.alertMessage}>{alertMessage.agree}</span>
             <span className={styles.passMessage}>{passMessage.agree}</span>
           </div>
           <button
             className={submitRequirements ? styles.allFilled : styles.submitBtn}
           >
-            Create on account
+            Create an account
           </button>
           <p className={styles.link}>
             Already have an account? <Link to='/users/login'>Login</Link>

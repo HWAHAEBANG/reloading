@@ -32,8 +32,6 @@ export default function MyCharts() {
     //     console.error(error);
     //   });
 
-    console.log("제발2", document.cookie);
-
     axios
       .get(`/users/test`)
       .then((response) => {

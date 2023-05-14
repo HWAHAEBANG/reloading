@@ -1,40 +1,39 @@
 .mainContainer {
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   display: flex;
-  background-color: red;
-  width: 10px;
-  height: 200px;
-  /* display: none; */
 }
 
-.textBox {
+.mainContainer > .textBox {
+  display: none;
   position: absolute;
-  top: 7px;
-  left: 7px;
-  display: flex;
+  bottom: 10px;
+  right: 7px;
   flex-direction: column;
-  width: 20px;
-  height: 100px;
-  background-color: blue;
-  /* background: rgba(0, 0, 0, 0.5); */
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .mainContainer:hover .textBox {
-  /* display: inline-block; */
+  display: flex;
 }
 
 .text {
-  /* font-size: 12px; */
-  /* line-height: 18px; */
-  /* white-space: nowrap; */
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
 }
 
-/* .text p:nth-child(1) {
+.textBox p:nth-child(1) {
   font-size: 14px;
   color: rgb(147, 193, 178);
   margin-bottom: 5px;
-} */
+}
 
-.icon {
+.mainContainer > .icon {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
   cursor: pointer;
 }

@@ -5,7 +5,6 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  /* background-color: aqua; */
 }
 
 .subContainer {
@@ -15,9 +14,7 @@
   border: 1px solid mediumaquamarine;
   animation: boxExtend 0.5s forwards;
   display: flex;
-  /* padding: 30px; */
   overflow: hidden;
-  /* background-color: bisque; */
 }
 
 @keyframes boxExtend {
@@ -29,8 +26,10 @@
   }
 }
 
-.videoSection {
-  /* background-color: blue; */
+/* =============================================================================== */
+/* =============================================================================== */
+
+.pictureArea {
   width: 60%;
 }
 
@@ -47,7 +46,6 @@
   top: -250px;
   left: -250px;
   animation: move 20s forwards;
-  /* transform-origin: center; */
 }
 
 @keyframes move {
@@ -152,11 +150,13 @@
   position: absolute;
   width: 1200px;
   height: 1000px;
-  /* background-color: red; */
   z-index: -2;
 }
 
-.inputSection {
+/* ============================================================================================= */
+/* ============================================================================================= */
+
+.inputArea {
   width: 40%;
   display: flex;
   flex-direction: column;
@@ -179,16 +179,16 @@
   line-height: 50px;
 }
 
-.inputBox {
+.inputSection {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 15px;
-  /* justify-content: start; */
   margin: 20px 0;
 }
 
-.inputBox label {
+.itemName {
+  position: relative;
   color: rgb(199, 199, 199);
 }
 
@@ -196,24 +196,35 @@
   font-size: 10px;
   color: red;
   margin-left: 10px;
+  font-weight: 700;
+  margin-left: 5px;
 }
 
 .passMessage {
   font-size: 10px;
   color: rgb(40, 230, 34);
   margin-left: 10px;
+  font-weight: 700;
+  margin-left: 5px;
 }
 
-.inputBox div {
+.wholeBox {
   width: 100%;
 }
 
-.inputBox > div > div {
+.itemNameBox {
+  position: relative;
   display: flex;
-  /* background-color: aquamarine; */
+  align-items: center;
+  gap: 0;
 }
 
-.inputBox > div > div:nth-child(4) button {
+.itemInputBox {
+  display: flex;
+  align-items: center;
+}
+
+.dupBtn {
   white-space: nowrap;
   padding: 5px 10px;
   margin-left: 10px;
@@ -225,7 +236,7 @@
   transition: 0.2s;
 }
 
-.inputBox > div > div:nth-child(4) button:hover {
+.dupBtn:hover {
   background-color: mediumaquamarine;
   color: black;
 }
@@ -249,6 +260,61 @@
 .at {
   margin: 0 10px;
 }
+
+/* Input file 태그 커스텀 ==================================================================*/
+.filebox {
+  display: flex;
+}
+
+.filebox .uploadName {
+  display: inline-block;
+  height: 32px;
+  padding: 0 px;
+  vertical-align: middle;
+  border: none;
+  background: none;
+  border-bottom: 1px solid gray;
+  width: 90%;
+  color: #999999;
+}
+
+.filebox label {
+  white-space: nowrap;
+  margin-left: 10px;
+  background: none;
+  border: 1px solid mediumaquamarine;
+  color: mediumaquamarine;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: 0.2s;
+  font-size: 13px;
+  width: 75px;
+  padding-right: 1.5%;
+}
+
+.filebox label span {
+  color: mediumaquamarine;
+}
+
+/* 위에 있는 투명의 라벨에 hover 했을 때 뒤에 버튼에 효가가 생기도록*/
+.filebox label:hover {
+  background-color: mediumaquamarine;
+}
+
+.filebox label:hover span {
+  color: black;
+}
+
+.filebox input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  color: mediumaquamarine;
+}
+/* =======================================================================================*/
 
 .agreeBox {
   display: flex;
