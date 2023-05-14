@@ -1,0 +1,296 @@
+.mainContainer {
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  /* background-color: aqua; */
+}
+
+.subContainer {
+  width: 100%;
+  height: 0%;
+  border-radius: 15px;
+  border: 1px solid mediumaquamarine;
+  animation: boxExtend 0.5s forwards;
+  display: flex;
+  /* padding: 30px; */
+  overflow: hidden;
+  /* background-color: bisque; */
+}
+
+@keyframes boxExtend {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+.videoSection {
+  /* background-color: blue; */
+  width: 60%;
+}
+
+.pngScope {
+  top: 300px;
+  left: 300px;
+  position: absolute;
+  width: 300px;
+}
+
+.scopeBox {
+  z-index: -1;
+  position: absolute;
+  top: -250px;
+  left: -250px;
+  animation: move 20s forwards;
+  /* transform-origin: center; */
+}
+
+@keyframes move {
+  0% {
+    top: -250px;
+    left: -250px;
+  }
+  4% {
+    top: -250px;
+    left: -250px;
+  }
+  5% {
+    top: -250px;
+    left: 580px;
+  }
+  9% {
+    top: -250px;
+    left: 580px;
+  }
+  10% {
+    top: 250px;
+    left: 50px;
+  }
+  14% {
+    top: 250px;
+    left: 50px;
+  }
+  15% {
+    top: 250px;
+    left: 580px;
+  }
+  19% {
+    top: 250px;
+    left: 580px;
+  }
+  20% {
+    top: 0px;
+    left: -250px;
+  }
+  24% {
+    top: 0px;
+    left: -250px;
+  }
+  25% {
+    top: 0px;
+    left: 150px;
+  }
+  28% {
+    top: 0px;
+    left: 150px;
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(2.5);
+    top: -700px;
+    left: -500px;
+  }
+  100% {
+    transform: scale(2.5);
+    top: -700px;
+    left: -500px;
+  }
+}
+.scopeBox div:nth-child(1) {
+  position: absolute;
+  top: 599px;
+  width: 3000px;
+  height: 2000px;
+  background-color: black;
+}
+
+.scopeBox div:nth-child(2) {
+  position: absolute;
+  top: -699px;
+  left: -1000px;
+  width: 3000px;
+  height: 1000px;
+  background-color: black;
+}
+
+.scopeBox div:nth-child(3) {
+  position: absolute;
+  left: 599px;
+  width: 2000px;
+  height: 2000px;
+  background-color: black;
+}
+
+.scopeBox div:nth-child(4) {
+  position: absolute;
+  left: -1699px;
+  width: 2000px;
+  height: 2000px;
+  background-color: black;
+}
+
+.pngApartment {
+  width: 1200px;
+}
+
+.apartmentBox {
+  position: absolute;
+  width: 1200px;
+  height: 1000px;
+  /* background-color: red; */
+  z-index: -2;
+}
+
+.inputSection {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  padding: 50px 80px;
+  min-width: 375px;
+}
+
+.title {
+  font-size: 30px;
+  color: mediumaquamarine;
+  white-space: nowrap;
+  height: 50px;
+}
+
+.subTitle {
+  font-size: 15px;
+  color: rgb(199, 199, 199);
+  line-height: 50px;
+}
+
+.inputBox {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 15px;
+  /* justify-content: start; */
+  margin: 20px 0;
+}
+
+.inputBox label {
+  color: rgb(199, 199, 199);
+}
+
+.alertMessage {
+  font-size: 10px;
+  color: red;
+  margin-left: 10px;
+}
+
+.passMessage {
+  font-size: 10px;
+  color: rgb(40, 230, 34);
+  margin-left: 10px;
+}
+
+.inputBox div {
+  width: 100%;
+}
+
+.inputBox > div > div {
+  display: flex;
+  /* background-color: aquamarine; */
+}
+
+.inputBox > div > div:nth-child(4) button {
+  white-space: nowrap;
+  padding: 5px 10px;
+  margin-left: 10px;
+  background: none;
+  border: 1px solid mediumaquamarine;
+  color: mediumaquamarine;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: 0.2s;
+}
+
+.inputBox > div > div:nth-child(4) button:hover {
+  background-color: mediumaquamarine;
+  color: black;
+}
+
+.input {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid gray;
+  color: #fff;
+  padding: 5px;
+  outline: none;
+  line-height: 20px;
+  font-size: 20px;
+}
+
+.filled {
+  border-bottom: 1px solid mediumaquamarine;
+}
+
+.at {
+  margin: 0 10px;
+}
+
+.agreeBox {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.agreeBox input {
+  margin: 0 20px;
+}
+
+.submitBtn {
+  width: 100%;
+  background-color: mediumaquamarine;
+  border: none;
+  margin: 30px 0 20px 0;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0.2;
+}
+
+.allFilled {
+  width: 100%;
+  background-color: mediumaquamarine;
+  border: none;
+  margin: 30px 0 20px 0;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.allFilled:hover {
+  filter: brightness(1.2);
+}
+.link {
+  text-align: center;
+  color: rgb(199, 199, 199);
+}
+
+.link * {
+  color: mediumaquamarine;
+  text-decoration: underline;
+}

@@ -1,0 +1,40 @@
+.mainContainer {
+  position: relative;
+  display: flex;
+  background-color: red;
+  width: 10px;
+  height: 200px;
+  /* display: none; */
+}
+
+.textBox {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  display: flex;
+  flex-direction: column;
+  width: 20px;
+  height: 100px;
+  background-color: blue;
+  /* background: rgba(0, 0, 0, 0.5); */
+}
+
+.mainContainer:hover .textBox {
+  /* display: inline-block; */
+}
+
+.text {
+  /* font-size: 12px; */
+  /* line-height: 18px; */
+  /* white-space: nowrap; */
+}
+
+/* .text p:nth-child(1) {
+  font-size: 14px;
+  color: rgb(147, 193, 178);
+  margin-bottom: 5px;
+} */
+
+.icon {
+  cursor: pointer;
+}

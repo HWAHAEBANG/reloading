@@ -208,23 +208,18 @@ label {
 }
 
 /* Global CSS */
-body {
+/* body {
   display: grid;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
+} */
 
-fieldset {
+/* fieldset {
   border: none;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
+} */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-/* 토글 스위치 끝*/
+/* 토글 스위치 끝 */

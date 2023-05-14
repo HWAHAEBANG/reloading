@@ -7,6 +7,11 @@
   font-weight: 700;
 }
 
+.linkContainer {
+  margin-top: 5px;
+  text-align: center;
+}
+
 .link {
   font-size: 14px;
   line-height: 25px;

@@ -276,13 +276,15 @@ export default function GlitchSplashScreen() {
       </div>
       {/* ====================================================================== */}
 
-      <p className={styles.link}>
-        Forgot <Link to='/users/findId'>ID</Link> or{" "}
-        <Link to='/users/findPw'>Password?</Link>
-      </p>
-      <p className={styles.link}>
-        Not Yet registered? <Link to='/users/signUp'>Sign up</Link>
-      </p>
+      <div className={styles.linkContainer}>
+        <p className={styles.link}>
+          Forgot <Link to='/users/findId'>ID</Link> or{" "}
+          <Link to='/users/findPw'>Password?</Link>
+        </p>
+        <p className={styles.link}>
+          Not Yet registered? <Link to='/users/signUp'>Sign up</Link>
+        </p>
+      </div>
       {/* <div>
         <button onClick={accessToken} style={{ cursor: "pointer" }}>
           액세스
