@@ -27,16 +27,15 @@ export default function GlitchSplashScreen() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
-  /** 굳이 한번 더 변수를 저장하는 이유
+  /** 굳이 한번 더 변수를 저장하는 이유 (보류)
    * 아이디를 입력하고 엔터를 누른 뒤 빠르게 비밀 번호를 이어서 입력 할 경우,
    * 비밀번호로 커서 넘어가기 전에 입력되어, 잘못 된 아이디가 전송됨.
    * 이를 방지하기 위해, 엔터를 누르는 순간의 input 값을 저장해두도록 별도의 변수를 저장한것.
    */
-
-  const [finalInputValue, setFinalInputValue] = useState({ id: "", pw: "" });
+  // const [finalInputValue, setFinalInputValue] = useState({ id: "", pw: "" });
 
   const handleInputId = (e) => {
-    setInputId(e.target.value);
+    setInputId(e.target.value.toLowerCase());
   };
 
   const handleInputPw = (e) => {
@@ -214,6 +213,7 @@ export default function GlitchSplashScreen() {
               }
               type='text'
               ref={idInputRef}
+              value={inputId}
               onKeyDown={idCheck}
               onChange={handleInputId}
             />
@@ -265,6 +265,7 @@ export default function GlitchSplashScreen() {
               }
               type='password'
               ref={pwInputRef}
+              value={inputPw}
               onKeyDown={pwCheck}
               onChange={handleInputPw}
             />

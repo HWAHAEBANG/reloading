@@ -31,6 +31,17 @@
 
 .pictureArea {
   width: 60%;
+  /* background-color: aqua; */
+  display: flex;
+  align-items: center;
+}
+
+.pictureContainer {
+  /* 반응형 손볼 때 가장 먼저 건드릴 것 */
+  position: relative;
+  width: 100%;
+  height: 800px;
+  /* background-color: red; */
 }
 
 .pngScope {
@@ -143,7 +154,7 @@
 }
 
 .pngApartment {
-  width: 1200px;
+  width: 1300px;
 }
 
 .apartmentBox {
@@ -174,7 +185,7 @@
 }
 
 .subTitle {
-  font-size: 15px;
+  font-size: 20px;
   color: rgb(199, 199, 199);
   line-height: 50px;
 }

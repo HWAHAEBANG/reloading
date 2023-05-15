@@ -10,6 +10,8 @@ export default function Access() {
 
   const userInfo = useSelector((state) => state.userInfo);
 
+  console.log("이미지를 돌려줘", userInfo);
+
   setTimeout(() => {
     navigate("/");
   }, 8000);
@@ -35,7 +37,8 @@ export default function Access() {
       <div className={styles.avatarBox}>
         <img
           className={styles.avatar}
-          src={process.env.PUBLIC_URL + "/image/HHB.jpg"}
+          // src={process.env.PUBLIC_URL + "/image/HHB.jpg"}
+          src={userInfo && userInfo.userInfo && userInfo.userInfo.profile_image}
           alt='프로필 사진'
         />
       </div>
@@ -50,7 +53,7 @@ export default function Access() {
             startDelay={4000}
             // cursorColor={"#03e9f4"}
             text={`HELLO, ${
-              userInfo && userInfo.userInfo && userInfo.userInfo.name
+              userInfo && userInfo.userInfo && userInfo.userInfo.nickname
             }`}
             typeSpeed={20}
             // scrollArea={myAppRef}

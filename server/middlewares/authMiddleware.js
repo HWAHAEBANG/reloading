@@ -38,7 +38,9 @@ const authMiddleware = (req, res, next) => {
             {
               id: result[0].id,
               name: result[0].name,
+              nickname: result[0].nickname,
               email: result[0].email,
+              profileImage: result[0].profile_image,
             },
             process.env.ACCESS_SECRET,
             {

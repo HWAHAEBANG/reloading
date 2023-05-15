@@ -44,7 +44,12 @@ export default function NavBar({ showNav, setShowNav }) {
               <div className={styles.avatarContainer}>
                 <img
                   className={styles.avatar}
-                  src={process.env.PUBLIC_URL + "/image/HHB.jpg"}
+                  src={
+                    userInfo &&
+                    userInfo.userInfo &&
+                    userInfo.userInfo.profile_image
+                  }
+                  // src={process.env.PUBLIC_URL + "/image/HHB.jpg"}
                   alt='프로필 사진'
                 />
               </div>
@@ -57,7 +62,7 @@ export default function NavBar({ showNav, setShowNav }) {
               환영합니다.
               <br />
               <span>
-                {userInfo && userInfo.userInfo && userInfo.userInfo.name}
+                {userInfo && userInfo.userInfo && userInfo.userInfo.nickname}
               </span>
               님
             </p>

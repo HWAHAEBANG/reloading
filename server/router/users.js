@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 // 또 써줘야하는건가? 추후 확인 ====================
 const bodyParser = require("body-parser");
@@ -20,7 +21,24 @@ router.use(
 router.use(bodyParser.urlencoded({ extended: true }));
 
 //=============================================
+// 인증 미들웨어 ===============================
 const authMiddleware = require("../middlewares/authMiddleware.js");
+
+// crypto 관련 =================================
+// 비밀번호를 해시화 하는 함수
+function hashPassword(pwd) {
+  // salt생성
+  const salt = crypto.randomBytes(16);
+  // 해시 함수 생성 (pbkdf2Syncg는 해시화 알고리즘)
+  const hash = crypto.pbkdf2Sync(pwd, salt, 1000, 64, "sha512");
+  return { salt, hash };
+}
+// 비밀번호 확인 함수
+function verifyPassword(pwd, hash, salt) {
+  const hashVerify = crypto.pbkdf2Sync(pwd, salt, 1000, 64, "sha512");
+  return hash.toString("hex") === hashVerify.toString("hex");
+}
+// =============================================
 
 // DB 연결부 ===================================
 const connectDB = require("../config/connectDB.js");
@@ -52,24 +70,45 @@ router.post("/idCheck", (req, res) => {
   });
 });
 //==============================================
+//닉네임 확인 ===================================
+router.post("/nicknameCheck", (req, res) => {
+  const inputNickname = req.body.data.inputNickname;
+  const sqlQuery = `SELECT id FROM users WHERE nickname = ?;`;
+  db.query(sqlQuery, [inputNickname], (err, result) => {
+    if (err) res.status(500).json(err);
+    if (result.length === 0) {
+      res.status(403).json("Not Exist Nickname");
+    } else {
+      res.send(result);
+    }
+    // console.log(result);
+  });
+});
+//==============================================
 //비밀번호 확인 =================================
 router.post("/pwCheck", (req, res) => {
   const inputId = req.body.data.inputId;
   const inputPw = req.body.data.inputPw;
-  const sqlQuery = `SELECT * FROM users WHERE id = ? AND pw = ?;`;
-  db.query(sqlQuery, [inputId, inputPw], (err, result) => {
+  const sqlQuery = `SELECT * FROM users WHERE id = ?;`;
+  db.query(sqlQuery, [inputId], (err, result) => {
     if (err) res.status(500).json(err);
-    if (result.length === 0) {
-      res.status(403).json("Wrong Password");
-      // res.send(result);
-    } else {
-      // access Token 발급
-      //세가지의 인수를 받음 (1. 어떤 user 정보를 담을지, 2.시크릿값, 3.유효기간 및 발행자)
+    // 해쉬값 비교
+    const isAuthenticated = verifyPassword(
+      inputPw,
+      result[0].hash,
+      result[0].salt
+    );
+
+    // access Token 발급
+    //세가지의 인수를 받음 (1. 어떤 user 정보를 담을지, 2.시크릿값, 3.유효기간 및 발행자)
+    if (isAuthenticated) {
       const accessToken = jwt.sign(
         {
           id: result[0].id,
           name: result[0].name,
+          nickname: result[0].nickname,
           email: result[0].email,
+          profileImage: result[0].profile_image,
         },
         process.env.ACCESS_SECRET,
         {
@@ -114,6 +153,8 @@ router.post("/pwCheck", (req, res) => {
       });
 
       res.status(200).json("Login Success");
+    } else {
+      res.status(403).json("Wrong Password");
     }
   });
 });
@@ -198,6 +239,29 @@ router.post("/logout", (req, res) => {
       });
       res.status(200).json("Logout Seuccess");
     });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.post("/signup", (req, res) => {
+  try {
+    const { id, pw, name, nickname, emailId, emailAddress, profileImage } =
+      req.body.data.inputValue;
+    const email = emailId + emailAddress;
+    const { salt, hash } = hashPassword(pw);
+    const profileImageValue = profileImage ? profileImage : null;
+    // console.log(id, pw, name, nickname, emailId, emailAddress, profileImage);
+    const sqlQuery =
+      "INSERT INTO users(id,salt,hash,name,nickname,email,profile_image) VALUES(?,?,?,?,?,?,?);";
+    db.query(
+      sqlQuery,
+      [id, salt, hash, name, nickname, email, profileImageValue],
+      (err, result) => {
+        if (err) res.status(500).json(err);
+        res.status(200).json("Signup Success");
+      }
+    );
   } catch (error) {
     res.status(500).json(error);
   }

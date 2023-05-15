@@ -361,7 +361,7 @@
 }
 .logoArea .text:before,
 .logoArea .text:after {
-  padding: 39px 0;
+  padding: 40px 0; /* 효과 상하 안 맞을 때 이거 수정 */
   color: white;
   content: "RE:LOADING";
   position: absolute;

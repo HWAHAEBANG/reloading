@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
 import { Link } from "react-router-dom";
-import RegexInfoBoxForRegister from "../ui/RegexInfoBoxForRegister";
+import RegexInfoBoxForSignup from "../ui/RegexInfoBoxForSignup";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { uploadImage } from "../../api/cloudynary";
+import axios from "axios";
 
 export default function Signup() {
   const [inputValue, setInputValue] = useState({
@@ -16,10 +17,10 @@ export default function Signup() {
     correctPwCheck: false,
     name: "",
     nickname: "",
-    validNickname: "",
+    validNickname: false,
     nonNicknameDuplication: false,
     emailId: "",
-    emailAdress: "",
+    emailAddress: "",
     validEmail: true, // 추후 리팩토링 예정
     profileImage: "",
     agree: false,
@@ -80,7 +81,10 @@ export default function Signup() {
               id: "",
             }));
         }
-        setInputValue((prevState) => ({ ...prevState, id: e.target.value }));
+        setInputValue((prevState) => ({
+          ...prevState,
+          id: e.target.value.toLowerCase(),
+        }));
         break;
       // ===================================================================================================
       // PW 입력값 검증 =====================================================================================
@@ -282,6 +286,7 @@ export default function Signup() {
     id: [
       "계정 정책",
       "- 영문자로 시작",
+      "- 대/소문자 무관",
       "- 영문자, 숫자, 하이픈(-), 언더바(_)를 사용",
       "- 3~20자 이내",
     ],
@@ -321,7 +326,7 @@ export default function Signup() {
     inputValue.nickname && // 닉네임이 입력되었는는가?
     inputValue.nonNicknameDuplication && // 닉네입이 중복되지 않았는가?
     inputValue.emailId && // 이메일 아이디를 입력하였는가?
-    inputValue.emailAdress && // 이메일 도메인 주소를  선택하였는가?
+    inputValue.emailAddress && // 이메일 도메인 주소를  선택하였는가?
     inputValue.validEmail && // 이메일이 인증되었는가? (추후 리팩토링 예정)
     inputValue.agree; // 정보제공에 동의 하였는가
 
@@ -345,52 +350,150 @@ export default function Signup() {
     agree: "",
   });
 
+  const handleSubmitId = () => {
+    axios
+      .post(`http://localhost:5000/users/signup`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputValue: inputValue, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
+      .then((response) => {
+        console.log("존재하는 계정입니다.");
+        // setExistingId(true);
+        // pwInputRef.current.focus();
+        setAlertMessage("");
+      })
+      .catch((error) => {
+        setAlertMessage("존재하지 않는 계정입니다.");
+        console.log("에러코드", error.response.status, error.response.data);
+      });
+  };
+
+  // 중복확인 통과한 이후에 다시 수정할 경우 대비
+  useEffect(() => {
+    setInputValue((prevState) => ({ ...prevState, nonIdDuplication: false }));
+  }, [inputValue.id]);
+
+  useEffect(() => {
+    setInputValue((prevState) => ({
+      ...prevState,
+      nonNicknameDuplication: false,
+    }));
+  }, [inputValue.nickname]);
+
   //test zone ==========================================================
   const dupIdToggle = () => {
-    if (inputValue.validId) {
-      setInputValue({
-        ...inputValue,
-        nonIdDuplication: true,
+    axios
+      .post(`http://localhost:5000/users/idCheck`, {
+        // url: "http://localhost:5000/users/idCheck", // 안되는뎅
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputId: inputValue.id, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
+      .then((response) => {
+        alert("이미 사용중인 아이디 입니다.");
+        setInputValue({
+          ...inputValue,
+          nonIdDuplication: false,
+        });
+        setAlertMessage((prevState) => ({
+          ...prevState,
+          id: "이미 사용중인 아이디 입니다.",
+        }));
+        setPassMessage((prevState) => ({
+          ...prevState,
+          id: "",
+        }));
+      })
+      .catch((error) => {
+        if (inputValue.validId) {
+          alert("사용할 수 있는 아이디 입니다.");
+          setInputValue({
+            ...inputValue,
+            nonIdDuplication: true,
+          });
+          setPassMessage((prevState) => ({
+            ...prevState,
+            id: "사용할 수 있는 아이디 입니다.",
+          }));
+          setAlertMessage((prevState) => ({
+            ...prevState,
+            id: "",
+          }));
+        } else {
+          alert("사용할 수 없는 아이디 입니다.");
+          setAlertMessage((prevState) => ({
+            ...prevState,
+            id: "사용할 수 없는 아이디 입니다.",
+          }));
+          setPassMessage((prevState) => ({
+            ...prevState,
+            id: "",
+          }));
+        }
+        // setAlertMessage("존재하지 않는 계정입니다.");
+        // console.log("에러코드", error.response.status, error.response.data);
       });
-      alert("사용할 수 있는 아이디 입니다.");
-
-      setPassMessage((prevState) => ({
-        ...prevState,
-        id: "사용할 수 있는 아이디 입니다.",
-      }));
-      // setAlertMessage((prevState) => ({
-      //   ...prevState,
-      //   id: "사용할 수 없는 아이디 입니다.",
-      // }));
-    } else {
-      setAlertMessage((prevState) => ({
-        ...prevState,
-        id: "사용할 수 없는 아이디 입니다.",
-      }));
-    }
   };
 
   const dupNicknameToggle = () => {
-    if (inputValue.validNickname) {
-      setInputValue({
-        ...inputValue,
-        nonNicknameDuplication: true,
+    axios
+      .post(`http://localhost:5000/users/nicknameCheck`, {
+        // url: "http://localhost:5000/users/nickCheck", // 안되는뎅
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputNickname: inputValue.nickname, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
+      .then((response) => {
+        alert("이미 사용중인 닉네임 입니다.");
+        setInputValue({
+          ...inputValue,
+          nonNicknameDuplication: false,
+        });
+        setAlertMessage((prevState) => ({
+          ...prevState,
+          nickname: "이미 사용중인 닉네임 입니다.",
+        }));
+        setPassMessage((prevState) => ({
+          ...prevState,
+          nickname: "",
+        }));
+      })
+      .catch((error) => {
+        if (inputValue.validNickname) {
+          alert("사용할 수 있는 닉네임 입니다.");
+          setInputValue({
+            ...inputValue,
+            nonNicknameDuplication: true,
+          });
+          setPassMessage((prevState) => ({
+            ...prevState,
+            nickname: "사용할 수 있는 닉네임 입니다.",
+          }));
+          setAlertMessage((prevState) => ({
+            ...prevState,
+            nickname: "",
+          }));
+        } else {
+          alert("사용할 수 없는 닉네임 입니다.");
+          setAlertMessage((prevState) => ({
+            ...prevState,
+            nickname: "사용할 수 없는 닉네임 입니다.",
+          }));
+          setPassMessage((prevState) => ({
+            ...prevState,
+            nickname: "",
+          }));
+        }
+        // setAlertMessage("존재하지 않는 계정입니다.");
+        // console.log("에러코드", error.response.status, error.response.data);
       });
-      alert("사용할 수 있는 닉네임 입니다.");
-      setPassMessage((prevState) => ({
-        ...prevState,
-        nickname: "사용할 수 있는 닉네임 입니다.",
-      }));
-      // setAlertMessage((prevState) => ({
-      //   ...prevState,
-      //   nickname: "사용할 수 없는 닉네임 입니다.",
-      // }));
-    } else {
-      setAlertMessage((prevState) => ({
-        ...prevState,
-        nickname: "사용할 수 없는 닉네임입니다.",
-      }));
-    }
   };
 
   console.log("검증", inputValue);
@@ -430,7 +533,7 @@ export default function Signup() {
     if (selectedObj) {
       setInputValue((preState) => ({
         ...preState,
-        emailAdress: selectedObj.value,
+        emailAddress: selectedObj.value,
       }));
     }
   }, [selectedSort]);
@@ -439,23 +542,25 @@ export default function Signup() {
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
         <div className={styles.pictureArea}>
-          <div className={styles.apartmentBox}>
-            <img
-              className={styles.pngApartment}
-              src={process.env.PUBLIC_URL + "/image/apartment.jpg"}
-              alt='apartment'
-            />
-          </div>
-          <div className={styles.scopeBox}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <img
-              className={styles.pngScope}
-              src={process.env.PUBLIC_URL + "/image/scope.png"}
-              alt='scope'
-            />
+          <div className={styles.pictureContainer}>
+            <div className={styles.apartmentBox}>
+              <img
+                className={styles.pngApartment}
+                src={process.env.PUBLIC_URL + "/image/apartment.jpg"}
+                alt='apartment'
+              />
+            </div>
+            <div className={styles.scopeBox}>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <img
+                className={styles.pngScope}
+                src={process.env.PUBLIC_URL + "/image/scope.png"}
+                alt='scope'
+              />
+            </div>
           </div>
         </div>
         <div className={styles.inputArea}>
@@ -468,7 +573,7 @@ export default function Signup() {
                 <label className={styles.itemName} htmlFor='id'>
                   ID *
                 </label>
-                <RegexInfoBoxForRegister textArray={REGEX_INFO.id} />
+                <RegexInfoBoxForSignup textArray={REGEX_INFO.id} />
                 <span className={styles.alertMessage}>{alertMessage.id}</span>
                 <span className={styles.passMessage}>{passMessage.id}</span>
               </div>
@@ -495,7 +600,7 @@ export default function Signup() {
                 <label className={styles.itemName} htmlFor='pw'>
                   Password *
                 </label>
-                <RegexInfoBoxForRegister textArray={REGEX_INFO.pw} />
+                <RegexInfoBoxForSignup textArray={REGEX_INFO.pw} />
                 <span className={styles.alertMessage}>{alertMessage.pw}</span>
                 <span className={styles.passMessage}>{passMessage.pw}</span>
               </div>
@@ -567,7 +672,7 @@ export default function Signup() {
                 <label className={styles.itemName} htmlFor='nickname'>
                   Nickname *
                 </label>
-                <RegexInfoBoxForRegister textArray={REGEX_INFO.nickname} />
+                <RegexInfoBoxForSignup textArray={REGEX_INFO.nickname} />
                 <span className={styles.alertMessage}>
                   {alertMessage.nickname}
                 </span>
@@ -638,13 +743,13 @@ export default function Signup() {
                 </div>
                 {/* <input
                   className={
-                    inputValue.emailAdress
+                    inputValue.emailAddress
                       ? `${styles.input}  ${styles.filled}`
                       : styles.input
                   }
                   type='text'
-                  name='emailAdress'
-                  value={inputValue.emailAdress}
+                  name='emailAddress'
+                  value={inputValue.emailAddress}
                   onChange={handleInputValue}
                 /> */}
               </div>
@@ -693,6 +798,7 @@ export default function Signup() {
           </div>
           <button
             className={submitRequirements ? styles.allFilled : styles.submitBtn}
+            onClick={handleSubmitId}
           >
             Create an account
           </button>
