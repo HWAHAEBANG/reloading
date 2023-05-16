@@ -5,6 +5,7 @@ import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
 // import { mockData } from "../../data/mockdata";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function AllCharts() {
   //select =============================================
@@ -18,10 +19,18 @@ export default function AllCharts() {
   };
   // ===================================================
   // fetch data ========================================
+  const userInfo = useSelector((state) => state.userInfo);
+
   const [chartsData, setChartsData] = useState();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/allCharts`)
+      .get(`http://localhost:5000/allCharts`, {
+        method: "GET",
+        withCredentials: true,
+        params: {
+          userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
+        },
+      })
       .then((response) => {
         if (response.data.length === 0) {
           return;
@@ -66,9 +75,9 @@ export default function AllCharts() {
             <input
               className={styles.inputBox}
               type='text'
-              // value={keyword}
+              value={keyword}
               onChange={handleKeyword}
-              // onKeyUp={handleSubmit}
+              // onKeyUp={handleSubmit} // 자동 검색으로 변경 완료
               placeholder='키워드를 입력해주세요.'
             />
             <button
@@ -103,7 +112,13 @@ export default function AllCharts() {
           </div>
         </div>
         <div className={`${styles.inner} scrollBar`}>
-          <div className={styles.wholeContentsArea}>
+          <div
+            className={
+              filteredChartsData && filteredChartsData.length < 5
+                ? `${styles.under5ea}`
+                : `${styles.wholeContentsArea}`
+            }
+          >
             {filteredChartsData &&
               filteredChartsData.map((data) => (
                 <ChartCard key={data.id} data={data} />

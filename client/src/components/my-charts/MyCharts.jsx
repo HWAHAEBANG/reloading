@@ -5,6 +5,7 @@ import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
 import axios from "axios";
 import axiosInstance from "../../util/axiosInstance";
+import { useSelector } from "react-redux";
 
 export default function MyCharts() {
   //select =============================================
@@ -16,33 +17,56 @@ export default function MyCharts() {
     setSelectedSort(e.target.innerText);
     setSortVisible((prev) => !prev);
   };
-  // -------====================================
+  // -------============================================
+  // fetch data ========================================
+  const userInfo = useSelector((state) => state.userInfo);
 
-  const [test, setTest] = useState("");
-
+  const [chartsData, setChartsData] = useState();
   useEffect(() => {
-    // axios
-    //   .get(`http://localhost:5000/users/test`)
-    //   .then((response) => {
-    //     if (response.data.length === 0) {
-    //       setTest(`일치하는 정보가 없습니다.`);
-    //     } else setTest(`귀하의 이름은는"${response.data[0].title}" 입니다.`);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-
     axios
-      .get(`/users/test`)
+      .get(`http://localhost:5000/myCharts`, {
+        method: "GET",
+        withCredentials: true,
+        params: {
+          userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
+        },
+      })
       .then((response) => {
+        console.log("악", response);
         if (response.data.length === 0) {
-          setTest(`일치하는 정보가 없습니다.`);
-        } else setTest(`귀하의 이름은는"${response.data[0].title}" 입니다.`);
+          return;
+          setChartsData(`일치하는 정보가 없습니다.`);
+        } else setChartsData(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
+
+  console.log("디비연결 이상무", chartsData);
+  // ===================================================
+  // search filter ===================================== // 블로그 포스팅
+  const [keyword, setKeyword] = useState("");
+  const handleKeyword = (e) => {
+    setKeyword(e.target.value);
+  };
+
+  const [filteredChartsData, setFilteredChartsData] = useState(chartsData);
+
+  useEffect(() => {
+    chartsData && keyword
+      ? setFilteredChartsData(
+          chartsData.filter((data) =>
+            data.title
+              .toLowerCase()
+              .replace(/\s/g, "")
+              .includes(keyword.toLowerCase().replace(/\s/g, ""))
+          )
+        )
+      : setFilteredChartsData(chartsData);
+  }, [chartsData, keyword]);
+
+  // ===================================================
 
   return (
     <div className={styles.mainContainer}>
@@ -53,9 +77,9 @@ export default function MyCharts() {
             <input
               className={styles.inputBox}
               type='text'
-              // value={keyword}
-              // onChange={handleKeyword}
-              // onKeyUp={handleSubmit}
+              value={keyword}
+              onChange={handleKeyword}
+              // onKeyUp={handleSubmit} // 자동 검색으로 변경 완료
               placeholder='키워드를 입력해주세요.'
             />
             <button
@@ -90,13 +114,17 @@ export default function MyCharts() {
           </div>
         </div>
         <div className={`${styles.inner} scrollBar`}>
-          <div className={styles.wholeContentsArea}>
-            {test && test}
-            {/* <ChartCard />
-            <ChartCard />ㅔ
-            <ChartCard />
-            <ChartCard />
-            <ChartCard /> */}
+          <div
+            className={
+              filteredChartsData && filteredChartsData.length < 5
+                ? `${styles.under5ea}`
+                : `${styles.wholeContentsArea}`
+            }
+          >
+            {filteredChartsData &&
+              filteredChartsData.map((data) => (
+                <ChartCard key={data.id} data={data} />
+              ))}
           </div>
         </div>
       </div>

@@ -78,13 +78,24 @@
 }
 
 .wholeContentsArea {
-  height: 100%;
+  /* display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; */
   /* margin: 30px; */
   display: grid;
-  /* grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(3, 1fr); */
-  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
-  gap: 20px;
+  /* grid-template-columns: repeat(5, 1fr); */
+  /* grid-template-rows: repeat(minmax(500px, 1fr)); */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  height: 100%;
+  gap: 30px;
+  padding: 20px;
+}
+
+.under5ea {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  gap: 30px;
   padding: 20px;
 }
 
@@ -106,5 +117,7 @@
 
 /* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
 @media all and (max-width: 479px) {
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)); */
   /*스타일입력*/
 }

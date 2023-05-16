@@ -10,8 +10,6 @@ export default function Access() {
 
   const userInfo = useSelector((state) => state.userInfo);
 
-  console.log("이미지를 돌려줘", userInfo);
-
   setTimeout(() => {
     navigate("/");
   }, 8000);

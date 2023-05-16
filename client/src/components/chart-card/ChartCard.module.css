@@ -158,7 +158,7 @@
 /* animation type0 ============================================ */
 .maincontainer0 {
   border-radius: 5px;
-  /* width: 300px; */
+  width: 330px;
   height: 400px;
   padding: 10px;
   position: relative;
@@ -219,7 +219,7 @@
 /* animation type1 ============================================*/
 .maincontainer1 {
   border-radius: 5px;
-  /* width: 300px; */
+  width: 330px;
   height: 400px;
   padding: 10px;
   position: relative;
@@ -280,7 +280,7 @@
 /* animation type2 ============================================ */
 .maincontainer2 {
   border-radius: 5px;
-  /* width: 300px; */
+  width: 330px;
   height: 400px;
   padding: 10px;
   position: relative;
@@ -341,7 +341,7 @@
 /* animation type3 ============================================ */
 .maincontainer3 {
   border-radius: 5px;
-  /* width: 300px; */
+  width: 330px;
   height: 400px;
   padding: 10px;
   position: relative;
@@ -402,7 +402,7 @@
 /* animation type4 ============================================ */
 .maincontainer4 {
   border-radius: 5px;
-  /* width: 300px; */
+  width: 330px;
   height: 400px;
   padding: 10px;
   position: relative;
@@ -481,3 +481,21 @@
 }
 
 /* common animation end  ============================================ */
+
+@media all and (min-width: 480px) and (max-width: 767px) {
+  .maincontainer0 {
+    width: auto;
+  }
+  .maincontainer1 {
+    width: auto;
+  }
+  .maincontainer2 {
+    width: auto;
+  }
+  .maincontainer3 {
+    width: auto;
+  }
+  .maincontainer4 {
+    width: auto;
+  }
+}
