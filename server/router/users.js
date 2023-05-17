@@ -44,15 +44,6 @@ function verifyPassword(pwd, hash, salt) {
 const connectDB = require("../config/connectDB.js");
 const db = connectDB.init();
 connectDB.open(db);
-//=============================================
-
-router.get("/test", (req, res) => {
-  const sqlQuery = `SELECT title FROM test;`;
-  db.query(sqlQuery, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
 
 //==============================================
 //아이디 확인 ===================================

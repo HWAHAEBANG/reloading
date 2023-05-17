@@ -8,16 +8,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 export default function AllCharts() {
-  //select =============================================
-  const [sortVisible, setSortVisible] = useState(false);
-  const [selectedSort, setSelectedSort] = useState("인기순");
-  // ===================================================
-  // select ============================================
-  const handleSelectSort = (e) => {
-    setSelectedSort(e.target.innerText);
-    setSortVisible((prev) => !prev);
-  };
-  // ===================================================
   // fetch data ========================================
   const userInfo = useSelector((state) => state.userInfo);
 
@@ -44,26 +34,65 @@ export default function AllCharts() {
 
   console.log("디비연결 이상무", chartsData);
   // ===================================================
+  // sort filter ===================================== // 블로그 포스팅
+
+  //select =============================================
+  const [sortVisible, setSortVisible] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("조회수순");
+  // ===================================================
+  const sortList = ["조회수순", "최신순", "이름순"];
+  // select ============================================
+  const handleSelectSort = (e) => {
+    setSelectedSort(e.target.innerText);
+    setSortVisible((prev) => !prev);
+  };
+  // ===================================================
+
+  const sortSwitch = (chartsData, selectedSort) => {
+    let sortedData = [...chartsData]; // 원본 배열 복사
+
+    switch (selectedSort) {
+      case "조회수순":
+        sortedData.sort((a, b) => b.view_count - a.view_count);
+        break;
+      case "최신순":
+        sortedData.sort(
+          (a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at)
+        );
+        break;
+      case "이름순":
+        sortedData.sort((a, b) => (a.title > b.title ? 1 : -1));
+        break;
+      default:
+    }
+
+    return sortedData; // 정렬된 배열 반환
+  };
+
   // search filter ===================================== // 블로그 포스팅
   const [keyword, setKeyword] = useState("");
   const handleKeyword = (e) => {
     setKeyword(e.target.value);
   };
-
-  const [filteredChartsData, setFilteredChartsData] = useState(chartsData);
+  // ===================================================
+  const [filteredChartsData, setFilteredChartsData] = useState(chartsData); //?
 
   useEffect(() => {
-    chartsData && keyword
+    if (!chartsData) return;
+    keyword
       ? setFilteredChartsData(
-          chartsData.filter((data) =>
-            data.title
-              .toLowerCase()
-              .replace(/\s/g, "")
-              .includes(keyword.toLowerCase().replace(/\s/g, ""))
+          sortSwitch(
+            chartsData.filter((data) =>
+              data.title
+                .toLowerCase()
+                .replace(/\s/g, "")
+                .includes(keyword.toLowerCase().replace(/\s/g, ""))
+            ),
+            selectedSort
           )
         )
-      : setFilteredChartsData(chartsData);
-  }, [chartsData, keyword]);
+      : setFilteredChartsData(sortSwitch(chartsData, selectedSort));
+  }, [chartsData, keyword, selectedSort]);
 
   // ===================================================
   return (
@@ -98,15 +127,11 @@ export default function AllCharts() {
                 className={sortVisible ? "listbox  visible" : "listbox"}
                 id='listbox'
               >
-                <li onClick={handleSelectSort}>
-                  <div className='list'>인기순</div>
-                </li>
-                <li onClick={handleSelectSort}>
-                  <div className='list'>최신순</div>
-                </li>
-                <li onClick={handleSelectSort}>
-                  <div className='list'>조회수 순</div>
-                </li>
+                {sortList.map((item, index) => (
+                  <li key={index} onClick={handleSelectSort}>
+                    <div className='list'>{item}</div>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -114,9 +139,9 @@ export default function AllCharts() {
         <div className={`${styles.inner} scrollBar`}>
           <div
             className={
-              filteredChartsData && filteredChartsData.length < 5
-                ? `${styles.under5ea}`
-                : `${styles.wholeContentsArea}`
+              filteredChartsData && filteredChartsData.length < 5 // 그리드의 한계를 보완하기 위함
+                ? styles.under5ea
+                : styles.wholeContentsArea
             }
           >
             {filteredChartsData &&

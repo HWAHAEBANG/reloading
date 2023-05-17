@@ -7,6 +7,7 @@ const db = connectDB.init();
 connectDB.open(db);
 //=============================================
 
+// id 데이터 무관하게 모든 차트 가져오는 코드 (CSS 테스트 용)
 // router.get("/", (req, res) => {
 //   const sqlQuery = `SELECT * FROM charts;`;
 //   db.query(sqlQuery, (err, result) => {
@@ -29,6 +30,17 @@ router.get("/", (req, res) => {
     if (err) throw err;
     console.log(result);
     res.send(result);
+  });
+});
+
+//=========================================
+router.put("/viewCount", (req, res) => {
+  const { chartId } = req.body.data;
+  const sqlQuery = `UPDATE charts SET view_count = view_count + 1 WHERE id = ?;`;
+  db.query(sqlQuery, [chartId], (err, result) => {
+    if (err) res.status(500).json(err);
+    res.send(result);
+    console.log(result);
   });
 });
 

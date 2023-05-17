@@ -8,11 +8,24 @@ import axios from "axios";
 
 export default function ChartCard({
   data,
-  data: { id, thumbnail, title, subTitle, description },
+  data: { id, thumbnail, title, subTitle, view_count: viewCount },
 }) {
   const navigate = useNavigate();
   const enter = () => {
     navigate(`/allCharts/${id}`, { state: { data: data } });
+
+    axios
+      .put(`http://localhost:5000/allCharts/viewCount`, {
+        method: "PUT",
+        withCredentials: true,
+        data: {
+          chartId: id,
+        },
+      })
+      .then((response) => {})
+      .catch((error) => {
+        console.log("에러코드", error.response.status, error.response.data);
+      });
   };
 
   const userInfo = useSelector((state) => state.userInfo);
@@ -112,6 +125,7 @@ export default function ChartCard({
       <span></span>
       <span></span>
       <div className={styles.topArea}>
+        <p className={styles.viewCount}>{viewCount && viewCount} Views</p>
         {heart ? (
           <AiFillHeart onClick={heartOff} />
         ) : (

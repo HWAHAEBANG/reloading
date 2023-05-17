@@ -81,7 +81,7 @@ export default function GlitchSplashScreen() {
         console.log("존재하는 비번입니다.");
         setAlertMessage("");
         getAccessToken();
-        getRefreshToken();
+        // getRefreshToken(); 없어도 되지 않나
 
         // setCorrectPw(true);
         setTimeout(() => {
@@ -125,12 +125,13 @@ export default function GlitchSplashScreen() {
       });
   };
 
-  const getRefreshToken = () => {
-    axios.get(`http://localhost:5000/users/refreshtoken`, {
-      method: "GET",
-      withCredentials: true,
-    });
-  };
+  //없어도 되지 않나
+  // const getRefreshToken = () => {
+  //   axios.get(`http://localhost:5000/users/refreshtoken`, {
+  //     method: "GET",
+  //     withCredentials: true,
+  //   });
+  // };
 
   // ======================================================================
 
