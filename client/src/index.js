@@ -21,10 +21,12 @@ import EditUserInfoSection from "./pages/EditUserInfoSection";
 import ChartDetail from "./components/chart-detail/ChartDetail";
 import Access from "./components/splashScreen/Access";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import { store, persistor } from "./redux/store";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginAction, setUserInfoAction } from "./redux";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -33,28 +35,32 @@ const GetUserDataFromAccessToken = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/users/accesstoken`, {
-        method: "GET",
-        withCredentials: true,
-      })
-      .then((response) => {
-        // setIsLogin(true);
-        dispatch(loginAction(true));
-        dispatch(setUserInfoAction(response.data));
-      })
-      .catch((error) => {
-        console.log(/* error */ "액세스 토큰이 없습니다.");
-      });
+    console.log("그냥 지나가슈 공사중이오.");
+    // axios
+    //   .get(`http://localhost:5000/users/accesstoken`, {
+    //     method: "GET",
+    //     withCredentials: true,
+    //   })
+    //   .then((response) => {
+    //     // setIsLogin(true);
+    //     dispatch(loginAction(true));
+    //     dispatch(setUserInfoAction(response.data));
+    //   })
+    //   .catch((error) => {
+    //     // console.log(/* error */ "액세스 토큰이 없습니다.");
+    //   });
   }, []);
-
   return <RouterProvider router={router} />;
 };
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     errorElement: <NotFound />,
     children: [
       {
@@ -113,7 +119,9 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <GetUserDataFromAccessToken />
+      <PersistGate loading={null} persistor={persistor}>
+        <GetUserDataFromAccessToken />
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );
