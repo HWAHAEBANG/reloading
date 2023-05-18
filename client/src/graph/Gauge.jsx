@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import RingLoader from "react-spinners/RingLoader";
 
 export default function Gauge() {
+  // loading ===========================
+  const loaderBox = {
+    display: "flex",
+    justifyContents: "center",
+    alignItems: "center",
+    height: "250px",
+  };
+
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(false);
+  // ===================================
+
   const options = {
     chart: {
       type: "gauge",
@@ -130,7 +147,24 @@ export default function Gauge() {
     ],
   };
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  return (
+    <div>
+      {loading ? (
+        <div style={loaderBox}>
+          <RingLoader
+            color='#36d7b7'
+            loading={loading}
+            cssOverride={override}
+            size={200}
+            aria-label='Loading Spinner'
+            data-testid='loader'
+          />
+        </div>
+      ) : (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      )}
+    </div>
+  );
 }
 
 // const options = {

@@ -6,39 +6,61 @@ import solidGauge from "highcharts/modules/solid-gauge";
 import darkUnica from "highcharts/themes/dark-unica";
 import "./unsoldHouse.css";
 import axios from "axios";
+import RingLoader from "react-spinners/RingLoader";
 
 highchartsMore(Highcharts);
 solidGauge(Highcharts);
 darkUnica(Highcharts);
 
 export default function UnsoldHouse() {
+  // loading ===========================
+  const loaderBox = {
+    display: "flex",
+    justifyContents: "center",
+    alignItems: "center",
+    height: "400px",
+  };
+
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(true);
+  // ===================================
   const [unsoldHouseData, setUnsoldHouseData] = useState();
   const [housePriceIndexData, setHousePriceIndexData] = useState();
   const [rentalPriceIndexData, setRentalPriceIndexData] = useState();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/allCharts/unsoldHouse`, {
+    Promise.all([
+      axios.get(`http://localhost:5000/allCharts/unsoldHouse`, {
         withCredentials: true,
-      })
-      .then((response) => {
-        setUnsoldHouseData(response.data.data);
-      });
+      }),
+      axios.get(`http://localhost:5000/allCharts/housePriceIndexAroundSeoul`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexAroundSeoul`, {
+        withCredentials: true,
+      }),
+    ])
+      .then((responses) => {
+        const unsoldHouseResponse = responses[0];
+        const housePriceIndexResponse = responses[1];
+        const rentalPriceIndexResponse = responses[2];
 
-    axios
-      .get(`http://localhost:5000/allCharts/housePriceIndexAroundSeoul`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setHousePriceIndexData(response.data.data);
-      });
+        setUnsoldHouseData(unsoldHouseResponse.data.data);
+        setHousePriceIndexData(housePriceIndexResponse.data.data);
+        setRentalPriceIndexData(rentalPriceIndexResponse.data.data);
 
-    axios
-      .get(`http://localhost:5000/allCharts/JeonsePriceIndexAroundSeoul`, {
-        withCredentials: true,
+        // 추가 작업을 수행할 수 있습니다.
+
+        setLoading(false);
       })
-      .then((response) => {
-        setRentalPriceIndexData(response.data.data);
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+        setLoading(false);
       });
   }, []);
 
@@ -158,7 +180,20 @@ export default function UnsoldHouse() {
 
   return (
     <div>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      {loading ? (
+        <div style={loaderBox}>
+          <RingLoader
+            color='#36d7b7'
+            loading={loading}
+            cssOverride={override}
+            size={200}
+            aria-label='Loading Spinner'
+            data-testid='loader'
+          />
+        </div>
+      ) : (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      )}
     </div>
   );
 }

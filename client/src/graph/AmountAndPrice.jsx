@@ -5,12 +5,28 @@ import highchartsMore from "highcharts/highcharts-more";
 import solidGauge from "highcharts/modules/solid-gauge";
 import darkUnica from "highcharts/themes/dark-unica";
 import axios from "axios";
+import RingLoader from "react-spinners/RingLoader";
 
 highchartsMore(Highcharts);
 solidGauge(Highcharts);
 darkUnica(Highcharts);
 
 export default function AmountAndPrice() {
+  // loading ===========================
+  const loaderBox = {
+    display: "flex",
+    justifyContents: "center",
+    alignItems: "center",
+    height: "400px",
+  };
+
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(true);
+  // ===================================
   // const [categories, setCategories] = useState();
   const [pirData, setPirData] = useState();
   const [housePriceIndexData, setHousePriceIndexData] = useState();
@@ -52,34 +68,37 @@ export default function AmountAndPrice() {
   // console.log("avg", avg);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/allCharts/pir`, { withCredentials: true })
-      .then((response) => {
-        setPirData(response.data.data);
-      });
-
-    axios
-      .get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
+    Promise.all([
+      axios.get(`http://localhost:5000/allCharts/pir`, {
         withCredentials: true,
-      })
-      .then((response) => {
-        setHousePriceIndexData(response.data.data);
-      });
-
-    axios
-      .get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul `, {
+      }),
+      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
         withCredentials: true,
-      })
-      .then((response) => {
-        setRentalPriceIndexData(response.data.data);
-      });
-
-    axios
-      .get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
+      }),
+      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul`, {
         withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
+        withCredentials: true,
+      }),
+    ])
+      .then((responses) => {
+        const pirResponse = responses[0];
+        const housePriceIndexResponse = responses[1];
+        const rentalPriceIndexResponse = responses[2];
+        const jeonsePriceRatioResponse = responses[3];
+
+        setPirData(pirResponse.data.data);
+        setHousePriceIndexData(housePriceIndexResponse.data.data);
+        setRentalPriceIndexData(rentalPriceIndexResponse.data.data);
+        setJeonsePriceRatioData(jeonsePriceRatioResponse.data.data);
       })
-      .then((response) => {
-        setJeonsePriceRatioData(response.data.data);
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -240,11 +259,25 @@ export default function AmountAndPrice() {
 
   return (
     <div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        // constructorType={"MultipleAxes"}
-        options={options}
-      />
+      {loading ? (
+        <div style={loaderBox}>
+          <RingLoader
+            color='#36d7b7'
+            loading={loading}
+            cssOverride={override}
+            size={200}
+            aria-label='Loading Spinner'
+            data-testid='loader'
+          />
+        </div>
+      ) : (
+        <HighchartsReact
+          highcharts={Highcharts}
+          // constructorType={"MultipleAxes"}
+          options={options}
+        />
+      )}
+      ;
     </div>
   );
 }

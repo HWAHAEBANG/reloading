@@ -2,17 +2,45 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import axios from "axios";
+import RingLoader from "react-spinners/RingLoader";
 
 export default function JeonsePriceRatio() {
+  // loading ===========================
+  const loaderBox = {
+    display: "flex",
+    justifyContents: "center",
+    alignItems: "center",
+    height: "400px",
+  };
+
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(true);
+  // ===================================
   const [jeonsePriceRatioData, setJeonsePriceRatioData] = useState();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
+    Promise.all([
+      axios.get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
         withCredentials: true,
+      }),
+    ])
+      .then((responses) => {
+        const jeonsePriceRatioResponse = responses[0];
+
+        setJeonsePriceRatioData(jeonsePriceRatioResponse.data.data);
+
+        // 추가 작업을 수행할 수 있습니다.
+
+        setLoading(false);
       })
-      .then((response) => {
-        setJeonsePriceRatioData(response.data.data);
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+        setLoading(false);
       });
   }, []);
 
@@ -91,5 +119,22 @@ export default function JeonsePriceRatio() {
       },
     ],
   };
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  return (
+    <div>
+      {loading ? (
+        <div style={loaderBox}>
+          <RingLoader
+            color='#36d7b7'
+            loading={loading}
+            cssOverride={override}
+            size={200}
+            aria-label='Loading Spinner'
+            data-testid='loader'
+          />
+        </div>
+      ) : (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      )}
+    </div>
+  );
 }

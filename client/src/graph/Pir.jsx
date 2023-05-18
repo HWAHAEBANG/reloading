@@ -6,13 +6,29 @@ import solidGauge from "highcharts/modules/solid-gauge";
 import darkUnica from "highcharts/themes/dark-unica";
 import axios from "axios";
 import { MdHeight } from "react-icons/md";
+import RingLoader from "react-spinners/RingLoader";
 
 highchartsMore(Highcharts);
 solidGauge(Highcharts);
 darkUnica(Highcharts);
 
 export default function Pir() {
-  // const [categories, setCategories] = useState();
+  // loading ===========================
+  const loaderBox = {
+    display: "flex",
+    justifyContents: "center",
+    alignItems: "center",
+    height: "400px",
+  };
+
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(true);
+  // ===================================
+
   const [pirData, setPirData] = useState();
   const [housePriceIndexData, setHousePriceIndexData] = useState();
   const [rentalPriceIndexData, setRentalPriceIndexData] = useState();
@@ -49,38 +65,47 @@ export default function Pir() {
       parseFloat(getAverage(pirData).toFixed(1)),
     ]);
 
+  // 대박....
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/allCharts/pir`, { withCredentials: true })
-      .then((response) => {
-        setPirData(response.data.data);
-      });
-
-    axios
-      .get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
+    Promise.all([
+      axios.get(`http://localhost:5000/allCharts/pir`, {
         withCredentials: true,
-      })
-      .then((response) => {
-        setHousePriceIndexData(response.data.data);
-      });
-
-    axios
-      .get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul `, {
+      }),
+      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
         withCredentials: true,
-      })
-      .then((response) => {
-        setRentalPriceIndexData(response.data.data);
-      });
-
-    axios
-      .get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
+      }),
+      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul`, {
         withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
+        withCredentials: true,
+      }),
+    ])
+      .then((responses) => {
+        const pirResponse = responses[0];
+        const housePriceIndexResponse = responses[1];
+        const rentalPriceIndexResponse = responses[2];
+        const jeonsePriceRatioResponse = responses[3];
+
+        setPirData(pirResponse.data.data);
+        setHousePriceIndexData(housePriceIndexResponse.data.data);
+        setRentalPriceIndexData(rentalPriceIndexResponse.data.data);
+        setJeonsePriceRatioData(jeonsePriceRatioResponse.data.data);
+
+        setLoading(false);
       })
-      .then((response) => {
-        setJeonsePriceRatioData(response.data.data);
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+        setLoading(false);
       });
   }, []);
-
+  //   위의 코드는 여러 개의 axios 요청을 병렬로 처리하고, 모든 요청이 완료된 후에 한 번의 상태 업데이트를 수행하는 방식입니다. 이 방법은 성능과 효율성 면에서 일반적으로 효과적입니다.
+  // 병렬로 요청을 처리하기 때문에 각 요청이 독립적으로 실행되므로 전체적인 처리 시간이 단일 요청의 처리 시간보다 효율적으로 단축될 수 있습니다. 이는 네트워크 요청이 병렬로 처리되므로 여러 개의 요청이 동시에 진행되는 것을 의미합니다.
+  // 또한, Promise.all()을 사용하여 모든 요청이 완료될 때까지 기다린 후 한 번의 상태 업데이트를 수행하기 때문에, 상태 업데이트를 여러 번 수행하는 것보다 성능적으로 유리할 수 있습니다. 상태 업데이트는 리렌더링을 유발하므로, 한 번의 업데이트는 리렌더링을 한 번만 발생시키기 때문에 효율적입니다.
+  // 성능에 영향을 주는 요소는 네트워크 지연, 서버 응답 시간 등 다양한 요소가 있습니다. 코드 자체의 성능은 개발 환경, 네트워크 상태, 서버 성능 등에 따라 달라질 수 있습니다. 따라서 실제로 코드를 실행해보고 성능을 측정하거나, 프로파일링 도구를 사용하여 성능 향상을 위한 최적화 작업을 수행하는 것이 좋습니다.
+  // 그러나 일반적으로 병렬 처리와 한 번의 상태 업데이트를 수행하는 방식은 많은 요청을 처리하고 성능을 향상시키는 데 효과적인 방법 중 하나입니다.
+  //====
   const options = {
     chart: {
       zoomType: "xy",
@@ -254,11 +279,24 @@ export default function Pir() {
 
   return (
     <div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        // constructorType={"MultipleAxes"}
-        options={options}
-      />
+      {loading ? (
+        <div style={loaderBox}>
+          <RingLoader
+            color='#36d7b7'
+            loading={loading}
+            cssOverride={override}
+            size={200}
+            aria-label='Loading Spinner'
+            data-testid='loader'
+          />
+        </div>
+      ) : (
+        <HighchartsReact
+          highcharts={Highcharts}
+          // constructorType={"MultipleAxes"}
+          options={options}
+        />
+      )}
     </div>
   );
 }

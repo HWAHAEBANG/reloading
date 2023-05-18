@@ -55,7 +55,7 @@ export default function TopBar({ showNav, setShowNav }) {
           />
         </a>
       </div>
-      <button onClick={enter}>임시포탈</button>
+      {/* <button onClick={enter}>임시포탈</button> */}
       {isLoggedIn.isLoggedIn ? (
         <button className={styles.logoutBtn} onClick={logout}>
           Logout

@@ -35,8 +35,12 @@ export default function Access() {
       <div className={styles.avatarBox}>
         <img
           className={styles.avatar}
-          // src={process.env.PUBLIC_URL + "/image/HHB.jpg"}
-          src={userInfo && userInfo.userInfo && userInfo.userInfo.profile_image}
+          src={
+            (userInfo &&
+              userInfo.userInfo &&
+              userInfo.userInfo.profile_image) ||
+            process.env.PUBLIC_URL + "/image/unknown.png"
+          }
           alt='프로필 사진'
         />
       </div>

@@ -6,12 +6,28 @@ import solidGauge from "highcharts/modules/solid-gauge";
 import darkUnica from "highcharts/themes/dark-unica";
 import axios from "axios";
 import { FcLeft } from "react-icons/fc";
+import RingLoader from "react-spinners/RingLoader";
 
 highchartsMore(Highcharts);
 solidGauge(Highcharts);
 darkUnica(Highcharts);
 
 export default function Hai() {
+  // loading ===========================
+  const loaderBox = {
+    display: "flex",
+    justifyContents: "center",
+    alignItems: "center",
+    height: "400px",
+  };
+
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(true);
+  // ===================================
   const [categories, setCategories] = useState();
   const [data, setData] = useState();
 
@@ -26,12 +42,25 @@ export default function Hai() {
   //toFixed를 하면 문자열로 변환되는 것 주의!
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/allCharts/hai`, { withCredentials: true })
-      .then((response) => {
-        // console.log("확인", response.data);
-        setCategories(response.data.categories);
-        setData(response.data.data);
+    Promise.all([
+      axios.get(`http://localhost:5000/allCharts/hai`, {
+        withCredentials: true,
+      }),
+    ])
+      .then((responses) => {
+        const haiResponse = responses[0];
+
+        setCategories(haiResponse.data.categories);
+        setData(haiResponse.data.data);
+
+        // 추가 작업을 수행할 수 있습니다.
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+        setLoading(false);
       });
   }, []);
 
@@ -162,11 +191,24 @@ export default function Hai() {
 
   return (
     <div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        // constructorType={"MultipleAxes"}
-        options={options}
-      />
+      {loading ? (
+        <div style={loaderBox}>
+          <RingLoader
+            color='#36d7b7'
+            loading={loading}
+            cssOverride={override}
+            size={200}
+            aria-label='Loading Spinner'
+            data-testid='loader'
+          />
+        </div>
+      ) : (
+        <HighchartsReact
+          highcharts={Highcharts}
+          // constructorType={"MultipleAxes"}
+          options={options}
+        />
+      )}
     </div>
   );
 }

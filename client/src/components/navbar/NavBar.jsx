@@ -45,9 +45,10 @@ export default function NavBar({ showNav, setShowNav }) {
                 <img
                   className={styles.avatar}
                   src={
-                    userInfo &&
-                    userInfo.userInfo &&
-                    userInfo.userInfo.profile_image
+                    (userInfo &&
+                      userInfo.userInfo &&
+                      userInfo.userInfo.profile_image) ||
+                    process.env.PUBLIC_URL + "/image/unknown.png"
                   }
                   // src={process.env.PUBLIC_URL + "/image/HHB.jpg"}
                   alt='프로필 사진'

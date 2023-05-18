@@ -35,10 +35,12 @@ export default function GlitchSplashScreen() {
   // const [finalInputValue, setFinalInputValue] = useState({ id: "", pw: "" });
 
   const handleInputId = (e) => {
+    keyboard();
     setInputId(e.target.value.toLowerCase());
   };
 
   const handleInputPw = (e) => {
+    keyboard();
     setInputPw(e.target.value);
   };
 
@@ -56,6 +58,7 @@ export default function GlitchSplashScreen() {
         },
       })
       .then((response) => {
+        faidIn();
         console.log("존재하는 계정입니다.");
         setExistingId(true);
         pwInputRef.current.focus();
@@ -78,6 +81,8 @@ export default function GlitchSplashScreen() {
         },
       })
       .then((response) => {
+        faidIn();
+        setTimeout(() => access(), 1000);
         console.log("존재하는 비번입니다.");
         setAlertMessage("");
         getAccessToken();
@@ -136,14 +141,16 @@ export default function GlitchSplashScreen() {
   // ======================================================================
 
   // sound effect =======================================================
-  const [startSound, setStartSound] = useState(false);
-  const [playActive] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
 
-  setTimeout(() => {
-    setStartSound(true);
-  }, 1000);
+  const [faidIn] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
+  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
+  const [access] = useSound("/sounds/access.mp3", { volume: 0.25 });
 
-  startSound && playActive(); //?
+  // setTimeout(() => {
+  //   setStartSound(true);
+  // }, 1000);
+
+  // startSound && playActive(); //?
   // ======================================================================
 
   return (

@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RegexInfoBoxForSignup from "../ui/RegexInfoBoxForSignup";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { uploadImage } from "../../api/cloudynary";
 import axios from "axios";
+import RingLoader from "react-spinners/RingLoader";
 
 export default function Signup() {
+  // loading ===========================
+
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(false);
+  // ===================================
+
+  const navigate = useNavigate();
+
   const [inputValue, setInputValue] = useState({
     id: "",
     validId: false,
@@ -27,10 +40,13 @@ export default function Signup() {
   });
 
   // 시진파일 URL get
+  const [uploadLoading, setUploadLoading] = useState(false);
+
   const getImgUrl = (e) => {
-    console.log(e);
+    setUploadLoading(true);
     uploadImage(e.target.files && e.target.files[0]).then((url) => {
       setInputValue((prevState) => ({ ...prevState, profileImage: url }));
+      setUploadLoading(false);
     });
   };
 
@@ -350,27 +366,6 @@ export default function Signup() {
     agree: "",
   });
 
-  const handleSubmitId = () => {
-    axios
-      .post(`http://localhost:5000/users/signup`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputValue: inputValue, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-        },
-      })
-      .then((response) => {
-        console.log("존재하는 계정입니다.");
-        // setExistingId(true);
-        // pwInputRef.current.focus();
-        setAlertMessage("");
-      })
-      .catch((error) => {
-        setAlertMessage("존재하지 않는 계정입니다.");
-        console.log("에러코드", error.response.status, error.response.data);
-      });
-  };
-
   // 중복확인 통과한 이후에 다시 수정할 경우 대비
   useEffect(() => {
     setInputValue((prevState) => ({ ...prevState, nonIdDuplication: false }));
@@ -496,14 +491,33 @@ export default function Signup() {
       });
   };
 
-  console.log("검증", inputValue);
+  const handleSubmit = () => {
+    setLoading(true);
+    axios
+      .post(`http://localhost:5000/users/signup`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputValue: inputValue, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
+      .then((response) => {
+        setLoading(false);
+        alert("가입이 성공적으로 완료되었습니다.");
+        navigate("/users/login");
+      })
+      .catch((error) => {
+        // setAlertMessage("존재하지 않는 계정입니다.");
+        console.log("에러코드", error.response.status, error.response.data);
+      });
+  };
+
   //test tool end=======================================================
 
   //select =============================================
   const [sortVisible, setSortVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState("도메인 선택");
 
-  console.log("검문소", selectedSort);
   // ===================================================
   // select ============================================
   const handleSelectSort = (e) => {
@@ -765,7 +779,9 @@ export default function Signup() {
                 <input // 파일의 이름을 보여주는 input태그
                   className={styles.uploadName}
                   id='profileImage'
-                  value={inputValue.profileImage}
+                  value={
+                    uploadLoading ? "업로드중..." : inputValue.profileImage
+                  }
                   readOnly
                   disabled
                 />
@@ -798,9 +814,21 @@ export default function Signup() {
           </div>
           <button
             className={submitRequirements ? styles.allFilled : styles.submitBtn}
-            onClick={handleSubmitId}
+            onClick={handleSubmit}
+            disabled={!submitRequirements}
           >
-            Create an account
+            {loading ? (
+              <RingLoader
+                color='#2D2C25'
+                loading={loading}
+                cssOverride={override}
+                size={20}
+                aria-label='Loading Spinner'
+                data-testid='loader'
+              />
+            ) : (
+              <span>Create an account</span>
+            )}
           </button>
           <p className={styles.link}>
             Already have an account? <Link to='/users/login'>Login</Link>
