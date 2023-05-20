@@ -49,20 +49,9 @@ export default function ChartDetail() {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
+        <IoArrowBackCircle className={styles.backToList} onClick={backToList} />
+
         <div className={styles.inner}>
-          <IoArrowBackCircle
-            className={styles.backToList}
-            onClick={backToList}
-          />
-          <div className={styles.sourceArea}>
-            <IoInformationCircleSharp className={styles.sourceIcon} />
-            <div className={styles.sourceBox}>
-              <p>데이터별 출처 & 업데이트 일자</p>
-              {JSON.parse(dataSources).map((dataSourse, index) => (
-                <p key={index}>{dataSourse && dataSourse}</p>
-              ))}
-            </div>
-          </div>
           <div className={styles.chartArea}>
             <Suspense fallback={<div>Loading...</div>}>
               <Component />
@@ -95,6 +84,15 @@ export default function ChartDetail() {
                 ""
               )}
             </div>
+          </div>
+        </div>
+        <div className={styles.sourceArea}>
+          <IoInformationCircleSharp className={styles.sourceIcon} />
+          <div className={styles.sourceBox}>
+            <p>데이터별 출처 & 업데이트 일자</p>
+            {JSON.parse(dataSources).map((dataSourse, index) => (
+              <p key={index}>{dataSourse && dataSourse}</p>
+            ))}
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL:
+    "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com",
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
@@ -54,5 +55,5 @@ export default axiosInstance;
 //     console.error(error);
 //   });
 
-// 위 코드에서 /users/me는 http://localhost:5000/users/me와 같습니다.
+// 위 코드에서 /users/me는 http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/me와 같습니다.
 // 인스턴스를 사용하면 baseURL을 매번 입력하지 않아도 되므로 코드가 간결해집니다.

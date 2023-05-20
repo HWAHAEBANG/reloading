@@ -33,6 +33,18 @@
   flex-direction: column;
 }
 
+.topArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  /* padding: 0 25px; */
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
 .searchArea {
   width: 100%;
   height: 50px;
@@ -57,6 +69,7 @@
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
+  padding-top: 4px;
 }
 
 .sortArea {
@@ -73,6 +86,10 @@
   align-items: center;
   gap: 30px;
   box-sizing: border-box;
+}
+
+.recommendBox {
+  white-space: nowrap;
 }
 
 .recommend {
@@ -145,4 +162,158 @@
 .articleDescription {
   margin-top: 10px;
   color: rgba(255, 255, 255, 0.8);
+}
+
+/* PC , 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  /*스타일입력*/
+  /* grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)); */
+}
+
+/* 테블릿 세로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  /*스타일입력*/
+}
+
+/* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width: 480px) and (max-width: 767px) {
+  /*스타일입력*/
+  .mainContainer {
+    padding: 10px;
+  }
+
+  .subContainer {
+    padding: 10px 20px;
+  }
+
+  .inner {
+    padding: 0px;
+  }
+
+  .searchArea {
+    height: 40px;
+  }
+
+  .inputBox {
+    font-size: 15px;
+  }
+
+  .sortArea {
+    padding: 5px 10px;
+  }
+
+  .recommendBox {
+    display: flex;
+    justify-content: left;
+    margin: 10px 0;
+    gap: 10px;
+    overflow-x: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+
+  .recommendBox::-webkit-scrollbar {
+    display: none; /* Webkit Browsers */
+  }
+
+  .recommendBox > p {
+    display: none;
+  }
+
+  .recommend {
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+}
+
+/* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
+@media all and (max-width: 479px) {
+  /*스타일입력*/
+  .mainContainer {
+    padding: 10px;
+  }
+
+  .subContainer {
+    padding: 10px 15px;
+  }
+
+  .inner {
+    padding: 0px;
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding: 5px 0;
+  }
+
+  .searchArea {
+    height: 30px;
+  }
+
+  .inputBox {
+    font-size: 15px;
+    border-radius: 5px 0 0 5px;
+    padding-left: 10px;
+  }
+
+  .inputBtn {
+    line-height: 20px;
+    width: 15%;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .sortArea {
+    padding: 5px 0px;
+  }
+
+  .recommendBox {
+    display: flex;
+    justify-content: left;
+    margin: 5px 0;
+    padding: 5px 0;
+    gap: 10px;
+    overflow-x: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+
+  .recommendBox::-webkit-scrollbar {
+    display: none; /* Webkit Browsers */
+  }
+
+  .recommendBox > p {
+    display: none;
+  }
+
+  .recommend {
+    font-size: 13px;
+    padding: 5px 16px;
+  }
+
+  .resultArea {
+    padding: 0px 5px;
+  }
+
+  .articleContainer {
+    padding: 20px 0px;
+  }
+
+  .articleTitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: aquamarine;
+  }
+
+  .articlePubDate {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .articleDescription {
+    margin-top: 5px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
+  }
 }

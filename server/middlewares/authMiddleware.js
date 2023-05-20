@@ -28,6 +28,7 @@ const authMiddleware = (req, res, next) => {
     db.query(sqlQuery, [data.id], (err, result) => {
       if (err) res.status(500).json(err);
       if (result.length === 0) {
+        // 오류 발생구간 간헐적 서버 튕김. 추후 디버깅
         res.status(403).json("Can Not Get Refresh Token");
       } else {
         console.log(result);

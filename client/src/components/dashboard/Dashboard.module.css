@@ -96,99 +96,20 @@
 /* 테블릿 가로 (해상도 768px ~ 1023px)*/
 @media all and (min-width: 768px) and (max-width: 1023px) {
   /* 스타일 입력 */
-  /* 스타일 입력 */
-  .gridContainer {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
-    grid-gap: 20px;
-  }
-
-  .box1 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box2 {
-    grid-column: 1;
-    grid-row: auto;
-  }
-  .box3 {
-    grid-column: 2;
-    grid-row: auto;
-  }
-  .box4 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box5 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box6 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box7 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box8 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box9 {
-    grid-column: 1;
-    grid-row: auto;
-  }
-  .box10 {
-  }
 }
 
 /* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/
 @media all and (min-width: 480px) and (max-width: 767px) {
   /* 스타일 입력 */
-  /* 스타일 입력 */
+}
+
+@media all and (max-width: 479px) {
   .gridContainer {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
-    grid-gap: 20px;
+    display: block;
+    overflow: scroll;
   }
 
-  .box1 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box2 {
-    grid-column: 1;
-    grid-row: auto;
-  }
-  .box3 {
-    grid-column: 2;
-    grid-row: auto;
-  }
-  .box4 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box5 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box6 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box7 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box8 {
-    grid-column: 1/3;
-    grid-row: auto;
-  }
-  .box9 {
-    grid-column: 1;
-    grid-row: auto;
-  }
-  .box10 {
+  .box {
+    margin-bottom: 10px;
   }
 }

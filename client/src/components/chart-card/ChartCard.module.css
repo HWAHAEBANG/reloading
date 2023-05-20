@@ -488,18 +488,36 @@
 
 @media all and (min-width: 480px) and (max-width: 767px) {
   .maincontainer0 {
-    width: auto;
+    width: 100%;
   }
   .maincontainer1 {
-    width: auto;
+    width: 100%;
   }
   .maincontainer2 {
-    width: auto;
+    width: 100%;
   }
   .maincontainer3 {
-    width: auto;
+    width: 100%;
   }
   .maincontainer4 {
-    width: auto;
+    width: 100%;
+  }
+}
+
+@media all and (max-width: 479px) {
+  .maincontainer0 {
+    width: 100%;
+  }
+  .maincontainer1 {
+    width: 100%;
+  }
+  .maincontainer2 {
+    width: 100%;
+  }
+  .maincontainer3 {
+    width: 100%;
+  }
+  .maincontainer4 {
+    width: 100%;
   }
 }

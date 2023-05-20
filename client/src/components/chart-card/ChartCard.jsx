@@ -4,6 +4,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import useSound from "use-sound";
 import axios from "axios";
 
 export default function ChartCard({
@@ -15,18 +16,26 @@ export default function ChartCard({
     navigate(`/allCharts/${id}`, { state: { data: data } });
 
     axios
-      .put(`http://localhost:5000/allCharts/viewCount`, {
-        method: "PUT",
-        withCredentials: true,
-        data: {
-          chartId: id,
-        },
-      })
+      .put(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/viewCount`,
+        {
+          method: "PUT",
+          withCredentials: true,
+          data: {
+            chartId: id,
+          },
+        }
+      )
       .then((response) => {})
       .catch((error) => {
         console.log("에러코드", error.response.status, error.response.data);
       });
   };
+
+  // sound ======
+  const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
+
+  // sound ======
 
   const userInfo = useSelector((state) => state.userInfo);
 
@@ -55,16 +64,20 @@ export default function ChartCard({
     e.stopPropagation();
     if (userInfo.userInfo.id) {
       axios
-        .post(`http://localhost:5000/myCharts/add`, {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            userId: userInfo.userInfo.id,
-            chartId: id,
-          },
-        })
+        .post(
+          `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/myCharts/add`,
+          {
+            method: "POST",
+            withCredentials: true,
+            data: {
+              userId: userInfo.userInfo.id,
+              chartId: id,
+            },
+          }
+        )
         .then((response) => {
           setHeart(true);
+          toggle();
         })
         .catch((error) => {
           console.log("에러코드", error.response.status, error.response.data);
@@ -81,16 +94,20 @@ export default function ChartCard({
       axios
         // delete 메서드로 작성했을 시 서버 콘솔에 다음과 같은 애러 뜸. 추후 다시 시도 요망
         // Cannot destructure property 'userId' of 'req.body.data' as it is undefined.
-        .post(`http://localhost:5000/myCharts/delete`, {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            userId: userInfo.userInfo.id,
-            chartId: id,
-          },
-        })
+        .post(
+          `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/myCharts/delete`,
+          {
+            method: "POST",
+            withCredentials: true,
+            data: {
+              userId: userInfo.userInfo.id,
+              chartId: id,
+            },
+          }
+        )
         .then((response) => {
           setHeart(false);
+          toggle();
         })
         .catch((error) => {
           console.log("에러코드", error.response.status, error.response.data);

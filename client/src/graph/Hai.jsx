@@ -43,9 +43,12 @@ export default function Hai() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/allCharts/hai`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/hai`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
       .then((responses) => {
         const haiResponse = responses[0];

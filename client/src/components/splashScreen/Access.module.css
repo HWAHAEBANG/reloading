@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   animation: box-collapse 0.5s forwards;
-  animation-delay: 7s;
+  animation-delay: 8s;
   width: 400px;
   height: 400px;
   overflow: hidden;
@@ -224,8 +224,8 @@
   width: 0;
   height: 2px;
   background: mediumaquamarine;
-  animation: container-anim1 1s forwards;
-  animation-delay: 3.5s;
+  animation: container-anim1 0.5s forwards;
+  animation-delay: 3s;
 }
 
 .innerBox span:nth-child(2) {
@@ -234,8 +234,8 @@
   width: 2px;
   height: 0;
   background: mediumaquamarine;
-  animation: container-anim2 1s forwards;
-  animation-delay: 3.5s;
+  animation: container-anim2 0.5s forwards;
+  animation-delay: 3s;
 }
 
 .innerBox span:nth-child(3) {
@@ -244,8 +244,8 @@
   width: 0;
   height: 2px;
   background: mediumaquamarine;
-  animation: container-anim1 1s forwards;
-  animation-delay: 3.5s;
+  animation: container-anim1 0.5s forwards;
+  animation-delay: 3s;
 }
 
 .innerBox span:nth-child(4) {
@@ -254,8 +254,8 @@
   width: 2px;
   height: 0;
   background: mediumaquamarine;
-  animation: container-anim2 1s forwards;
-  animation-delay: 3.5s;
+  animation: container-anim2 0.5s forwards;
+  animation-delay: 3s;
 }
 
 .avatarBox {
@@ -275,10 +275,32 @@
   opacity: 0;
   filter: saturate(0.3) hue-rotate(10deg);
   animation: image-expand 0.5s forwards;
-  animation-delay: 4s;
+  animation-delay: 3.3s;
 }
 
 /* ============================================================================= */
+/* PC , 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  /*스타일입력*/
+  /* grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)); */
+}
+
+/* 테블릿 세로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  /*스타일입력*/
+}
+
+/* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width: 480px) and (max-width: 767px) {
+  /*스타일입력*/
+}
+
+/* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
+@media all and (max-width: 479px) {
+  .GrantText {
+    transform: scale(0.7);
+  }
+}
 /* ============================================================================= */
 
 @keyframes fade-in-out {
@@ -286,7 +308,7 @@
     /* opacity: 0; */
     opacity: 0;
   }
-  30% {
+  5% {
     opacity: 1;
   }
   80% {

@@ -6,21 +6,35 @@ import { FiSearch } from "react-icons/fi";
 import axios from "axios";
 import axiosInstance from "../../util/axiosInstance";
 import { useSelector } from "react-redux";
+import useSound from "use-sound";
 
 export default function MyCharts() {
+  // sound ======
+  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
+  const [grow] = useSound("/sounds/grow.wav", { volume: 0.25 });
+  const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
+
+  useEffect(() => {
+    grow();
+  }, []);
+  // sound ======
+
   // fetch data ========================================
   const userInfo = useSelector((state) => state.userInfo);
 
   const [chartsData, setChartsData] = useState();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/myCharts`, {
-        method: "GET",
-        withCredentials: true,
-        params: {
-          userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
-        },
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/myCharts`,
+        {
+          method: "GET",
+          withCredentials: true,
+          params: {
+            userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
+          },
+        }
+      )
       .then((response) => {
         console.log("악", response);
         if (response.data.length === 0) {
@@ -44,6 +58,7 @@ export default function MyCharts() {
   const sortList = ["조회수순", "최신순", "이름순"];
   // select ============================================
   const handleSelectSort = (e) => {
+    toggle();
     setSelectedSort(e.target.innerText);
     setSortVisible((prev) => !prev);
   };
@@ -70,9 +85,20 @@ export default function MyCharts() {
     return sortedData; // 정렬된 배열 반환
   };
 
+  // // sound ======
+  // const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
+  // const [grow] = useSound("/sounds/grow.wav", { volume: 0.25 });
+  // const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
+
+  // useEffect(() => {
+  //   grow();
+  // }, []);
+  // // sound ======
+
   // search filter ===================================== // 블로그 포스팅
   const [keyword, setKeyword] = useState("");
   const handleKeyword = (e) => {
+    keyboard();
     setKeyword(e.target.value);
   };
   // ===================================================
@@ -100,7 +126,7 @@ export default function MyCharts() {
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
         <div className={styles.topArea}>
-          <div>MY CHARTS</div>
+          <div className={styles.title}>MY CHARTS</div>
           <div className={styles.searchSection}>
             <input
               className={styles.inputBox}

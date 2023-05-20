@@ -34,8 +34,8 @@
   margin-bottom: 10px;
 }
 
-.topArea > div {
-  padding: 0 25px;
+.title {
+  /* padding: 0 25px; */
   font-size: 40px;
 }
 
@@ -68,7 +68,7 @@
   font-weight: 700;
   cursor: pointer;
   margin-right: 20px;
-  padding-top: 8px;
+  padding-top: 4px;
 }
 
 .inner {
@@ -113,11 +113,87 @@
 /* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/
 @media all and (min-width: 480px) and (max-width: 767px) {
   /*스타일입력*/
+  .mainContainer {
+    padding: 10px;
+  }
+
+  .subContainer {
+    padding: 10px 5px;
+  }
+
+  .topArea {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .searchSection {
+    width: 100%;
+  }
+
+  .selectBox {
+    margin-left: 20px;
+  }
+
+  .inputBox {
+    width: 100%;
+  }
+
+  .inputBtn {
+    width: 15%;
+  }
 }
 
 /* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
 @media all and (max-width: 479px) {
-  /* display: grid; */
-  /* grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)); */
   /*스타일입력*/
+  .mainContainer {
+    padding: 10px;
+  }
+
+  .subContainer {
+    padding: 10px 5px;
+  }
+
+  .topArea {
+    flex-direction: column;
+    align-items: start;
+    padding: 0 10px;
+  }
+
+  .topArea > div {
+    padding: 0;
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .searchSection {
+    width: 100%;
+    height: 30px;
+  }
+
+  .inputBox {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 5px 0 0 5px;
+    padding: 0 10px;
+  }
+
+  .inputBtn {
+    font-size: 20px;
+    line-height: 20px;
+    width: 15%;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .selectBox {
+    margin-left: 5px;
+  }
+
+  .wholeContentsArea {
+    padding: 5px;
+  }
 }

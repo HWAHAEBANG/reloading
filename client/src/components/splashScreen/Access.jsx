@@ -12,7 +12,7 @@ export default function Access() {
 
   setTimeout(() => {
     navigate("/");
-  }, 8000);
+  }, 9000);
 
   return (
     <div className={styles.mainContainer}>
@@ -113,7 +113,7 @@ export default function Access() {
               fontSize: "21.5px",
               lineHeight: "0px",
             }}
-            startDelay={4500}
+            startDelay={5000}
             // cursorColor={"#03e9f4"}
             text='WELCOME BACK'
             typeSpeed={20}

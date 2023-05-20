@@ -49,14 +49,17 @@ export default function GlitchSplashScreen() {
 
   const handleSubmitId = () => {
     axios
-      .post(`http://localhost:5000/users/idCheck`, {
-        // url: "http://localhost:5000/users/idCheck", // 안되는뎅
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputId: inputId, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-        },
-      })
+      .post(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/idCheck`,
+        {
+          // url: "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/idCheck", // 안되는뎅
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputId: inputId, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+          },
+        }
+      )
       .then((response) => {
         faidIn();
         console.log("존재하는 계정입니다.");
@@ -65,6 +68,7 @@ export default function GlitchSplashScreen() {
         setAlertMessage("");
       })
       .catch((error) => {
+        wrong();
         setAlertMessage("존재하지 않는 계정입니다.");
         console.log("에러코드", error.response.status, error.response.data);
       });
@@ -72,43 +76,47 @@ export default function GlitchSplashScreen() {
 
   const handleSubmitPw = () => {
     axios
-      .post(`http://localhost:5000/users/pwCheck`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputId: inputId,
-          inputPw: inputPw,
-        },
-      })
+      .post(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/pwCheck`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputId: inputId,
+            inputPw: inputPw,
+          },
+        }
+      )
       .then((response) => {
         faidIn();
         setTimeout(() => access(), 1000);
-        console.log("존재하는 비번입니다.");
+        setTimeout(() => disk(), 10000);
         setAlertMessage("");
         getAccessToken();
         // getRefreshToken(); 없어도 되지 않나
 
-        // setCorrectPw(true);
+        setCorrectPw(true);
         setTimeout(() => {
           navigate("/users/access");
         }, 500);
+
         setInputId(""); // 혹시 남아있을까봐
         setInputPw(""); // 혹시 남아있을까봐
       })
       .catch((error) => {
-        console.log("비밀번호가 일치하지 않습니다.");
+        wrong();
         setAlertMessage("비밀번호가 일치하지 않습니다.");
       });
   };
 
   const idCheck = (e) => {
-    if (e.key === "Enter") {
+    if (e.keyCode === 13) {
       handleSubmitId();
     }
   };
 
   const pwCheck = (e) => {
-    if (e.key === "Enter") {
+    if (e.keyCode === 13) {
       handleSubmitPw();
     }
   };
@@ -116,10 +124,13 @@ export default function GlitchSplashScreen() {
 
   const getAccessToken = () => {
     axios
-      .get(`http://localhost:5000/users/accesstoken`, {
-        method: "GET",
-        withCredentials: true,
-      })
+      .get(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/accesstoken`,
+        {
+          method: "GET",
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         // setIsLogin(true);
         dispatch(loginAction(true));
@@ -130,21 +141,15 @@ export default function GlitchSplashScreen() {
       });
   };
 
-  //없어도 되지 않나
-  // const getRefreshToken = () => {
-  //   axios.get(`http://localhost:5000/users/refreshtoken`, {
-  //     method: "GET",
-  //     withCredentials: true,
-  //   });
-  // };
-
   // ======================================================================
 
   // sound effect =======================================================
 
-  const [faidIn] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
   const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
+  const [wrong] = useSound("/sounds/wrong.mp3", { volume: 0.25 });
+  const [faidIn] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
   const [access] = useSound("/sounds/access.mp3", { volume: 0.25 });
+  const [disk] = useSound("/sounds/disk.wav", { volume: 1 });
 
   // setTimeout(() => {
   //   setStartSound(true);
@@ -240,7 +245,9 @@ export default function GlitchSplashScreen() {
           <div
             className={
               existingId
-                ? `${styles.pwTitle} ${styles.existingIdType1ForPw}`
+                ? correctPw
+                  ? styles.pwTitle
+                  : `${styles.pwTitle} ${styles.existingIdType1ForPw}`
                 : styles.pwTitle
             }
           >
@@ -260,7 +267,9 @@ export default function GlitchSplashScreen() {
           <div
             className={
               existingId
-                ? `${styles.pwOutLine} ${styles.existingIdType2ForPw}`
+                ? correctPw
+                  ? styles.pwOutLine
+                  : `${styles.pwOutLine} ${styles.existingIdType2ForPw}`
                 : styles.pwOutLine
             }
           ></div>
@@ -268,7 +277,9 @@ export default function GlitchSplashScreen() {
             <input
               className={
                 existingId
-                  ? `${styles.pwInput} ${styles.existingIdType3ForPw}`
+                  ? correctPw
+                    ? styles.pwInput
+                    : `${styles.pwInput} ${styles.existingIdType3ForPw}`
                   : styles.pwInput
               }
               type='password'
@@ -284,7 +295,33 @@ export default function GlitchSplashScreen() {
         <p className={styles.alert}>{alertMessage}</p>
       </div>
       {/* ====================================================================== */}
-
+      {existingId ? (
+        <button
+          className={
+            existingId
+              ? correctPw
+                ? styles.confirmPw
+                : `${styles.confirmPw} ${styles.existingIdType3ForPw}`
+              : styles.confirmPw
+          }
+          onClick={handleSubmitPw}
+        >
+          confirm PW
+        </button>
+      ) : (
+        <button
+          className={
+            existingId
+              ? correctPw
+                ? styles.confirmId
+                : `${styles.confirmId} ${styles.existingIdType1ForPw}`
+              : styles.confirmId
+          }
+          onClick={handleSubmitId}
+        >
+          confirm ID
+        </button>
+      )}
       <div className={styles.linkContainer}>
         <p className={styles.link}>
           Forgot <Link to='/users/findId'>ID</Link> or{" "}

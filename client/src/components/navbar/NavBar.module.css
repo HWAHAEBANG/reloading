@@ -223,3 +223,17 @@ label {
 } */
 
 /* 토글 스위치 끝 */
+/*로그아웃 ====== */
+.logoutBtn {
+  background: none;
+  padding: 5px 10px;
+  color: mediumaquamarine;
+  border: 1px solid mediumaquamarine;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: mediumaquamarine;
+  color: #000000;
+}

@@ -4,6 +4,7 @@ import axios from "axios";
 import { formatAgo } from "../../util/date";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
+import useSound from "use-sound";
 
 const RECOMMEND_KEYWORD = [
   "부동산",
@@ -36,7 +37,7 @@ export default function TopicNews() {
     if (!selectedKeyword) return;
     axios
       .get(
-        `http://localhost:5000/topicNews?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/topicNews?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
         {
           withCredentials: true,
         }
@@ -47,10 +48,12 @@ export default function TopicNews() {
   }, [selectedKeyword, selectedSort]);
 
   const handleKeyword = (e) => {
+    keyboard();
     setKeyword(e.target.value);
   };
 
   const handleSubmit = (e) => {
+    toggle();
     if (e.type === "keyup") {
       e.code === "Enter" && setSelectedKeyword(keyword);
     } else {
@@ -60,15 +63,42 @@ export default function TopicNews() {
 
   // select ====================================
   const handleSelectSort = (e) => {
+    toggle();
     setSelectedSort(e.target.innerText);
     setSortVisible((prev) => !prev);
   };
   // -------====================================
 
+  const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
+  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
         <div className={styles.inner}>
+          <div className={styles.topArea}>
+            <div className={styles.title}>TOPIC NEWS</div>
+            <div className='selectBox'>
+              <div
+                className='pl on'
+                onClick={() => setSortVisible((prev) => !prev)}
+              >
+                {selectedSort}
+                {sortVisible ? <TiArrowSortedUp /> : <TiArrowSortedDown />}
+              </div>
+              <ul
+                className={sortVisible ? "listbox  visible" : "listbox"}
+                id='listbox'
+              >
+                <li onClick={handleSelectSort}>
+                  <div className='list'>정확도순</div>
+                </li>
+                <li onClick={handleSelectSort}>
+                  <div className='list'>최신순</div>
+                </li>
+              </ul>
+            </div>
+          </div>
           <div className={styles.searchArea}>
             <input
               className={styles.inputBox}
@@ -98,26 +128,6 @@ export default function TopicNews() {
                   #{item}
                 </div>
               ))}
-            </div>
-            <div className='selectBox'>
-              <div
-                className='pl on'
-                onClick={() => setSortVisible((prev) => !prev)}
-              >
-                {selectedSort}
-                {sortVisible ? <TiArrowSortedUp /> : <TiArrowSortedDown />}
-              </div>
-              <ul
-                className={sortVisible ? "listbox  visible" : "listbox"}
-                id='listbox'
-              >
-                <li onClick={handleSelectSort}>
-                  <div className='list'>정확도순</div>
-                </li>
-                <li onClick={handleSelectSort}>
-                  <div className='list'>최신순</div>
-                </li>
-              </ul>
             </div>
           </div>
           <div className={`${styles.resultArea} scrollBar`}>

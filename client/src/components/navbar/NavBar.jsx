@@ -14,8 +14,11 @@ import { ImNewspaper } from "react-icons/im";
 import { GrBarChart } from "react-icons/gr";
 import { AiOutlineBarChart } from "react-icons/ai";
 import Background from "../ui/Background";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAction, clearUserInfoAction } from "../../redux";
+import axios from "axios";
+import useSound from "use-sound";
 
 export default function NavBar({ showNav, setShowNav }) {
   const [autoClose, setAutoClose] = useState(true);
@@ -25,12 +28,52 @@ export default function NavBar({ showNav, setShowNav }) {
   };
 
   //autoClose가 true일 때, 버튼누르면 setShowNav(false)로
-  const handleEnter = () => {
+  const handleEnter = (e) => {
+    const textContent = e.currentTarget.querySelector("p").textContent;
+
+    if (textContent === "All Charts" || textContent === "My Charts") {
+      setTimeout(() => {
+        grow();
+      }, 1000);
+    }
+    move();
     autoClose && setShowNav(false);
   };
 
-  const userInfo = useSelector((state) => state.userInfo);
+  // 로그아웃 =====================
+  const navigate = useNavigate();
 
+  const enter = () => {
+    navigate("/users/login");
+  };
+
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const userInfo = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    axios
+      .post(
+        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/logout`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            presentId: userInfo.userInfo.id,
+          },
+        }
+      )
+      .then((Response) => {
+        dispatch(logoutAction());
+        dispatch(clearUserInfoAction());
+        navigate("/users/login");
+      });
+  };
+
+  // sound ======
+  const [move] = useSound("/sounds/move.wav", { volume: 0.25 });
+  const [grow] = useSound("/sounds/grow.wav", { volume: 0.25 });
+  // sound ======
   return (
     <div
       className={`${styles.mainContainer} ${
@@ -71,12 +114,18 @@ export default function NavBar({ showNav, setShowNav }) {
         </div>
         <div className={styles.buttonList}>
           <Link to='/users/editUserInfo'>
-            <div>
+            <div onClick={handleEnter}>
               &nbsp;
               <FaUserEdit />
             </div>
           </Link>
-          <div>
+          <div
+            onClick={() => {
+              alert(
+                "[개발중] 업데이트 차트 카카오톡 메시지 알림 서비스 구현 예정"
+              );
+            }}
+          >
             <BsFillBellFill />
           </div>
         </div>
@@ -123,6 +172,7 @@ export default function NavBar({ showNav, setShowNav }) {
           </div>
         </Link>
       </div>
+
       <dir className={styles.otherLinkSection}>
         <div className={styles.linkList} onClick={handleEnter}>
           <IoIosHome />
@@ -143,6 +193,9 @@ export default function NavBar({ showNav, setShowNav }) {
           </a>
         </div>
       </dir>
+      <button className={styles.logoutBtn} onClick={logout}>
+        Logout
+      </button>
       {/* <Background /> */}
     </div>
   );

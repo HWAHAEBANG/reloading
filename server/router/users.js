@@ -80,7 +80,7 @@ router.post("/nicknameCheck", (req, res) => {
 router.post("/pwCheck", (req, res) => {
   const inputId = req.body.data.inputId;
   const inputPw = req.body.data.inputPw;
-  const sqlQuery = `SELECT * FROM users WHERE id = ?;`;
+  const sqlQuery = `SELECT * FROM users WHERE id = ?;`; // 그거 버그 잡아야함.
   db.query(sqlQuery, [inputId], (err, result) => {
     if (err) res.status(500).json(err);
     // 해쉬값 비교
@@ -129,7 +129,7 @@ router.post("/pwCheck", (req, res) => {
       // token 전송 (쿠키를 통해)
       res.cookie("accessToken", accessToken, {
         // domain:
-        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -137,7 +137,7 @@ router.post("/pwCheck", (req, res) => {
 
       res.cookie("refreshToken", refreshToken, {
         // domain:
-        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값, , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -150,7 +150,6 @@ router.post("/pwCheck", (req, res) => {
   });
 });
 
-// 클라이언트에서 로그인 안되어있을 때 쿠키 보고 요청 안하도록 리팩토링 요망
 router.get("/accesstoken", (req, res) => {
   const token = req.cookies.accessToken;
   const data = jwt.verify(token, process.env.ACCESS_SECRET);
@@ -253,6 +252,92 @@ router.post("/signup", (req, res) => {
         res.status(200).json("Signup Success");
       }
     );
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.post("/editUserInfo", (req, res) => {
+  // 추후 다른 요청들도 try catch 문으로 리팩토링 요망.
+  try {
+    const { id, pw, name, nickname, emailId, emailAddress, profileImage } =
+      req.body.data.inputValue;
+    const email = emailId + emailAddress;
+    const profileImageValue = profileImage ? profileImage : null;
+    if (pw) {
+      const { salt, hash } = hashPassword(pw);
+      const sqlQuery = `UPDATE users SET salt = ?, hash= ?,  name = ?, nickname = ?, email = ?, profile_image = ? WHERE id = ?;`;
+      db.query(
+        sqlQuery,
+        [salt, hash, name, nickname, email, profileImageValue, id],
+        (err, result) => {
+          if (err) res.status(500).json(err);
+
+          // access Token 발급
+          //세가지의 인수를 받음 (1. 어떤 user 정보를 담을지, 2.시크릿값, 3.유효기간 및 발행자)
+          const accessToken = jwt.sign(
+            {
+              id: id,
+              name: name,
+              nickname: nickname,
+              email: email,
+              profileImage: profileImageValue,
+            },
+            process.env.ACCESS_SECRET,
+            {
+              expiresIn: "30m", // 유효기간 30분
+              issuer: "HHB", // 발행자
+            }
+          );
+
+          // token 전송 (쿠키를 통해)
+          res.cookie("accessToken", accessToken, {
+            // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+            // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
+            httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
+            // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
+          });
+
+          res.status(200).json("Access Token Recreated");
+        }
+      );
+    } else {
+      const sqlQuery = `UPDATE users SET name = ?, nickname = ?, email = ?, profile_image = ? WHERE id = ?;`;
+      db.query(
+        sqlQuery,
+        [name, nickname, email, profileImageValue, id],
+        (err, result) => {
+          if (err) res.status(500).json(err);
+
+          // access Token 발급
+          //세가지의 인수를 받음 (1. 어떤 user 정보를 담을지, 2.시크릿값, 3.유효기간 및 발행자)
+          const accessToken = jwt.sign(
+            {
+              id: id,
+              name: name,
+              nickname: nickname,
+              email: email,
+              profileImage: profileImageValue,
+            },
+            process.env.ACCESS_SECRET,
+            {
+              expiresIn: "30m", // 유효기간 30분
+              issuer: "HHB", // 발행자
+            }
+          );
+
+          // token 전송 (쿠키를 통해)
+          res.cookie("accessToken", accessToken, {
+            // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+            // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
+            httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
+            // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
+          });
+
+          res.status(200).json("Access Token Recreated");
+        }
+      );
+    }
   } catch (error) {
     res.status(500).json(error);
   }
