@@ -129,7 +129,7 @@ router.post("/pwCheck", (req, res) => {
       // token 전송 (쿠키를 통해)
       res.cookie("accessToken", accessToken, {
         // domain:
-        // "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -137,7 +137,7 @@ router.post("/pwCheck", (req, res) => {
 
       res.cookie("refreshToken", refreshToken, {
         // domain:
-        // "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값, , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -166,47 +166,48 @@ router.get("/accesstoken", (req, res) => {
   });
 });
 
-router.get("/refreshtoken", (req, res) => {
-  const token = req.cookies.refreshToken;
-  const data = jwt.verify(token, process.env.REFRESH_SECRET);
-  const sqlQuery = `SELECT * FROM users WHERE id = ?;`;
-  db.query(sqlQuery, [data.id], (err, result) => {
-    if (err) res.status(500).json(err);
-    if (result.length === 0) {
-      res.status(403).json("Can Not Get Refresh Token");
-    } else {
-      console.log(result);
-      const savedToken = result[0].refresh_token;
+// 필요없...근거같은데?? 갱신은 자동으로 해주고, 처음에는 로그인에서 받고... 주석처리!
+// router.get("/refreshtoken", (req, res) => {
+//   const token = req.cookies.refreshToken;
+//   const data = jwt.verify(token, process.env.REFRESH_SECRET);
+//   const sqlQuery = `SELECT * FROM users WHERE id = ?;`;
+//   db.query(sqlQuery, [data.id], (err, result) => {
+//     if (err) res.status(500).json(err);
+//     if (result.length === 0) {
+//       res.status(403).json("Can Not Get Refresh Token");
+//     } else {
+//       console.log(result);
+//       const savedToken = result[0].refresh_token;
 
-      if (savedToken === token) {
-        const accessToken = jwt.sign(
-          {
-            id: result[0].id,
-            name: result[0].name,
-            email: result[0].email,
-          },
-          process.env.ACCESS_SECRET,
-          {
-            expiresIn: "30m", // 유효기간 30분
-            issuer: "HHB", // 발행자
-          }
-        );
+//       if (savedToken === token) {
+//         const accessToken = jwt.sign(
+//           {
+//             id: result[0].id,
+//             name: result[0].name,
+//             email: result[0].email,
+//           },
+//           process.env.ACCESS_SECRET,
+//           {
+//             expiresIn: "30m", // 유효기간 30분
+//             issuer: "HHB", // 발행자
+//           }
+//         );
 
-        // token 전송 (쿠키를 통해)
-        res.cookie("accessToken", accessToken, {
-          // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
-          // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
-          httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
-          // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
-        });
+//         // token 전송 (쿠키를 통해)
+//         res.cookie("accessToken", accessToken, {
+//           // domain: "http://localhost:3000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+//           // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
+//           httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
+//           // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
+//         });
 
-        res.status(200).json("Access Token Recreated");
-      } else {
-        res.status(403).json("Diffrent Refresh Token");
-      }
-    }
-  });
-});
+//         res.status(200).json("Access Token Recreated");
+//       } else {
+//         res.status(403).json("Diffrent Refresh Token");
+//       }
+//     }
+//   });
+// });
 
 router.post("/logout", (req, res) => {
   // 추후 다른 요청들도 try catch 문으로 리팩토링 요망.

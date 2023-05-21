@@ -60,22 +60,18 @@
             });
           (0, r.useEffect)(function () {
             Promise.all([
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/pir",
-                { withCredentials: !0 }
-              ),
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/housePriceIndexSeoul",
-                { withCredentials: !0 }
-              ),
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/JeonsePriceIndexSeoul",
-                { withCredentials: !0 }
-              ),
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/jeonsePriceRatio",
-                { withCredentials: !0 }
-              ),
+              g.Z.get("http://localhost:5000/allCharts/pir", {
+                withCredentials: !0,
+              }),
+              g.Z.get("http://localhost:5000/allCharts/housePriceIndexSeoul", {
+                withCredentials: !0,
+              }),
+              g.Z.get("http://localhost:5000/allCharts/JeonsePriceIndexSeoul", {
+                withCredentials: !0,
+              }),
+              g.Z.get("http://localhost:5000/allCharts/jeonsePriceRatio", {
+                withCredentials: !0,
+              }),
             ])
               .then(function (t) {
                 var e = t[0],
@@ -378,10 +374,9 @@
             ),
             (0, r.useEffect)(function () {
               Promise.all([
-                g.Z.get(
-                  "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/hai",
-                  { withCredentials: !0 }
-                ),
+                g.Z.get("http://localhost:5000/allCharts/hai", {
+                  withCredentials: !0,
+                }),
               ])
                 .then(function (t) {
                   var e = t[0];
@@ -525,10 +520,9 @@
             f = c[1];
           (0, r.useEffect)(function () {
             Promise.all([
-              h.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/jeonsePriceRatio",
-                { withCredentials: !0 }
-              ),
+              h.Z.get("http://localhost:5000/allCharts/jeonsePriceRatio", {
+                withCredentials: !0,
+              }),
             ])
               .then(function (t) {
                 var e = t[0];
@@ -658,22 +652,18 @@
               });
           (0, r.useEffect)(function () {
             Promise.all([
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/pir",
-                { withCredentials: !0 }
-              ),
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/housePriceIndexSeoul",
-                { withCredentials: !0 }
-              ),
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/JeonsePriceIndexSeoul",
-                { withCredentials: !0 }
-              ),
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/jeonsePriceRatio",
-                { withCredentials: !0 }
-              ),
+              g.Z.get("http://localhost:5000/allCharts/pir", {
+                withCredentials: !0,
+              }),
+              g.Z.get("http://localhost:5000/allCharts/housePriceIndexSeoul", {
+                withCredentials: !0,
+              }),
+              g.Z.get("http://localhost:5000/allCharts/JeonsePriceIndexSeoul", {
+                withCredentials: !0,
+              }),
+              g.Z.get("http://localhost:5000/allCharts/jeonsePriceRatio", {
+                withCredentials: !0,
+              }),
             ])
               .then(function (t) {
                 var e = t[0],
@@ -853,10 +843,9 @@
             f = c[1];
           (0, r.useEffect)(function () {
             Promise.all([
-              h.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/priceChangeRate",
-                { withCredentials: !0 }
-              ),
+              h.Z.get("http://localhost:5000/allCharts/priceChangeRate", {
+                withCredentials: !0,
+              }),
             ])
               .then(function (t) {
                 var e = t[0];
@@ -1021,16 +1010,15 @@
             S = b[1];
           (0, r.useEffect)(function () {
             Promise.all([
+              g.Z.get("http://localhost:5000/allCharts/unsoldHouse", {
+                withCredentials: !0,
+              }),
               g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/unsoldHouse",
+                "http://localhost:5000/allCharts/housePriceIndexAroundSeoul",
                 { withCredentials: !0 }
               ),
               g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/housePriceIndexAroundSeoul",
-                { withCredentials: !0 }
-              ),
-              g.Z.get(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/JeonsePriceIndexAroundSeoul",
+                "http://localhost:5000/allCharts/JeonsePriceIndexAroundSeoul",
                 { withCredentials: !0 }
               ),
             ])
@@ -17895,11 +17883,9 @@
                                 ? (y ||
                                     (r.halo = y =
                                       g.renderer.path().add(x.parentGroup)),
-                                  y
-                                    .show()
-                                    [i ? "animate" : "attr"]({
-                                      d: this.haloPath(a.size),
-                                    }),
+                                  y.show()[i ? "animate" : "attr"]({
+                                    d: this.haloPath(a.size),
+                                  }),
                                   y.attr({
                                     class:
                                       "highcharts-halo highcharts-color-" +
@@ -37768,11 +37754,9 @@
                                 ? (y ||
                                     (r.halo = y =
                                       g.renderer.path().add(x.parentGroup)),
-                                  y
-                                    .show()
-                                    [i ? "animate" : "attr"]({
-                                      d: this.haloPath(a.size),
-                                    }),
+                                  y.show()[i ? "animate" : "attr"]({
+                                    d: this.haloPath(a.size),
+                                  }),
                                   y.attr({
                                     class:
                                       "highcharts-halo highcharts-color-" +
@@ -76050,10 +76034,11 @@
           M = A[0],
           _ = A[1],
           P = function () {
-            ti.Z.post(
-              "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/idCheck",
-              { method: "POST", withCredentials: !0, data: { inputId: d } }
-            )
+            ti.Z.post("http://localhost:5000/users/idCheck", {
+              method: "POST",
+              withCredentials: !0,
+              data: { inputId: d },
+            })
               .then(function (t) {
                 I(),
                   console.log(
@@ -76076,14 +76061,11 @@
               });
           },
           T = function () {
-            ti.Z.post(
-              "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/pwCheck",
-              {
-                method: "POST",
-                withCredentials: !0,
-                data: { inputId: d, inputPw: m },
-              }
-            )
+            ti.Z.post("http://localhost:5000/users/pwCheck", {
+              method: "POST",
+              withCredentials: !0,
+              data: { inputId: d, inputPw: m },
+            })
               .then(function (t) {
                 I(),
                   setTimeout(function () {
@@ -76109,10 +76091,10 @@
               });
           },
           O = function () {
-            ti.Z.get(
-              "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/accesstoken",
-              { method: "GET", withCredentials: !0 }
-            )
+            ti.Z.get("http://localhost:5000/users/accesstoken", {
+              method: "GET",
+              withCredentials: !0,
+            })
               .then(function (t) {
                 y(Ai(!0)), y(Ti(t.data));
               })
@@ -76578,14 +76560,11 @@
               ? (0, Ei.jsx)("button", {
                   className: ji.logoutBtn,
                   onClick: function () {
-                    ti.Z.post(
-                      "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/logout",
-                      {
-                        method: "POST",
-                        withCredentials: !0,
-                        data: { presentId: o.userInfo.id },
-                      }
-                    ).then(function (t) {
+                    ti.Z.post("http://localhost:5000/users/logout", {
+                      method: "POST",
+                      withCredentials: !0,
+                      data: { presentId: o.userInfo.id },
+                    }).then(function (t) {
                       s(Mi()), s(Oi()), n("/users/login");
                     });
                   },
@@ -76967,14 +76946,11 @@
             (0, Ei.jsx)("button", {
               className: Zi.logoutBtn,
               onClick: function () {
-                ti.Z.post(
-                  "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/logout",
-                  {
-                    method: "POST",
-                    withCredentials: !0,
-                    data: { presentId: u.userInfo.id },
-                  }
-                ).then(function (t) {
+                ti.Z.post("http://localhost:5000/users/logout", {
+                  method: "POST",
+                  withCredentials: !0,
+                  data: { presentId: u.userInfo.id },
+                }).then(function (t) {
                   d(Mi()), d(Oi()), c("/users/login");
                 });
               },
@@ -77285,14 +77261,11 @@
           o = n[0],
           s = n[1];
         (0, t.useEffect)(function () {
-          ti.Z.get(
-            "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts",
-            {
-              method: "GET",
-              withCredentials: !0,
-              params: { userId: e.userInfo.id },
-            }
-          )
+          ti.Z.get("http://localhost:5000/allCharts", {
+            method: "GET",
+            withCredentials: !0,
+            params: { userId: e.userInfo.id },
+          })
             .then(function (t) {
               0 !== t.data.length && s(t.data);
             })
@@ -77660,10 +77633,11 @@
         return (0, Ei.jsxs)("div", {
           onClick: function () {
             c("/allCharts/".concat(o), { state: { data: i } }),
-              ti.Z.put(
-                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/viewCount",
-                { method: "PUT", withCredentials: !0, data: { chartId: o } }
-              )
+              ti.Z.put("http://localhost:5000/allCharts/viewCount", {
+                method: "PUT",
+                withCredentials: !0,
+                data: { chartId: o },
+              })
                 .then(function (t) {})
                 .catch(function (t) {
                   console.log(
@@ -77702,7 +77676,7 @@
                         t.stopPropagation(),
                           p.userInfo.id
                             ? ti.Z.post(
-                                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/myCharts/delete",
+                                "http://localhost:5000/myCharts/delete",
                                 {
                                   method: "POST",
                                   withCredentials: !0,
@@ -77728,14 +77702,11 @@
                       onClick: function (t) {
                         t.stopPropagation(),
                           p.userInfo.id
-                            ? ti.Z.post(
-                                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/myCharts/add",
-                                {
-                                  method: "POST",
-                                  withCredentials: !0,
-                                  data: { userId: p.userInfo.id, chartId: o },
-                                }
-                              )
+                            ? ti.Z.post("http://localhost:5000/myCharts/add", {
+                                method: "POST",
+                                withCredentials: !0,
+                                data: { userId: p.userInfo.id, chartId: o },
+                              })
                                 .then(function (t) {
                                   v(!0), d();
                                 })
@@ -77833,14 +77804,11 @@
           o = n[0],
           s = n[1];
         (0, t.useEffect)(function () {
-          ti.Z.get(
-            "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts",
-            {
-              method: "GET",
-              withCredentials: !0,
-              params: { userId: e.userInfo.id },
-            }
-          )
+          ti.Z.get("http://localhost:5000/allCharts", {
+            method: "GET",
+            withCredentials: !0,
+            params: { userId: e.userInfo.id },
+          })
             .then(function (t) {
               0 !== t.data.length && s(t.data);
             })
@@ -78018,8 +77986,7 @@
           under5ea: "MyCharts_under5ea__pZCxO",
         },
         qn = ti.Z.create({
-          baseURL:
-            "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com",
+          baseURL: "http://localhost:5000",
           timeout: 5e3,
           headers: { "Content-Type": "application/json" },
         });
@@ -78059,14 +78026,11 @@
           d = u[0],
           p = u[1];
         (0, t.useEffect)(function () {
-          ti.Z.get(
-            "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/myCharts",
-            {
-              method: "GET",
-              withCredentials: !0,
-              params: { userId: l.userInfo.id },
-            }
-          )
+          ti.Z.get("http://localhost:5000/myCharts", {
+            method: "GET",
+            withCredentials: !0,
+            params: { userId: l.userInfo.id },
+          })
             .then(function (t) {
               console.log("\uc545", t), 0 !== t.data.length && p(t.data);
             })
@@ -78351,7 +78315,7 @@
             function () {
               l &&
                 ti.Z.get(
-                  "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/topicNews?keyword="
+                  "http://localhost:5000/topicNews?keyword="
                     .concat(l, "&selectedSort=")
                     .concat(b),
                   { withCredentials: !0 }
@@ -79115,7 +79079,7 @@
                                   className: pr.dupBtn,
                                   onClick: function () {
                                     ti.Z.post(
-                                      "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/idCheck",
+                                      "http://localhost:5000/users/idCheck",
                                       {
                                         method: "POST",
                                         withCredentials: !0,
@@ -79345,7 +79309,7 @@
                                   className: pr.dupBtn,
                                   onClick: function () {
                                     ti.Z.post(
-                                      "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/nicknameCheck",
+                                      "http://localhost:5000/users/nicknameCheck",
                                       {
                                         method: "POST",
                                         withCredentials: !0,
@@ -79595,14 +79559,11 @@
                       className: y ? pr.allFilled : pr.submitBtn,
                       onClick: function () {
                         o(!0),
-                          ti.Z.post(
-                            "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/signup",
-                            {
-                              method: "POST",
-                              withCredentials: !0,
-                              data: { inputValue: h },
-                            }
-                          )
+                          ti.Z.post("http://localhost:5000/users/signup", {
+                            method: "POST",
+                            withCredentials: !0,
+                            data: { inputValue: h },
+                          })
                             .then(function (t) {
                               o(!1),
                                 alert(
@@ -80155,7 +80116,7 @@
                                 className: Cr.dupBtn,
                                 onClick: function () {
                                   ti.Z.post(
-                                    "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/pwCheck",
+                                    "http://localhost:5000/users/pwCheck",
                                     {
                                       method: "POST",
                                       withCredentials: !0,
@@ -80384,7 +80345,7 @@
                                 onClick: c.authenticationStatus
                                   ? function () {
                                       ti.Z.post(
-                                        "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/nicknameCheck",
+                                        "http://localhost:5000/users/nicknameCheck",
                                         {
                                           method: "POST",
                                           withCredentials: !0,
@@ -80628,21 +80589,18 @@
                       : Cr.submitBtn,
                     onClick: function () {
                       s(!0),
-                        ti.Z.post(
-                          "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/editUserInfo",
-                          {
-                            method: "POST",
-                            withCredentials: !0,
-                            data: { inputValue: c },
-                          }
-                        )
+                        ti.Z.post("http://localhost:5000/users/editUserInfo", {
+                          method: "POST",
+                          withCredentials: !0,
+                          data: { inputValue: c },
+                        })
                           .then(function (t) {
                             s(!1),
                               alert(
                                 "\uc218\uc815\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4."
                               ),
                               ti.Z.get(
-                                "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/accesstoken",
+                                "http://localhost:5000/users/accesstoken",
                                 { method: "GET", withCredentials: !0 }
                               )
                                 .then(function (t) {

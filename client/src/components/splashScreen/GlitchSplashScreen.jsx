@@ -49,17 +49,14 @@ export default function GlitchSplashScreen() {
 
   const handleSubmitId = () => {
     axios
-      .post(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/idCheck`,
-        {
-          // url: "http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/idCheck", // 안되는뎅
-          method: "POST",
-          withCredentials: true,
-          data: {
-            inputId: inputId, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-          },
-        }
-      )
+      .post(`http://localhost:5000/users/idCheck`, {
+        // url: "http://localhost:5000/users/idCheck", // 안되는뎅
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputId: inputId, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
       .then((response) => {
         faidIn();
         console.log("존재하는 계정입니다.");
@@ -76,17 +73,14 @@ export default function GlitchSplashScreen() {
 
   const handleSubmitPw = () => {
     axios
-      .post(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/pwCheck`,
-        {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            inputId: inputId,
-            inputPw: inputPw,
-          },
-        }
-      )
+      .post(`http://localhost:5000/users/pwCheck`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputId: inputId,
+          inputPw: inputPw,
+        },
+      })
       .then((response) => {
         faidIn();
         setTimeout(() => access(), 1000);
@@ -124,13 +118,10 @@ export default function GlitchSplashScreen() {
 
   const getAccessToken = () => {
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/accesstoken`,
-        {
-          method: "GET",
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/users/accesstoken`, {
+        method: "GET",
+        withCredentials: true,
+      })
       .then((response) => {
         // setIsLogin(true);
         dispatch(loginAction(true));

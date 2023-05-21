@@ -37,7 +37,7 @@ const GetUserDataFromAccessToken = () => {
   useEffect(() => {
     console.log("그냥 지나가슈 공사중이오.");
     // axios
-    //   .get(`http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/accesstoken`, {
+    //   .get(`http://localhost:5000/users/accesstoken`, {
     //     method: "GET",
     //     withCredentials: true,
     //   })

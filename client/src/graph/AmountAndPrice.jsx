@@ -69,30 +69,18 @@ export default function AmountAndPrice() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/pir`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/housePriceIndexSeoul`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/JeonsePriceIndexSeoul`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/allCharts/jeonsePriceRatio`,
-        {
-          withCredentials: true,
-        }
-      ),
+      axios.get(`http://localhost:5000/allCharts/pir`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
+        withCredentials: true,
+      }),
     ])
       .then((responses) => {
         const pirResponse = responses[0];

@@ -8,7 +8,8 @@ connectDB.open(db);
 //=============================================
 //조인!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.get("/", (req, res) => {
-  const { userId } = req.query; // 클라이언트로부터 현재 로그인 중인 회원의 ID 받아옴
+  // const { userId } = req.query; // 클라이언트로부터 현재 로그인 중인 회원의 ID 받아옴
+  const { id: userId } = req.user; //  미들웨어 거쳐서 검증된 아이디
   const sqlQuery = `
     SELECT charts.*,
     CASE WHEN favorites.chart_id IS NOT NULL THEN 1 ELSE 0 END AS isFavorite
@@ -25,7 +26,8 @@ router.get("/", (req, res) => {
 
 //=============================================
 router.post("/add", (req, res) => {
-  const { userId, chartId } = req.body.data;
+  const { /* userId, */ chartId } = req.body.data;
+  const { id: userId } = req.user;
 
   // 데이터베이스에 favorites 정보 저장하는 로직 예시
   const sqlQuery = "INSERT INTO favorites (user_id, chart_id) VALUES (?, ?)";
@@ -42,7 +44,8 @@ router.post("/add", (req, res) => {
 // delete 메서드로 작성했을 시 서버 콘솔에 다음과 같은 애러 뜸. 추후 다시 시도 요망
 // Cannot destructure property 'userId' of 'req.body.data' as it is undefined.
 router.post("/delete", (req, res) => {
-  const { userId, chartId } = req.body.data;
+  const { /* userId, */ chartId } = req.body.data;
+  const { id: userId } = req.user;
   const sqlQuery = "DELETE FROM favorites WHERE user_id= ? and chart_id = ?";
   db.query(sqlQuery, [userId, chartId], (err, result) => {
     if (err) {

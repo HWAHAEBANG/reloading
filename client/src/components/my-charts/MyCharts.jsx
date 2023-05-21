@@ -25,16 +25,13 @@ export default function MyCharts() {
   const [chartsData, setChartsData] = useState();
   useEffect(() => {
     axios
-      .get(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/myCharts`,
-        {
-          method: "GET",
-          withCredentials: true,
-          params: {
-            userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
-          },
-        }
-      )
+      .get(`http://localhost:5000/myCharts`, {
+        method: "GET",
+        withCredentials: true,
+        params: {
+          userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
+        },
+      })
       .then((response) => {
         console.log("악", response);
         if (response.data.length === 0) {

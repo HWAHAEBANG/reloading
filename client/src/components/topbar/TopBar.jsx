@@ -20,16 +20,13 @@ export default function TopBar({ showNav, setShowNav }) {
 
   const logout = () => {
     axios
-      .post(
-        `http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/users/logout`,
-        {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            presentId: userInfo.userInfo.id,
-          },
-        }
-      )
+      .post(`http://localhost:5000/users/logout`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
       .then((Response) => {
         dispatch(logoutAction());
         dispatch(clearUserInfoAction());
