@@ -35,7 +35,7 @@ const GetUserDataFromAccessToken = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("그냥 지나가슈 공사중이오.");
+    // console.log("그냥 지나가슈 공사중이오.");
     // axios
     //   .get(`http://localhost:5000/users/accesstoken`, {
     //     method: "GET",

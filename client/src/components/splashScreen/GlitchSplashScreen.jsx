@@ -124,7 +124,7 @@ export default function GlitchSplashScreen() {
       })
       .then((response) => {
         // setIsLogin(true);
-        dispatch(loginAction(true));
+        dispatch(loginAction() /* (true) */); // true 왜썼음?
         dispatch(setUserInfoAction(response.data));
       })
       .catch((error) => {
@@ -141,6 +141,7 @@ export default function GlitchSplashScreen() {
   const [faidIn] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
   const [access] = useSound("/sounds/access.mp3", { volume: 0.25 });
   const [disk] = useSound("/sounds/disk.wav", { volume: 1 });
+  const [move] = useSound("/sounds/move.wav", { volume: 0.25 });
 
   // setTimeout(() => {
   //   setStartSound(true);
@@ -315,11 +316,20 @@ export default function GlitchSplashScreen() {
       )}
       <div className={styles.linkContainer}>
         <p className={styles.link}>
-          Forgot <Link to='/users/findId'>ID</Link> or{" "}
-          <Link to='/users/findPw'>Password?</Link>
+          Forgot{" "}
+          <Link to='/users/findId' onClick={() => move()}>
+            ID
+          </Link>{" "}
+          or{" "}
+          <Link to='/users/findPw' onClick={() => move()}>
+            Password?
+          </Link>
         </p>
         <p className={styles.link}>
-          Not Yet registered? <Link to='/users/signUp'>Sign up</Link>
+          Not Yet registered?{" "}
+          <Link to='/users/signUp' onClick={() => move()}>
+            Sign up
+          </Link>
         </p>
       </div>
       {/* <div>

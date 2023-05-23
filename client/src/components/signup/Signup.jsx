@@ -6,8 +6,11 @@ import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { uploadImage } from "../../api/cloudynary";
 import axios from "axios";
 import RingLoader from "react-spinners/RingLoader";
+import VerifyEmailModal from "../verify-mail-modal/VerifyEmailModal";
+import useSound from "use-sound";
 
 export default function Signup() {
+  const [move] = useSound("/sounds/move.wav", { volume: 0.25 });
   // loading ===========================
 
   const override = {
@@ -551,10 +554,27 @@ export default function Signup() {
       }));
     }
   }, [selectedSort]);
+  // =========================================================
+  const [modalToggle, setModalToggle] = useState(false);
+
+  const handleOpenEmailModal = () => {
+    if (!inputValue.emailId) return alert("이메일 이이디를 입력해주세요.");
+    if (!inputValue.emailAddress) return alert("이메일 도메인을 선택해주세요.");
+    setModalToggle(true);
+    move();
+  };
 
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
+        {modalToggle ? (
+          <VerifyEmailModal
+            inputValue={inputValue}
+            setModalToggle={setModalToggle}
+          />
+        ) : (
+          ""
+        )}
         <div className={styles.pictureArea}>
           <div className={styles.pictureContainer}>
             <div className={styles.apartmentBox}>
@@ -579,7 +599,6 @@ export default function Signup() {
         </div>
         <div className={styles.inputArea}>
           <h1 className={styles.title}>Welcome to RE:ROADING</h1>
-
           <h2 className={styles.subTitle}>Creat your accout</h2>
           <div className={styles.inputSection}>
             <div className={styles.wholeBox}>
@@ -755,17 +774,12 @@ export default function Signup() {
                     ))}
                   </ul>
                 </div>
-                {/* <input
-                  className={
-                    inputValue.emailAddress
-                      ? `${styles.input}  ${styles.filled}`
-                      : styles.input
-                  }
-                  type='text'
-                  name='emailAddress'
-                  value={inputValue.emailAddress}
-                  onChange={handleInputValue}
-                /> */}
+                <button
+                  className={styles.dupBtn}
+                  onClick={handleOpenEmailModal}
+                >
+                  메일 인증
+                </button>
               </div>
             </div>
             <div className={styles.wholeBox}>
