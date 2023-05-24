@@ -115,7 +115,6 @@ export default function GlitchSplashScreen() {
     }
   };
   // 회원가입 여부와 회원정보 리덕스에 저장  =======================================
-
   const getAccessToken = () => {
     axios
       .get(`http://localhost:5000/users/accesstoken`, {
@@ -135,19 +134,12 @@ export default function GlitchSplashScreen() {
   // ======================================================================
 
   // sound effect =======================================================
-
   const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
   const [wrong] = useSound("/sounds/wrong.mp3", { volume: 0.25 });
   const [faidIn] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
   const [access] = useSound("/sounds/access.mp3", { volume: 0.25 });
   const [disk] = useSound("/sounds/disk.wav", { volume: 1 });
   const [move] = useSound("/sounds/move.wav", { volume: 0.25 });
-
-  // setTimeout(() => {
-  //   setStartSound(true);
-  // }, 1000);
-
-  // startSound && playActive(); //?
   // ======================================================================
 
   return (
@@ -316,39 +308,22 @@ export default function GlitchSplashScreen() {
       )}
       <div className={styles.linkContainer}>
         <p className={styles.link}>
-          Forgot{" "}
+          Forgot
           <Link to='/users/findId' onClick={() => move()}>
             ID
-          </Link>{" "}
-          or{" "}
+          </Link>
+          or
           <Link to='/users/findPw' onClick={() => move()}>
             Password?
           </Link>
         </p>
         <p className={styles.link}>
-          Not Yet registered?{" "}
+          Not Yet registered?
           <Link to='/users/signUp' onClick={() => move()}>
             Sign up
           </Link>
         </p>
       </div>
-      {/* <div>
-        <button onClick={accessToken} style={{ cursor: "pointer" }}>
-          액세스
-        </button>
-        <button onClick={refreshToken} style={{ cursor: "pointer" }}>
-          리프레쉬
-        </button>
-        <button onClick={logout} style={{ cursor: "pointer" }}>
-          로그아웃
-        </button>
-      </div>
-      {isLoggedIn.isLoggedIn ? (
-        <p>{`반갑습니다. ${userInfo.userInfo.name}님`}</p>
-      ) : (
-        <p>로그아웃 상태</p>
-      )
-      } */}
     </div>
   );
 }

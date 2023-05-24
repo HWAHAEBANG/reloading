@@ -3,12 +3,26 @@ import styles from "./VerifyEmailModal.module.css";
 import { GoMailRead } from "react-icons/go";
 import Countdown from "react-countdown";
 import axios from "axios";
+import RingLoader from "react-spinners/RingLoader";
 
-export default function VerifyEmailModal({ inputValue, setModalToggle }) {
+export default function VerifyEmailModal({
+  inputValue,
+  setInputValue,
+  setModalToggle,
+}) {
+  // loading ===========================
+  const override = {
+    display: "block",
+    margin: "auto",
+  };
+
+  const [loading, setLoading] = useState(false);
+  // ===================================
   const [countDownVisible, setCountDownVisible] = useState(false);
   const [resultVisible, setResultVisible] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
   //=====================================================================================================
+
   const [isRunning, setIsRunning] = useState(false); // 타이머가 실행 중인지 여부를 저장하는 상태값
 
   const countdownTime = 10 * 60 * 1000;
@@ -28,30 +42,20 @@ export default function VerifyEmailModal({ inputValue, setModalToggle }) {
     }
   }, [isRunning]);
 
+  // =========================================================
+  // input태그가 onChange 될때마가 초기화 되는 버그로 인해 추가
+  const [countdownDate, setCountdownDate] = useState(
+    Date.now() + countdownTime
+  );
+  // =========================================================
+
   //=====================================================================================================
-
-  console.log("흠", isRunning);
-
+  // 이메일 요청 ================================================
   const handleSend = () => {
-    alert("메일이 전송되었습니다. 메일함을 확인해주세요");
-    setCountDownVisible(true);
-    setResultVisible(false);
-    setIsRunning(false); // 일단 false로 설정
-    setTimeout(() => {
-      setIsRunning(true); // 일정 시간 후에 true로 변경
-    }, 0); // 0초 후에 실행되도록 설정
-  };
-
-  const confirm = () => {
-    // 임시
-    setResultVisible(true);
-    setCountDownVisible(false);
-  };
-  //============================================================
-  // 이메일 인증 ==============================================
-  const verifyEmail = () => {
+    setCountdownDate(Date.now() + countdownTime);
+    setLoading(true);
     axios
-      .post("http://loaclhost:5000/users/verifyEmail", {
+      .post(`http://localhost:5000/users/sendEmail`, {
         method: "POST",
         withCredentials: true,
         data: {
@@ -60,18 +64,63 @@ export default function VerifyEmailModal({ inputValue, setModalToggle }) {
         },
       })
       .then(() => {
-        setResultVisible(true);
-        setCountDownVisible(false);
+        alert("메일이 전송되었습니다. 메일함을 확인해주세요");
+        setLoading(false);
+        setCountDownVisible(true);
+        setResultVisible(false);
+        setIsRunning(false); // 일단 false로 설정
+        setTimeout(() => {
+          setIsRunning(true); // 일정 시간 후에 true로 변경
+        }, 0); // 0초 후에 실행되도록 설정
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  // =========================================================
+
+  //============================================================
+  // 인증번호 입력값 확인 ========================================
+  const [inputCode, setInputCode] = useState("");
+  const handleInputCodeChange = (e) => {
+    setInputCode(e.target.value);
+  };
 
   const handleClose = () => {
     setModalToggle(false);
   };
+
+  const handleVerify = () => {
+    axios
+      .post(`http://localhost:5000/users/verifyEmail`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputCode: inputCode,
+          emailId: inputValue.emailId,
+          emailAddress: inputValue.emailAddress,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setResultVisible(true);
+          setValidEmail(true);
+          setInputValue((prevState) => ({ ...prevState, validEmail: true }));
+          setCountDownVisible(false);
+          alert("인증이 완료되었습니다.");
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 400) {
+          setResultVisible(true);
+          setValidEmail(false);
+          setCountDownVisible(true);
+          alert("틀린 인증 코드입니다.");
+        } else {
+          console.log(error);
+        }
+      });
+  };
+  //============
 
   return (
     <div className={styles.verifyEmailModal}>
@@ -95,8 +144,32 @@ export default function VerifyEmailModal({ inputValue, setModalToggle }) {
           <p className={styles.helperText}>위 메일로 인증코드를 전송합니다.</p>
         </div>
         {countDownVisible ? (
-          <button className={styles.sendBtn} onClick={handleSend}>
-            재전송 요청
+          loading ? (
+            <button className={styles.sendBtn}>
+              <RingLoader
+                color='#36d7b7'
+                loading={loading}
+                cssOverride={override}
+                size={20}
+                aria-label='Loading Spinner'
+                data-testid='loader'
+              />
+            </button>
+          ) : (
+            <button className={styles.sendBtn} onClick={handleSend}>
+              재전송 요청
+            </button>
+          )
+        ) : loading ? (
+          <button className={styles.sendBtn}>
+            <RingLoader
+              color='#36d7b7'
+              loading={loading}
+              cssOverride={override}
+              size={20}
+              aria-label='Loading Spinner'
+              data-testid='loader'
+            />
           </button>
         ) : (
           <button className={styles.sendBtn} onClick={handleSend}>
@@ -116,8 +189,9 @@ export default function VerifyEmailModal({ inputValue, setModalToggle }) {
             type='text'
             placeholder='인증코드를 입력해주세요.'
             disabled={!countDownVisible}
+            onChange={handleInputCodeChange}
           />
-          <button className={styles.confirmBtn} onClick={confirm}>
+          <button className={styles.confirmBtn} onClick={handleVerify}>
             확인
           </button>
         </div>
@@ -126,7 +200,8 @@ export default function VerifyEmailModal({ inputValue, setModalToggle }) {
           <span className={styles.countDown}>
             남은시간
             <Countdown
-              date={Date.now() + countdownTime}
+              date={countdownDate}
+              // date={Date.now() + countdownTime} input태그가 onChange 될때마가 초기화 되는 버그로 인해 수정
               onComplete={handleComplete}
               renderer={({ minutes, seconds }) => (
                 <span>

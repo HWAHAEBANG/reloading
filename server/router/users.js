@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 // 또 써줘야하는건가? 추후 확인 ====================
 const bodyParser = require("body-parser");
@@ -42,6 +43,7 @@ function verifyPassword(pwd, hash, salt) {
 
 // DB 연결부 ===================================
 const connectDB = require("../config/connectDB.js");
+const { route } = require("./allCharts.js");
 const db = connectDB.init();
 connectDB.open(db);
 
@@ -344,4 +346,100 @@ router.post("/editUserInfo", (req, res) => {
   }
 });
 
+// let verificationCode = "";
+const verificationCodes = {}; // 사용자별 인증 코드를 저장하는 객체
+
+// verificationCode 변수를 서버 측에서 공유하여 클라이언트의 입력과 비교하는 방식은 보안상 취약합니다.
+// 이 부분은 안전한 방식으로 구현해야 합니다. 예를 들어, 클라이언트에게 이메일로 전송된 인증 링크를 클릭하도록 하고,
+// 해당 링크에는 고유한 인증 토큰을 포함시켜서 서버에서 유효성을 검사하는 방식이 일반적으로 사용됩니다. <== 추후 리팩토링 해보기
+router.post("/sendEmail", (req, res) => {
+  // 동적으로 nanoid 모듈 가져오기
+  try {
+    const { emailId, emailAddress } = req.body.data;
+
+    // SMTP 전송 설정
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    // 이메일 전송 함수
+    const sendEmail = async (recipientEmail, verificationCodes) => {
+      try {
+        const mailOptions = {
+          from: process.env.SMTP_USER,
+          to: recipientEmail,
+          subject: "RE:LOADING 이메일 인증 코드",
+          text: `
+          다음 인증코드를 사이트의 입력란이 입력해주세요.
+
+          인증 코드: ${verificationCodes[recipientEmail]}
+
+          본 인증 코드는 발급 기준 10분뒤 만기됩니다.
+          `,
+        };
+
+        const response = await transporter.sendMail(mailOptions);
+
+        console.log("이메일이 성공적으로 전송되었습니다.", response);
+        res.status(200).json("Send Complete");
+      } catch (error) {
+        console.error("이메일 전송 중 오류가 발생했습니다.", error);
+        res.status(500).json(error);
+      }
+    };
+
+    // 수신자 이메일 주소
+    const recipientEmail = `${emailId}${emailAddress}`;
+
+    // 인증 코드 생성 및 이메일 전송
+    const generateVerificationCodeAndSendEmail = () => {
+      // 인증 코드 생성 로직
+      verificationCodes[recipientEmail] = Math.floor(
+        1000 + Math.random() * 9000
+      );
+      setTimeout(() => {
+        // 10분 경과 후 다른 랜덤값으로 변환됨.
+        // verificationCodes[recipientEmail] = Math.floor(
+        //   1000 + Math.random() * 9000
+        // );
+        // 10분 경과 후 해당 키 삭제
+        delete verificationCodes[recipientEmail];
+        console.log("10분 경과", verificationCodes[recipientEmail]);
+        console.log("10분뒤 객체 전체보기", verificationCodes);
+      }, 100000);
+
+      // 이메일 전송
+      sendEmail(recipientEmail, verificationCodes[recipientEmail]);
+    };
+
+    // 실행
+    generateVerificationCodeAndSendEmail();
+    console.log("인증번호", verificationCodes[recipientEmail]);
+    console.log("객체 전체보기", verificationCodes);
+
+    //========================================
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.post("/verifyEmail", async (req, res) => {
+  try {
+    const { inputCode, emailId, emailAddress } = req.body.data;
+
+    if (
+      parseInt(inputCode) === verificationCodes[`${emailId}${emailAddress}`]
+    ) {
+      res.status(200).json("Valid Code");
+    } else {
+      res.status(400).json("Invalid Code"); // 틀렸을 때는 상태 코드 400을 반환하는 것이 적합
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 module.exports = router;

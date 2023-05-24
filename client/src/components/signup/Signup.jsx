@@ -37,7 +37,7 @@ export default function Signup() {
     nonNicknameDuplication: false,
     emailId: "",
     emailAddress: "",
-    validEmail: true, // 추후 리팩토링 예정
+    validEmail: false, // 추후 리팩토링 예정
     profileImage: "",
     agree: false,
   });
@@ -570,6 +570,7 @@ export default function Signup() {
         {modalToggle ? (
           <VerifyEmailModal
             inputValue={inputValue}
+            setInputValue={setInputValue}
             setModalToggle={setModalToggle}
           />
         ) : (
