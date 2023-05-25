@@ -21,11 +21,12 @@ router.use(
 );
 router.use(bodyParser.urlencoded({ extended: true }));
 
-//=============================================
-// 인증 미들웨어 ===============================
+//===========================================================================================
+// 인증 미들웨어 ============================================================================-
 const authMiddleware = require("../middlewares/authMiddleware.js");
 
-// crypto 관련 =================================
+//===========================================================================================
+// crypto 관련 ==============================================================================
 // 비밀번호를 해시화 하는 함수
 function hashPassword(pwd) {
   // salt생성
@@ -39,16 +40,15 @@ function verifyPassword(pwd, hash, salt) {
   const hashVerify = crypto.pbkdf2Sync(pwd, salt, 1000, 64, "sha512");
   return hash.toString("hex") === hashVerify.toString("hex");
 }
-// =============================================
-
-// DB 연결부 ===================================
+//===========================================================================================
+// DB 연결부 ================================================================================
 const connectDB = require("../config/connectDB.js");
 const { route } = require("./allCharts.js");
 const db = connectDB.init();
 connectDB.open(db);
 
-//==============================================
-//아이디 확인 ===================================
+//===========================================================================================
+//아이디 확인 ================================================================================
 router.post("/idCheck", (req, res) => {
   const inputId = req.body.data.inputId;
   const sqlQuery = `SELECT id FROM users WHERE id = ?;`;
@@ -62,8 +62,8 @@ router.post("/idCheck", (req, res) => {
     // console.log(result);
   });
 });
-//==============================================
-//닉네임 확인 ===================================
+//===========================================================================================
+//닉네임 확인 ================================================================================
 router.post("/nicknameCheck", (req, res) => {
   const inputNickname = req.body.data.inputNickname;
   const sqlQuery = `SELECT id FROM users WHERE nickname = ?;`;
@@ -77,8 +77,8 @@ router.post("/nicknameCheck", (req, res) => {
     // console.log(result);
   });
 });
-//==============================================
-//비밀번호 확인 =================================
+//===========================================================================================
+//비밀번호 확인 ==============================================================================
 router.post("/pwCheck", (req, res) => {
   const inputId = req.body.data.inputId;
   const inputPw = req.body.data.inputPw;
@@ -151,7 +151,8 @@ router.post("/pwCheck", (req, res) => {
     }
   });
 });
-
+//액세스 토큰으로 회원 정보 받아오기 ===========================================================
+//===========================================================================================
 router.get("/accesstoken", (req, res) => {
   const token = req.cookies.accessToken;
   const data = jwt.verify(token, process.env.ACCESS_SECRET);
@@ -167,7 +168,8 @@ router.get("/accesstoken", (req, res) => {
     }
   });
 });
-
+//리프레시 토큰으로 엑세스 토근 갱신하기 (현재 로직상 갱신은 자동이라 필요 없음)===================
+//===========================================================================================
 // 필요없...근거같은데?? 갱신은 자동으로 해주고, 처음에는 로그인에서 받고... 주석처리!
 // router.get("/refreshtoken", (req, res) => {
 //   const token = req.cookies.refreshToken;
@@ -210,7 +212,8 @@ router.get("/accesstoken", (req, res) => {
 //     }
 //   });
 // });
-
+//===========================================================================================
+//로그아웃 ===================================================================================
 router.post("/logout", (req, res) => {
   // 추후 다른 요청들도 try catch 문으로 리팩토링 요망.
   try {
@@ -236,7 +239,8 @@ router.post("/logout", (req, res) => {
     res.status(500).json(error);
   }
 });
-
+//===========================================================================================
+//회원가입 ===================================================================================
 router.post("/signup", (req, res) => {
   try {
     const { id, pw, name, nickname, emailId, emailAddress, profileImage } =
@@ -259,7 +263,8 @@ router.post("/signup", (req, res) => {
     res.status(500).json(error);
   }
 });
-
+//===========================================================================================
+//회원정보 수정 ==============================================================================
 router.post("/editUserInfo", (req, res) => {
   // 추후 다른 요청들도 try catch 문으로 리팩토링 요망.
   try {
@@ -345,10 +350,12 @@ router.post("/editUserInfo", (req, res) => {
     res.status(500).json(error);
   }
 });
-
-// let verificationCode = "";
-const verificationCodes = {}; // 사용자별 인증 코드를 저장하는 객체
-
+//===========================================================================================
+// 사용자별 인증 코드를 저장하는 객체 ==========================================================
+const verificationCodes = {};
+// let verificationCode = ""; <= 이와 같이 단일 변수로 할 경우 동시성 문제 발생.
+//===========================================================================================
+//이메일 인증코드 전송 ========================================================================
 // verificationCode 변수를 서버 측에서 공유하여 클라이언트의 입력과 비교하는 방식은 보안상 취약합니다.
 // 이 부분은 안전한 방식으로 구현해야 합니다. 예를 들어, 클라이언트에게 이메일로 전송된 인증 링크를 클릭하도록 하고,
 // 해당 링크에는 고유한 인증 토큰을 포함시켜서 서버에서 유효성을 검사하는 방식이 일반적으로 사용됩니다. <== 추후 리팩토링 해보기
@@ -357,89 +364,232 @@ router.post("/sendEmail", (req, res) => {
   try {
     const { emailId, emailAddress } = req.body.data;
 
-    // SMTP 전송 설정
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    // 수신자 이메일 주소
+    const recipientEmail = `${emailId}${emailAddress}`;
 
-    // 이메일 전송 함수
-    const sendEmail = async (recipientEmail, verificationCodes) => {
-      try {
-        const mailOptions = {
-          from: process.env.SMTP_USER,
-          to: recipientEmail,
-          subject: "RE:LOADING 이메일 인증 코드",
-          text: `
+    const sqlQuery = `SELECT email FROM users WHERE email=?`;
+    db.query(sqlQuery, [recipientEmail], (err, result) => {
+      if (err) res.status(500).json(err);
+      if (result.length === 0) {
+        // SMTP 전송 설정
+        const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        });
+
+        // 이메일 전송 함수
+        const sendEmail = async (recipientEmail, verificationCodes) => {
+          try {
+            const mailOptions = {
+              from: process.env.SMTP_USER,
+              to: recipientEmail,
+              subject: "RE:LOADING 이메일 인증 코드",
+              text: `
           다음 인증코드를 사이트의 입력란이 입력해주세요.
 
           인증 코드: ${verificationCodes[recipientEmail]}
 
           본 인증 코드는 발급 기준 10분뒤 만기됩니다.
           `,
+            };
+
+            const response = await transporter.sendMail(mailOptions);
+
+            console.log("이메일이 성공적으로 전송되었습니다.", response);
+            res.status(200).json("Send Complete");
+          } catch (error) {
+            console.error("이메일 전송 중 오류가 발생했습니다.", error);
+            res.status(500).json(error);
+          }
         };
 
-        const response = await transporter.sendMail(mailOptions);
+        // 인증 코드 생성 및 이메일 전송
+        const generateVerificationCodeAndSendEmail = () => {
+          // 인증 코드 생성 로직
+          verificationCodes[recipientEmail] = Math.floor(
+            1000 + Math.random() * 9000
+          );
+          setTimeout(() => {
+            // 10분 경과 후 다른 랜덤값으로 변환됨.
+            // verificationCodes[recipientEmail] = Math.floor(
+            //   1000 + Math.random() * 9000
+            // );
+            // 10분 경과 후 해당 키 삭제
+            delete verificationCodes[recipientEmail];
+            console.log("10분 경과", verificationCodes[recipientEmail]);
+            console.log("10분뒤 객체 전체보기", verificationCodes);
+          }, 6000000);
 
-        console.log("이메일이 성공적으로 전송되었습니다.", response);
-        res.status(200).json("Send Complete");
-      } catch (error) {
-        console.error("이메일 전송 중 오류가 발생했습니다.", error);
-        res.status(500).json(error);
+          // 이메일 전송
+          sendEmail(recipientEmail, verificationCodes[recipientEmail]);
+        };
+
+        // 실행
+        generateVerificationCodeAndSendEmail();
+        console.log("인증번호", verificationCodes[recipientEmail]);
+        console.log("객체 전체보기", verificationCodes);
+
+        //========================================
+      } else {
+        res.status(400).json("Aready Used Email");
       }
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+//===========================================================================================
+//입력한 인증코드 검증 ========================================================================
+router.post(
+  "/verifyEmail",
+  /* async */ (req, res) => {
+    try {
+      const { inputCode, emailId, emailAddress } = req.body.data;
+
+      if (
+        parseInt(inputCode) === verificationCodes[`${emailId}${emailAddress}`]
+      ) {
+        res.status(200).json("Valid Code");
+      } else {
+        res.status(400).json("Invalid Code"); // 틀렸을 때는 상태 코드 400을 반환하는 것이 적합
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
+
+//===========================================================================================
+
+router.post("/sendFindIdEmail", (req, res) => {
+  try {
+    // 이메일 전송
+    const recipientEmail = req.body.data.inputEmail;
+    const sqlQuery = `SELECT id From users WHERE email = ?`;
+    db.query(sqlQuery, [recipientEmail], (err, result) => {
+      if (err) res.status(500).json(err);
+      if (result.length === 0) {
+        res.status(403).json("Not Exist Email");
+      } else {
+        console.log(result[0].id);
+
+        // SMTP 전송 설정
+        const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        });
+
+        // 이메일 전송 함수
+        const sendEmail = async (recipientEmail, foundId) => {
+          try {
+            const mailOptions = {
+              from: process.env.SMTP_USER,
+              to: recipientEmail,
+              subject: "RE:LOADING 아이디 찾기 결과",
+              text: `
+              RE:LOADING을 다시 찾아주셔서 감사합니다.
+
+              문의하신 회원님의 아이디는 "${foundId}"입니다.
+          `,
+            };
+
+            const response = await transporter.sendMail(mailOptions);
+
+            console.log("이메일이 성공적으로 전송되었습니다.", response);
+            res.status(200).json("Send Complete");
+          } catch (error) {
+            console.error("이메일 전송 중 오류가 발생했습니다.", error);
+            res.status(500).json(error);
+          }
+        };
+
+        // 실행
+        // 이메일 전송
+        sendEmail(recipientEmail, result[0].id);
+      }
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//=======================================================================================
+router.post("/sendFindPwEmail", async (req, res) => {
+  try {
+    const recipientEmail = req.body.data.inputEmail;
+
+    const generateUniquePw = async () => {
+      // 동적으로 nanoid 모듈 가져오기
+      const { nanoid } = await import("nanoid");
+      return nanoid(10);
     };
 
-    // 수신자 이메일 주소
-    const recipientEmail = `${emailId}${emailAddress}`;
-
-    // 인증 코드 생성 및 이메일 전송
-    const generateVerificationCodeAndSendEmail = () => {
-      // 인증 코드 생성 로직
-      verificationCodes[recipientEmail] = Math.floor(
-        1000 + Math.random() * 9000
-      );
-      setTimeout(() => {
-        // 10분 경과 후 다른 랜덤값으로 변환됨.
-        // verificationCodes[recipientEmail] = Math.floor(
-        //   1000 + Math.random() * 9000
-        // );
-        // 10분 경과 후 해당 키 삭제
-        delete verificationCodes[recipientEmail];
-        console.log("10분 경과", verificationCodes[recipientEmail]);
-        console.log("10분뒤 객체 전체보기", verificationCodes);
-      }, 100000);
+    // 임시 비밀번호로 DB 데이터 교체.
+    const tempPw = await generateUniquePw(); // generateUniqueId() 함수가 완료될 때까지 기다립니다
+    const { salt, hash } = hashPassword(tempPw);
+    const sqlQuery1 = `UPDATE users SET salt=?, hash=? WHERE email = ?`;
+    db.query(sqlQuery1, [salt, hash, recipientEmail], (err, result) => {
+      if (err) res.status(500).json(err);
 
       // 이메일 전송
-      sendEmail(recipientEmail, verificationCodes[recipientEmail]);
-    };
+      const sqlQuery2 = `SELECT id From users WHERE email = ?`;
+      db.query(sqlQuery2, [recipientEmail], (err, result) => {
+        if (err) res.status(500).json(err);
+        if (result.length === 0) {
+          res.status(403).json("Not Exist Email");
+        } else {
+          console.log(result[0].id);
 
-    // 실행
-    generateVerificationCodeAndSendEmail();
-    console.log("인증번호", verificationCodes[recipientEmail]);
-    console.log("객체 전체보기", verificationCodes);
+          // SMTP 전송 설정
+          const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+            },
+          });
 
-    //========================================
+          // 이메일 전송 함수
+          const sendEmail = async (recipientEmail, tempPw) => {
+            try {
+              const mailOptions = {
+                from: process.env.SMTP_USER,
+                to: recipientEmail,
+                subject: "RE:LOADING 임시 비밀번호 발송",
+                text: `
+              RE:LOADING을 다시 찾아주셔서 감사합니다.
+
+              문의하신 회원님의 임시 비밀번호는 "${tempPw}"입니다.
+
+              계정의 보안을 위해 임시 비밀번호로 로그인 후 비밀번호를 반드시 변경하시기 바랍니다.
+          `,
+              };
+
+              const response = await transporter.sendMail(mailOptions);
+
+              console.log("이메일이 성공적으로 전송되었습니다.", response);
+              res.status(200).json("Send Complete");
+            } catch (error) {
+              console.error("이메일 전송 중 오류가 발생했습니다.", error);
+              res.status(500).json(error);
+            }
+          };
+
+          // 실행
+          // 이메일 전송
+          sendEmail(recipientEmail, tempPw);
+        }
+      });
+    });
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-router.post("/verifyEmail", async (req, res) => {
-  try {
-    const { inputCode, emailId, emailAddress } = req.body.data;
-
-    if (
-      parseInt(inputCode) === verificationCodes[`${emailId}${emailAddress}`]
-    ) {
-      res.status(200).json("Valid Code");
-    } else {
-      res.status(400).json("Invalid Code"); // 틀렸을 때는 상태 코드 400을 반환하는 것이 적합
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
 module.exports = router;

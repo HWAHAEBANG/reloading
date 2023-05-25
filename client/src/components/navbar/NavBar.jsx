@@ -95,7 +95,10 @@ export default function NavBar({ showNav, setShowNav }) {
                 />
               </div>
             ) : (
-              <FaUserCircle className={styles.alternativeAvartarIcon} />
+              <FaUserCircle
+                className={styles.alternativeAvartarIcon}
+                onClick={handleEnter}
+              />
             )
           }
           <div>
@@ -190,9 +193,15 @@ export default function NavBar({ showNav, setShowNav }) {
           </a>
         </div>
       </dir>
-      <button className={styles.logoutBtn} onClick={logout}>
-        Logout
-      </button>
+      {isLoggedIn ? (
+        <button className={styles.logoutBtn} onClick={logout}>
+          Logout
+        </button>
+      ) : (
+        <button className={styles.logoutBtn} onClick={enter}>
+          Login
+        </button>
+      )}
       {/* <Background /> */}
     </div>
   );

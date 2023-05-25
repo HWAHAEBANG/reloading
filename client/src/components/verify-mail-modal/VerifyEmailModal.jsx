@@ -73,8 +73,13 @@ export default function VerifyEmailModal({
           setIsRunning(true); // 일정 시간 후에 true로 변경
         }, 0); // 0초 후에 실행되도록 설정
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        if (error.response && error.response.status === 400) {
+          alert("이미 사용중인 이메일 입니다.");
+          setLoading(false);
+        } else {
+          console.log(error);
+        }
       });
   };
 

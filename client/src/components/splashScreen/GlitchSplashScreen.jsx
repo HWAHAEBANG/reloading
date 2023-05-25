@@ -7,6 +7,8 @@ import { Howl } from "howler";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction, setUserInfoAction } from "../../redux";
+import FindIdModal from "../find-id-modal/FindIdModal";
+import FindPwModal from "../find-pw-modal/FindPwModal";
 
 export default function GlitchSplashScreen() {
   // input 태그 자동 포커스 ===============
@@ -132,7 +134,22 @@ export default function GlitchSplashScreen() {
   };
 
   // ======================================================================
+  // openMoadl==========================================================
+  const [findIdModalVisible, setFindIdModalVisible] = useState(false);
+  const [findPwModalVisible, setFindPwModalVisible] = useState(false);
 
+  const openModal = (e) => {
+    move();
+    switch (e.target.id) {
+      case "findId":
+        setFindIdModalVisible(true);
+        break;
+      case "findPw":
+        setFindPwModalVisible(true);
+        break;
+    }
+  };
+  // ======================================================================
   // sound effect =======================================================
   const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
   const [wrong] = useSound("/sounds/wrong.mp3", { volume: 0.25 });
@@ -158,7 +175,6 @@ export default function GlitchSplashScreen() {
           </h3>
         </div>
       </div>
-
       {/* ============================================ */}
       <div
         className={
@@ -309,13 +325,14 @@ export default function GlitchSplashScreen() {
       <div className={styles.linkContainer}>
         <p className={styles.link}>
           Forgot
-          <Link to='/users/findId' onClick={() => move()}>
+          <span id='findId' onClick={openModal}>
             ID
-          </Link>
+          </span>
           or
-          <Link to='/users/findPw' onClick={() => move()}>
-            Password?
-          </Link>
+          <span id='findPw' onClick={openModal}>
+            Password
+          </span>
+          ?
         </p>
         <p className={styles.link}>
           Not Yet registered?
@@ -324,6 +341,16 @@ export default function GlitchSplashScreen() {
           </Link>
         </p>
       </div>
+      {findIdModalVisible ? (
+        <FindIdModal setModalToggle={setFindIdModalVisible} />
+      ) : (
+        ""
+      )}
+      {findPwModalVisible ? (
+        <FindPwModal setModalToggle={setFindPwModalVisible} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
