@@ -72,9 +72,9 @@ export default function AllCharts() {
   };
 
   // sound ======
-  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
-  const [grow] = useSound("/sounds/grow.wav", { volume: 0.25 });
-  const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
+  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 1 });
+  const [grow] = useSound("/sounds/grow.wav", { volume: 1 });
+  const [toggle] = useSound("/sounds/toggle.wav", { volume: 1 });
 
   useEffect(() => {
     grow();

@@ -10,7 +10,7 @@ darkUnica(Highcharts);
 highchartsMore(Highcharts);
 
 export default function SpiderWebDemo() {
-  const [mock, setMock] = useState([10000, 47000, 11000, 49000, 12000, 43000]);
+  const [mock, setMock] = useState([50000, 10000, 11000, 49000, 60000, 43000]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,14 +41,15 @@ export default function SpiderWebDemo() {
     },
     title: {
       text: "핵심 지표별 진행 상황",
-      x: 0,
+      x: -20,
+      y: -20,
     },
     // subtitle: {
     //   text: "중심에서 멀수록 투자 적기",
     //   x: 0,
     // },
     pane: {
-      size: "80%",
+      size: "98%",
     },
     xAxis: {
       categories: [

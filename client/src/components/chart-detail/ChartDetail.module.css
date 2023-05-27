@@ -112,14 +112,25 @@
   /* background-color: red; */
   /* padding: 20px; */
   /* background-color: red; */
+  padding: 0 20px;
 }
 
 .descriptionSection {
   height: 100%;
   width: 60%;
   padding: 0 20px;
-  /* display: flex; 유튜브 영상  없으면 발동하도록 추후 설정*/
   /* background-color: purple; */
+}
+
+.noYoutube {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 50px;
+}
+
+.noYoutubeVer {
+  flex: 1;
 }
 
 .descriptionTitle {
@@ -134,8 +145,13 @@
   line-height: 30px;
 }
 
+.descriptionContent span {
+  color: rgb(147, 193, 178);
+  font-weight: 900;
+}
+
 .helperTitle {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 700;
   line-height: 30px;
   color: rgb(147, 193, 178);
@@ -145,6 +161,11 @@
 .helperContent {
   font-size: 15px;
   line-height: 30px;
+}
+
+.helperContent span {
+  color: rgb(147, 193, 178);
+  font-weight: 900;
 }
 
 .youtubeSection {

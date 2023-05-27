@@ -10,7 +10,7 @@ import VerifyEmailModal from "../verify-mail-modal/VerifyEmailModal";
 import useSound from "use-sound";
 
 export default function Signup() {
-  const [move] = useSound("/sounds/move.wav", { volume: 0.25 });
+  const [move] = useSound("/sounds/move.wav", { volume: 1 });
   // loading ===========================
 
   const override = {

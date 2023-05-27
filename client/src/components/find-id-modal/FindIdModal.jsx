@@ -42,7 +42,7 @@ export default function FindIdModal({ setModalToggle }) {
         setSuccess(true);
       })
       .catch((err) => {
-        alert("메일 전송에 실패하였습니다. 이메일 형식을 다시 확인해주세요");
+        alert("메일 전송에 실패하였습니다. 유효하지 않은 이메일입니다.");
         setLoading(false);
         console.log(err);
       });

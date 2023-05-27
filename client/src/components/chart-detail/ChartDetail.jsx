@@ -58,32 +58,60 @@ export default function ChartDetail() {
             </Suspense>
           </div>
           <div className={styles.desciptionArea}>
-            <div className={styles.descriptionSection}>
-              <div className={styles.descriptionBox}>
+            <div
+              className={
+                youtubeUrl
+                  ? styles.descriptionSection
+                  : `${styles.descriptionSection} ${styles.noYoutube}`
+              }
+            >
+              <div
+                className={
+                  youtubeUrl
+                    ? styles.descriptionBox
+                    : `${styles.descriptionBox} ${styles.noYoutubeVer}`
+                }
+              >
                 <p className={styles.descriptionTitle}>{title}</p>
-                <p className={styles.descriptionContent}>{description}</p>
+                <p
+                  className={styles.descriptionContent}
+                  dangerouslySetInnerHTML={{ __html: description }}
+                ></p>
               </div>
-              <div className={styles.helperBox}>
+              <div
+                className={
+                  youtubeUrl
+                    ? styles.helperBox
+                    : `${styles.helperBox} ${styles.noYoutubeVer}`
+                }
+              >
                 <p className={styles.helperTitle}> 차트보는 방법</p>
-                <p className={styles.helperContent}>{helperText}</p>
+                <p
+                  className={styles.helperContent}
+                  dangerouslySetInnerHTML={{ __html: helperText }}
+                ></p>
               </div>
               <p>{IoInformationCircleSharp}</p>
             </div>
-            <div className={styles.youtubeSection}>
-              {youtubeUrl ? (
-                <iframe
-                  id='player'
-                  type='text/html'
-                  width='100%'
-                  height='100%'
-                  src={`https://www.youtube.com/embed/${youtubeUrl}?start=${startSecond}`}
-                  frameBorder='0'
-                  title={title}
-                />
-              ) : (
-                ""
-              )}
-            </div>
+            {youtubeUrl ? (
+              <div className={styles.youtubeSection}>
+                {youtubeUrl ? (
+                  <iframe
+                    id='player'
+                    type='text/html'
+                    width='100%'
+                    height='100%'
+                    src={`https://www.youtube.com/embed/${youtubeUrl}?start=${startSecond}`}
+                    frameBorder='0'
+                    title={title}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div className={styles.sourceArea}>

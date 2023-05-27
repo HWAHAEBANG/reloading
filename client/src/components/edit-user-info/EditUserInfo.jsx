@@ -7,10 +7,15 @@ import { uploadImage } from "../../api/cloudynary";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginAction, setUserInfoAction } from "../../redux";
+import VerifyEmailModal from "../verify-mail-modal/VerifyEmailModal";
+import RingLoader from "react-spinners/RingLoader";
+import useSound from "use-sound";
 
 export default function EditUserInfo() {
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
+
+  const [move] = useSound("/sounds/move.wav", { volume: 1 });
 
   // 회원가입 여부와 회원정보 리덕스에 저장  =======================================
 
@@ -328,6 +333,15 @@ export default function EditUserInfo() {
         }));
         break;
       // ===================================================================================================
+      case "emailId":
+      case "emailAdress":
+        setInputValue((prevState) => ({
+          // 입력 변동감지되면 중복여부, 정규식을 false로 바꿈
+          ...prevState,
+          validEmail: false,
+        }));
+
+        break;
       // 검증 불필요 항목 입력값 =============================================================================
       default:
         setInputValue((prevState) => ({
@@ -433,6 +447,15 @@ export default function EditUserInfo() {
   //     nonNicknameDuplication: false,
   //   }));
   // }, [inputValue.nickname]);
+
+  const [modalToggle, setModalToggle] = useState(false);
+
+  const handleOpenEmailModal = () => {
+    if (!inputValue.emailId) return alert("이메일 이이디를 입력해주세요.");
+    if (!inputValue.emailAddress) return alert("이메일 도메인을 선택해주세요.");
+    setModalToggle(true);
+    move();
+  };
 
   //test zone ==========================================================
 
@@ -644,7 +667,10 @@ export default function EditUserInfo() {
   const handleSelectSort = (e) => {
     setSelectedSort(e.target.innerText);
     setSortVisible((prev) => !prev);
+    // 이메일 도메인 변경이 감지되면, validEmaild을 false로 바꿔서 제출이 막히게 함.
+    setInputValue((prevState) => ({ ...prevState, validEmail: false }));
   };
+
   // -------===========================================
   //이메일 선택 옵션 ======================================
   const EMAIL_DOMAINS = [
@@ -676,17 +702,23 @@ export default function EditUserInfo() {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
+        {modalToggle ? (
+          <VerifyEmailModal
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            setModalToggle={setModalToggle}
+          />
+        ) : (
+          ""
+        )}
         <div className={styles.inputArea}>
           <h1 className={styles.title}>Edit User Information</h1>
-
-          {/* <h2 className={styles.subTitle}>회원 정보 수정</h2> */}
           <div className={styles.inputSection}>
             <div className={styles.wholeBox}>
               <div className={styles.itemNameBox}>
                 <label className={styles.itemName} htmlFor='id'>
                   ID
                 </label>
-                {/* <RegexInfoBoxForSignup textArray={REGEX_INFO.id} /> */}
                 <span className={styles.alertMessage}>{alertMessage.id}</span>
                 <span className={styles.passMessage}>{passMessage.id}</span>
               </div>
@@ -707,9 +739,6 @@ export default function EditUserInfo() {
                     userInfo && userInfo.userInfo && userInfo.userInfo.id
                   }
                 />
-                {/* <button className={styles.dupBtn} onClick={dupIdToggle}>
-                  중복 확인
-                </button> */}
               </div>
             </div>
             <div className={styles.wholeBox}>
@@ -943,17 +972,12 @@ export default function EditUserInfo() {
                     ))}
                   </ul>
                 </div>
-                {/* <input
-                  className={
-                    inputValue.emailAddress
-                      ? `${styles.input}  ${styles.filled}`
-                      : styles.input
-                  }
-                  type='text'
-                  name='emailAddress'
-                  value={inputValue.emailAddress}
-                  onChange={handleInputValue}
-                /> */}
+                <button
+                  className={styles.dupBtn}
+                  onClick={handleOpenEmailModal}
+                >
+                  메일 인증
+                </button>
               </div>
             </div>
             <div
@@ -978,11 +1002,6 @@ export default function EditUserInfo() {
                   }
                   readOnly
                   disabled
-                  // placeholder={
-                  //   userInfo &&
-                  //   userInfo.userInfo &&
-                  //   userInfo.userInfo.profile_image
-                  // }
                 />
                 {/* 파일 선택 버튼 역할 */}
                 <label htmlFor='file'>
@@ -1019,7 +1038,7 @@ export default function EditUserInfo() {
                 : !submitRequirementsWithoutPw
             }
           >
-            {/* {loading ? (
+            {loading ? (
               <RingLoader
                 color='#2D2C25'
                 loading={loading}
@@ -1028,9 +1047,9 @@ export default function EditUserInfo() {
                 aria-label='Loading Spinner'
                 data-testid='loader'
               />
-            ) : ( */}
-            <span>Create an account</span>
-            {/* )} */}
+            ) : (
+              <span>Create an account</span>
+            )}
           </button>
           <p className={styles.link}>
             변경을 취소하시겠습니까? <Link to='/'> 홈으로 돌아가기</Link>

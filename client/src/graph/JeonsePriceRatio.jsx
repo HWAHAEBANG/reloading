@@ -19,20 +19,32 @@ export default function JeonsePriceRatio() {
   };
 
   const [loading, setLoading] = useState(true);
+
   // ===================================
   const [jeonsePriceRatioData, setJeonsePriceRatioData] = useState();
+  const [housePriceIndexData, setHousePriceIndexData] = useState();
+  const [jeonsePriceIndexData, setJeonsePriceIndexData] = useState();
 
   useEffect(() => {
     Promise.all([
       axios.get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
         withCredentials: true,
       }),
+      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
     ])
       .then((responses) => {
         const jeonsePriceRatioResponse = responses[0];
+        const housePriceIndexResponse = responses[1];
+        const jeonsePriceIndexResponse = responses[2];
 
         setJeonsePriceRatioData(jeonsePriceRatioResponse.data.data);
-
+        setHousePriceIndexData(housePriceIndexResponse.data.data);
+        setJeonsePriceIndexData(jeonsePriceIndexResponse.data.data);
         // 추가 작업을 수행할 수 있습니다.
 
         setLoading(false);
@@ -117,8 +129,28 @@ export default function JeonsePriceRatio() {
           valueSuffix: "%",
         },
       },
+      {
+        name: "서울 아파트 매매 지수", // 지역이름 변수로 놓자
+        type: "line",
+        data: housePriceIndexData,
+        tooltip: {
+          valueSuffix: "%",
+        },
+      },
+      {
+        name: "서울 아파트 전세 지수", // 지역이름 변수로 놓자
+        type: "line",
+        data: jeonsePriceIndexData,
+        tooltip: {
+          valueSuffix: "%",
+        },
+      },
     ],
   };
+
+  console.log("매매", housePriceIndexData);
+  console.log("전세", jeonsePriceIndexData);
+
   return (
     <div>
       {loading ? (

@@ -14,7 +14,7 @@ export default function InputId() {
 
   const [startSound, setStartSound] = useState(false);
 
-  const [playActive] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
+  const [playActive] = useSound("/sounds/faidin.mp3", { volume: 1 });
 
   setTimeout(() => {
     setStartSound(true);

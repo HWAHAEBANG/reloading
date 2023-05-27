@@ -30,7 +30,7 @@ export default function ChartCard({
   };
 
   // sound ======
-  const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
+  const [toggle] = useSound("/sounds/toggle.wav", { volume: 1 });
 
   // sound ======
 

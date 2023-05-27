@@ -58,7 +58,7 @@ export default function Dashboard() {
   };
 
   // sound ======
-  const [disk] = useSound("/sounds/disk.wav", { volume: 0.25 });
+  const [disk] = useSound("/sounds/disk.wav", { volume: 1 });
 
   useEffect(() => {
     disk();

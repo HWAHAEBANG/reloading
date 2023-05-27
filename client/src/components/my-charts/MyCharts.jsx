@@ -10,9 +10,9 @@ import useSound from "use-sound";
 
 export default function MyCharts() {
   // sound ======
-  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
-  const [grow] = useSound("/sounds/grow.wav", { volume: 0.25 });
-  const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
+  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 1 });
+  const [grow] = useSound("/sounds/grow.wav", { volume: 1 });
+  const [toggle] = useSound("/sounds/toggle.wav", { volume: 1 });
 
   useEffect(() => {
     grow();
@@ -33,10 +33,8 @@ export default function MyCharts() {
         },
       })
       .then((response) => {
-        console.log("악", response);
         if (response.data.length === 0) {
           return;
-          setChartsData(`일치하는 정보가 없습니다.`);
         } else setChartsData(response.data);
       })
       .catch((error) => {
@@ -168,10 +166,19 @@ export default function MyCharts() {
                 : styles.wholeContentsArea
             }
           >
-            {filteredChartsData &&
+            {filteredChartsData ? (
               filteredChartsData.map((data) => (
                 <ChartCard key={data.id} data={data} />
-              ))}
+              ))
+            ) : (
+              <div>
+                <p className={styles.emptyText}>
+                  나의 차트가 비어있습니다.
+                  <br />
+                  ALL CHARTS 메뉴에서 ♡ 버튼을 눌러 추가하실 수 있습니다.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

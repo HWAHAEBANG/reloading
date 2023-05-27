@@ -11,7 +11,7 @@ export default function InputPw() {
     e.key === "Enter" && navigate("/pass");
   };
 
-  const [playActive] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
+  const [playActive] = useSound("/sounds/faidin.mp3", { volume: 1 });
 
   useEffect(() => {
     playActive();

@@ -29,7 +29,9 @@ export default function NavBar({ showNav, setShowNav }) {
 
   //autoClose가 true일 때, 버튼누르면 setShowNav(false)로
   const handleEnter = (e) => {
-    const textContent = e.currentTarget.querySelector("p").textContent;
+    const textContent = e.currentTarget.querySelector("p")
+      ? e.currentTarget.querySelector("p").textContent
+      : "nothing";
 
     if (textContent === "All Charts" || textContent === "My Charts") {
       setTimeout(() => {
@@ -68,8 +70,8 @@ export default function NavBar({ showNav, setShowNav }) {
   };
 
   // sound ======
-  const [move] = useSound("/sounds/move.wav", { volume: 0.25 });
-  const [grow] = useSound("/sounds/grow.wav", { volume: 0.25 });
+  const [move] = useSound("/sounds/move.wav", { volume: 1 });
+  const [grow] = useSound("/sounds/grow.wav", { volume: 1 });
   // sound ======
   return (
     <div
@@ -95,10 +97,7 @@ export default function NavBar({ showNav, setShowNav }) {
                 />
               </div>
             ) : (
-              <FaUserCircle
-                className={styles.alternativeAvartarIcon}
-                onClick={handleEnter}
-              />
+              <FaUserCircle className={styles.alternativeAvartarIcon} />
             )
           }
           <div>

@@ -151,12 +151,12 @@ export default function GlitchSplashScreen() {
   };
   // ======================================================================
   // sound effect =======================================================
-  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
-  const [wrong] = useSound("/sounds/wrong.mp3", { volume: 0.25 });
-  const [faidIn] = useSound("/sounds/faidin.mp3", { volume: 0.25 });
-  const [access] = useSound("/sounds/access.mp3", { volume: 0.25 });
+  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 1 });
+  const [wrong] = useSound("/sounds/wrong.mp3", { volume: 1 });
+  const [faidIn] = useSound("/sounds/faidin.mp3", { volume: 1 });
+  const [access] = useSound("/sounds/access.mp3", { volume: 1 });
   const [disk] = useSound("/sounds/disk.wav", { volume: 1 });
-  const [move] = useSound("/sounds/move.wav", { volume: 0.25 });
+  const [move] = useSound("/sounds/move.wav", { volume: 1 });
   // ======================================================================
 
   return (

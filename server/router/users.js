@@ -131,7 +131,7 @@ router.post("/pwCheck", (req, res) => {
       // token 전송 (쿠키를 통해)
       res.cookie("accessToken", accessToken, {
         // domain:
-        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "http://localhost:5000/", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -139,7 +139,7 @@ router.post("/pwCheck", (req, res) => {
 
       res.cookie("refreshToken", refreshToken, {
         // domain:
-        // "http://localhost:5000", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "http://localhost:5000/", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값, , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -359,6 +359,8 @@ const verificationCodes = {};
 // verificationCode 변수를 서버 측에서 공유하여 클라이언트의 입력과 비교하는 방식은 보안상 취약합니다.
 // 이 부분은 안전한 방식으로 구현해야 합니다. 예를 들어, 클라이언트에게 이메일로 전송된 인증 링크를 클릭하도록 하고,
 // 해당 링크에는 고유한 인증 토큰을 포함시켜서 서버에서 유효성을 검사하는 방식이 일반적으로 사용됩니다. <== 추후 리팩토링 해보기
+
+// 비동기 제대로짚고 넘어가기 ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 router.post("/sendEmail", (req, res) => {
   // 동적으로 nanoid 모듈 가져오기
   try {
@@ -368,7 +370,7 @@ router.post("/sendEmail", (req, res) => {
     const recipientEmail = `${emailId}${emailAddress}`;
 
     const sqlQuery = `SELECT email FROM users WHERE email=?`;
-    db.query(sqlQuery, [recipientEmail], (err, result) => {
+    db.query(sqlQuery, [recipientEmail], async (err, result) => {
       if (err) res.status(500).json(err);
       if (result.length === 0) {
         // SMTP 전송 설정
@@ -379,21 +381,34 @@ router.post("/sendEmail", (req, res) => {
             pass: process.env.SMTP_PASS,
           },
         });
+        //================================================================================
+        const generateVerificationCodeAndSendEmail = async () => {
+          // 인증 코드 생성 로직
+          verificationCodes[recipientEmail] = Math.floor(
+            1000 + Math.random() * 9000
+          );
+
+          // 10분 경과 후 해당 키 삭제
+          setTimeout(() => {
+            delete verificationCodes[recipientEmail];
+          }, 6000000);
+
+          // 이메일 전송
+          await sendEmail(recipientEmail, verificationCodes[recipientEmail]);
+        };
 
         // 이메일 전송 함수
-        const sendEmail = async (recipientEmail, verificationCodes) => {
+        const sendEmail = async (recipientEmail, verificationCode) => {
           try {
             const mailOptions = {
               from: process.env.SMTP_USER,
               to: recipientEmail,
               subject: "RE:LOADING 이메일 인증 코드",
               text: `
-          다음 인증코드를 사이트의 입력란이 입력해주세요.
-
-          인증 코드: ${verificationCodes[recipientEmail]}
-
-          본 인증 코드는 발급 기준 10분뒤 만기됩니다.
-          `,
+                다음 인증코드를 사이트의 입력란이 입력해주세요.
+                인증 코드: ${verificationCode}
+                본 인증 코드는 발급 기준 10분뒤 만기됩니다.
+              `,
             };
 
             const response = await transporter.sendMail(mailOptions);
@@ -405,33 +420,73 @@ router.post("/sendEmail", (req, res) => {
             res.status(500).json(error);
           }
         };
-
-        // 인증 코드 생성 및 이메일 전송
-        const generateVerificationCodeAndSendEmail = () => {
-          // 인증 코드 생성 로직
-          verificationCodes[recipientEmail] = Math.floor(
-            1000 + Math.random() * 9000
-          );
-          setTimeout(() => {
-            // 10분 경과 후 다른 랜덤값으로 변환됨.
-            // verificationCodes[recipientEmail] = Math.floor(
-            //   1000 + Math.random() * 9000
-            // );
-            // 10분 경과 후 해당 키 삭제
-            delete verificationCodes[recipientEmail];
-            console.log("10분 경과", verificationCodes[recipientEmail]);
-            console.log("10분뒤 객체 전체보기", verificationCodes);
-          }, 6000000);
-
-          // 이메일 전송
-          sendEmail(recipientEmail, verificationCodes[recipientEmail]);
-        };
-
         // 실행
-        generateVerificationCodeAndSendEmail();
-        console.log("인증번호", verificationCodes[recipientEmail]);
-        console.log("객체 전체보기", verificationCodes);
+        await generateVerificationCodeAndSendEmail();
 
+        // 비동기 설명 ======================
+        // 위 코드에서 비동기 부분은 다음과 같은 부분들이 있습니다:
+
+        // 데이터베이스 쿼리: db.query 함수를 사용하여 데이터베이스에 쿼리를 전송합니다. 이 함수는 비동기적으로 동작하며, 콜백 함수를 사용하여 쿼리 결과를 처리합니다. 여기서는 async (err, result) => { ... } 형태로 콜백 함수를 정의하여 에러와 결과를 처리합니다.
+
+        // 이메일 전송 함수: sendEmail 함수는 nodemailer 라이브러리를 사용하여 이메일을 전송합니다. 이 함수는 async 키워드로 정의되어 있으며, 내부에서 await 키워드를 사용하여 이메일 전송이 완료될 때까지 기다립니다. 이렇게 함으로써 이메일 전송이 완료되기 전에 다음 동작이 실행되지 않도록 합니다.
+
+        // 코드 실행: generateVerificationCodeAndSendEmail 함수는 await 키워드로 호출됩니다. 이 함수 내부에서는 비동기적으로 인증 코드를 생성하고 이메일을 전송합니다. await 키워드를 사용하여 sendEmail 함수가 완료될 때까지 기다립니다.
+
+        // 따라서, 데이터베이스 쿼리와 이메일 전송은 비동기적으로 동작하며, 이를 처리하기 위해 콜백 함수와 async/await를 사용하여 순서를 제어하고 응답을 처리합니다. 이를 통해 코드의 실행 흐름을 유지하면서 비동기 작업이 완료될 때까지 기다릴 수 있습니다.
+
+        //==================================
+        //이하 나의 틀린 코드. 분석요망 =====================================================
+        // 이메일 전송 함수
+        // const sendEmail = async (recipientEmail, verificationCodes) => {
+        //   try {
+        //     const mailOptions = {
+        //       from: process.env.SMTP_USER,
+        //       to: recipientEmail,
+        //       subject: "RE:LOADING 이메일 인증 코드",
+        //       text: `
+        //   다음 인증코드를 사이트의 입력란이 입력해주세요.
+
+        //   인증 코드: ${verificationCodes[recipientEmail]}
+
+        //   본 인증 코드는 발급 기준 10분뒤 만기됩니다.
+        //   `,
+        //     };
+
+        //     const response = await transporter.sendMail(mailOptions);
+
+        //     console.log("이메일이 성공적으로 전송되었습니다.", response);
+        //     res.status(200).json("Send Complete");
+        //   } catch (error) {
+        //     console.error("이메일 전송 중 오류가 발생했습니다.", error);
+        //     res.status(500).json(error);
+        //   }
+        // };
+
+        // // 인증 코드 생성 및 이메일 전송
+        // const generateVerificationCodeAndSendEmail = async () => {
+        //   // 인증 코드 생성 로직
+        //   verificationCodes[recipientEmail] = Math.floor(
+        //     1000 + Math.random() * 9000
+        //   );
+        //   // setTimeout(() => {
+        //   //   // 10분 경과 후 다른 랜덤값으로 변환됨.
+        //   //   // verificationCodes[recipientEmail] = Math.floor(
+        //   //   //   1000 + Math.random() * 9000
+        //   //   // );
+        //   //   // 10분 경과 후 해당 키 삭제
+        //   //   delete verificationCodes[recipientEmail];
+        //   //   console.log("10분 경과", verificationCodes[recipientEmail]);
+        //   //   console.log("10분뒤 객체 전체보기", verificationCodes);
+        //   // }, 6000000);
+        // };
+
+        // // 실행
+        // await generateVerificationCodeAndSendEmail();
+        // console.log("인증번호", verificationCodes[recipientEmail]);
+        // console.log("객체 전체보기", verificationCodes);
+
+        // // 이메일 전송
+        // sendEmail(recipientEmail, verificationCodes[recipientEmail]);
         //========================================
       } else {
         res.status(400).json("Aready Used Email");

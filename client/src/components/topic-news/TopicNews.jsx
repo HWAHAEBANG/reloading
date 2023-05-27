@@ -69,8 +69,8 @@ export default function TopicNews() {
   };
   // -------====================================
 
-  const [toggle] = useSound("/sounds/toggle.wav", { volume: 0.25 });
-  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 0.25 });
+  const [toggle] = useSound("/sounds/toggle.wav", { volume: 1 });
+  const [keyboard] = useSound("/sounds/keyboard.wav", { volume: 1 });
 
   return (
     <div className={styles.mainContainer}>

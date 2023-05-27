@@ -31,7 +31,7 @@ export default function Pir() {
 
   const [pirData, setPirData] = useState();
   const [housePriceIndexData, setHousePriceIndexData] = useState();
-  const [rentalPriceIndexData, setRentalPriceIndexData] = useState();
+  const [jeonsePriceIndexData, setJeonsePriceIndexData] = useState();
   const [jeonsePriceRatioData, setJeonsePriceRatioData] = useState();
 
   // //재사용 용
@@ -84,12 +84,12 @@ export default function Pir() {
       .then((responses) => {
         const pirResponse = responses[0];
         const housePriceIndexResponse = responses[1];
-        const rentalPriceIndexResponse = responses[2];
+        const jeonsePriceIndexResponse = responses[2];
         const jeonsePriceRatioResponse = responses[3];
 
         setPirData(pirResponse.data.data);
         setHousePriceIndexData(housePriceIndexResponse.data.data);
-        setRentalPriceIndexData(rentalPriceIndexResponse.data.data);
+        setJeonsePriceIndexData(jeonsePriceIndexResponse.data.data);
         setJeonsePriceRatioData(jeonsePriceRatioResponse.data.data);
 
         setLoading(false);
@@ -255,7 +255,7 @@ export default function Pir() {
       {
         name: "서울 아파트 전세 지수", // 지역이름 변수로 놓자
         type: "spline",
-        data: rentalPriceIndexData,
+        data: jeonsePriceIndexData,
         tooltip: {
           valueSuffix: "%",
         },

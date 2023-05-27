@@ -21,6 +21,7 @@
 .link * {
   color: mediumaquamarine;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .mainContainer {
