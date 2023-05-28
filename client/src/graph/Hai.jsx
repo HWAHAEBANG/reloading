@@ -28,17 +28,25 @@ export default function Hai() {
 
   const [loading, setLoading] = useState(true);
   // ===================================
-  const [categories, setCategories] = useState();
-  const [data, setData] = useState();
+  const [haiDataSeoul, setHaiDataSeoul] = useState();
+  const [housePriceIndexData, setHousePriceIndexData] = useState();
+  const [baseRateKoreaResponse, setBaseRateKoreaResponse] = useState();
 
+  // 중첩배열용
   const getAverage = (arr) => {
-    const sum = arr.reduce((acc, cur) => acc + cur);
+    const sum = arr.reduce((acc, cur) => acc + cur[1], 0);
     const avg = sum / arr.length;
     return avg;
   };
 
-  const average = new Array(data && data.length); // 데이터 개수만큼 빈 배열을 만들고
-  data && average.fill(parseFloat(getAverage(data).toFixed(1))); // 평균으로 다 채운다. 원본을 수정함.
+  const avg =
+    haiDataSeoul &&
+    haiDataSeoul.map((item) => [
+      item[0],
+      parseFloat(getAverage(haiDataSeoul).toFixed(1)),
+    ]);
+  // const average = new Array(haiDataSeoul && haiDataSeoul.length); // 데이터 개수만큼 빈 배열을 만들고
+  // haiDataSeoul && average.fill(parseFloat(getAverage(haiDataSeoul).toFixed(1))); // 평균으로 다 채운다. 원본을 수정함.
   //toFixed를 하면 문자열로 변환되는 것 주의!
 
   useEffect(() => {
@@ -46,12 +54,21 @@ export default function Hai() {
       axios.get(`http://localhost:5000/allCharts/hai`, {
         withCredentials: true,
       }),
+      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/allCharts/baseRateKorea`, {
+        withCredentials: true,
+      }),
     ])
       .then((responses) => {
         const haiResponse = responses[0];
+        const housePriceIndexResponse = responses[1];
+        const baseRateKoreaResponse = responses[2];
 
-        setCategories(haiResponse.data.categories);
-        setData(haiResponse.data.data);
+        setHaiDataSeoul(haiResponse.data.data);
+        setHousePriceIndexData(housePriceIndexResponse.data.data);
+        setBaseRateKoreaResponse(baseRateKoreaResponse.data.data);
 
         // 추가 작업을 수행할 수 있습니다.
 
@@ -63,6 +80,8 @@ export default function Hai() {
         setLoading(false);
       });
   }, []);
+
+  console.log("체크", baseRateKoreaResponse);
 
   const options = {
     chart: {
@@ -80,51 +99,58 @@ export default function Hai() {
       },
     },
     title: {
-      text: "HAI : 연소득대비 주택 가격 비율 ",
+      text: "HAI : 주택 구입 부담 지수",
     },
-    subtitle: {
-      text: "Housing Affordability Index",
-    },
-    xAxis: [
-      {
-        categories: categories,
-        crosshair: true, // 뭘까
-      },
-    ],
+    // subtitle: {
+    //   text: "Housing Affordability Index",
+    // },
+    xAxis: { type: "datetime" },
+    // [
+    //   {
+    //     categories: haiSeoul,
+    //     crosshair: true, // 뭘까
+    //   },
+    // ],
     yAxis: [
       {
         // Primary yAxis
         labels: {
           // 좌축 눈금 단위
-          format: "{value}°C",
+          // format: "{value}",
           style: {
-            color: Highcharts.getOptions().colors[1],
+            color: Highcharts.getOptions().colors[0],
           },
         },
+
         title: {
           // 좌측 눈금 이름
-          text: "서울 매매지수",
+          text: "HAI, 매매지수",
           style: {
-            color: Highcharts.getOptions().colors[1],
+            color: Highcharts.getOptions().colors[0],
           },
         },
+        tickAmount: 7,
+        max: 250,
+        // tickInterval: 40,
       },
       {
         // Secondary yAxis
         title: {
           // 우측 눈금 이름
-          text: "HAI",
+          text: "기준금리",
           style: {
-            color: Highcharts.getOptions().colors[0],
+            color: "#95DFFD",
           },
         },
         labels: {
           // 우축 눈금 단위
-          format: "{value}", //"{value} mm"
+          format: "{value}%", //"{value} mm"
           style: {
-            color: Highcharts.getOptions().colors[0],
+            color: "#95DFFD",
           },
         },
+        tickAmount: 7,
+        max: 6,
         opposite: true,
       },
     ],
@@ -146,45 +172,45 @@ export default function Hai() {
       {
         name: "서울 HAI",
         type: "column",
-        yAxis: 1,
-        data: data,
+        yAxis: 0,
+        data: haiDataSeoul,
         tooltip: {
           valueSuffix: "", //" mm"
         },
       },
       {
-        name: "서울 매매 지수", // 지역이름 변수로 놓자
+        name: "서울 HAI 장기 평균", // 지역이름 변수로 놓자
         type: "spline",
-        data: [
-          7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6,
-        ],
+        yAxis: 0, // 이거 있으면 좌측 눈금 따라가나보다!
+        data: avg,
         tooltip: {
-          valueSuffix: "°C",
+          valueSuffix: "", //" mm"
+        },
+      },
+      {
+        name: "서울 아파트 매매 지수", // 지역이름 변수로 놓자
+        type: "spline",
+        yAxis: 0,
+        data: housePriceIndexData,
+        // yAxis: 1, // 이거 있으면 좌측 눈금 따라가나보다!
+        tooltip: {
+          valueSuffix: "%",
         },
       },
       {
         name: "기준 금리", // 지역이름 변수로 놓자
         type: "spline",
-        data: [
-          7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6,
-        ].reverse(),
-        tooltip: {
-          valueSuffix: "°C",
-        },
-      },
-      {
-        name: "HAI평균", // 지역이름 변수로 놓자
-        type: "spline",
+        data: baseRateKoreaResponse,
         yAxis: 1, // 이거 있으면 좌측 눈금 따라가나보다!
-        data: average,
         tooltip: {
-          valueSuffix: "", //" mm"
+          valueSuffix: "%",
         },
+        color: "#95DFFD",
       },
     ],
     plotOptions: {
       series: {
-        borderWidth: 0,
+        borderWidth: 0, // 그래프 border
       },
     },
   };

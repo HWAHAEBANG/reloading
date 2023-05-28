@@ -87,6 +87,21 @@ app.use("/allCharts/jeonsePriceRatio", JEONSE_PRICE_RATIO);
 const PRICE_CHANGE_RATE = require("./router/priceChangeRate.js");
 app.use("/allCharts/priceChangeRate", PRICE_CHANGE_RATE);
 
+const BASE_RATE_KOREA = require("./router/baseRateKorea.js");
+app.use("/allCharts/baseRateKorea", BASE_RATE_KOREA);
+
+const TRANSACTION_VOLUME_SALES_SEOUL = require("./router/transactionVolumeSalesSeoul.js");
+app.use(
+  "/allCharts/transactionVolumeSalesSeoul",
+  TRANSACTION_VOLUME_SALES_SEOUL
+);
+
+const TRANSACTION_VOLUME_JEONSE_SEOUL = require("./router/transactionVolumeJeonseSeoul");
+app.use(
+  "/allCharts/transactionVolumeJeonseSeoul",
+  TRANSACTION_VOLUME_JEONSE_SEOUL
+);
+
 // ========================================
 
 app.listen(PORT, () => {

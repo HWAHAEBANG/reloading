@@ -132,7 +132,7 @@ export default function Pir() {
       ],
     },
     title: {
-      text: "PIR : 연소득대비 주택 가격 비율",
+      text: "PIR : 주택 구매 능력 지표",
     },
     subtitle: {
       text: "Price to Income Ratio",
@@ -145,18 +145,20 @@ export default function Pir() {
         // Primary yAxis
         labels: {
           // 좌축 눈금 단위
-          format: "{value}%",
+          format: "{value}",
           style: {
-            color: Highcharts.getOptions().colors[1],
+            color: Highcharts.getOptions().colors[0],
           },
         },
         title: {
           // 좌측 눈금 이름
-          text: "꺾은 선",
+          text: "매매 / 전세 지수, 전세가율 (%)",
           style: {
-            color: Highcharts.getOptions().colors[1],
+            color: Highcharts.getOptions().colors[0],
           },
         },
+        max: 120,
+        tickAmount: 6,
       },
       {
         // Secondary yAxis
@@ -164,17 +166,19 @@ export default function Pir() {
           // 우측 눈금 이름
           text: "PIR",
           style: {
-            color: Highcharts.getOptions().colors[0],
+            color: Highcharts.getOptions().colors[1],
           },
         },
         labels: {
           // 우축 눈금 단위
           format: "{value}", //"{value} mm"
           style: {
-            color: Highcharts.getOptions().colors[0],
+            color: Highcharts.getOptions().colors[1],
           },
         },
         opposite: true,
+        max: 25,
+        tickAmount: 6,
       },
     ],
     tooltip: {
@@ -183,9 +187,9 @@ export default function Pir() {
     legend: {
       layout: "vertical",
       align: "left",
-      x: 120,
+      x: 70,
       verticalAlign: "top",
-      y: 100,
+      y: 50,
       floating: true,
       backgroundColor:
         Highcharts.defaultOptions.legend.backgroundColor || // theme
@@ -234,11 +238,54 @@ export default function Pir() {
         tooltip: {
           valueSuffix: "", //" mm"
         },
+        fillColor: {
+          linearGradient: {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 1,
+          },
+          stops: [
+            [0, Highcharts.getOptions().colors[7]],
+            [
+              1,
+              Highcharts.color(Highcharts.getOptions().colors[1])
+                .setOpacity(0)
+                .get("rgba"),
+            ],
+          ],
+        },
+        marker: {
+          fillColor: Highcharts.getOptions().colors[7], // 점의 색상 설정
+        },
+        lineColor: Highcharts.getOptions().colors[7], // 선 색상 설정
       },
       {
         name: "서울 아파트 전세가율",
-        type: "spline",
-        // yAxis: 1,
+        type: "area",
+        fillColor: {
+          linearGradient: {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 1,
+          },
+          stops: [
+            [0, Highcharts.getOptions().colors[0]],
+            [
+              1,
+              Highcharts.color(Highcharts.getOptions().colors[4])
+                .setOpacity(0)
+                .get("rgba"),
+            ],
+          ],
+        },
+
+        marker: {
+          fillColor: Highcharts.getOptions().colors[0], // 점의 색상 설정
+        },
+        lineColor: Highcharts.getOptions().colors[0], // 선 색상 설정
+        yAxis: 0,
         data: jeonsePriceRatioData,
         tooltip: {
           valueSuffix: "%", //" mm"

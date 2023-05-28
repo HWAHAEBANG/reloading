@@ -86,15 +86,22 @@ export default function JeonsePriceRatio() {
     yAxis: [
       {
         title: {
-          text: "Fruit units",
+          enabled: false,
+          //   text: "매매 / 전세지수, 전세가율",
+          // style: {
+          //   color: Highcharts.getOptions().colors[0],
+          // },
         },
+        labels: {
+          // 우축 눈금 단위
+          format: "{value}%", //"{value} mm"
+          // style: {
+          //   color: Highcharts.getOptions().colors[0],
+          // },
+        },
+        tickAmount: 7,
+        max: 120,
       },
-      // {
-      //   title: {
-      //     text: "전년도 대비 증감율 (%)",
-      //   },
-      //   opposite: true,
-      // },
     ],
     tooltip: {
       split: true,
@@ -104,7 +111,15 @@ export default function JeonsePriceRatio() {
       enabled: false,
     },
     legend: {
-      enabled: false,
+      layout: "vertical",
+      align: "left",
+      x: 70,
+      verticalAlign: "top",
+      y: 40,
+      floating: true,
+      backgroundColor:
+        Highcharts.defaultOptions.legend.backgroundColor || // theme
+        "rgba(255,255,255,0.25)",
     },
     series: [
       {
@@ -147,9 +162,6 @@ export default function JeonsePriceRatio() {
       },
     ],
   };
-
-  console.log("매매", housePriceIndexData);
-  console.log("전세", jeonsePriceIndexData);
 
   return (
     <div>

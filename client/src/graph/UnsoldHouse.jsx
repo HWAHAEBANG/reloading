@@ -89,13 +89,17 @@ export default function UnsoldHouse() {
     yAxis: [
       {
         title: {
-          text: "호",
+          text: "매매 / 전세 지수 (%)",
         },
+        tickAmount: 10,
+        max: 120,
       },
       {
         title: {
-          text: "전년도 대비 증감율 (%)",
+          text: "미분양 물량 (호)",
         },
+        tickAmount: 10,
+        max: 45000,
         opposite: true,
       },
     ],
@@ -103,7 +107,15 @@ export default function UnsoldHouse() {
       shared: true,
     },
     legend: {
-      enabled: false,
+      layout: "vertical",
+      align: "left",
+      x: 70,
+      verticalAlign: "top",
+      y: 40,
+      floating: true,
+      backgroundColor:
+        Highcharts.defaultOptions.legend.backgroundColor || // theme
+        "rgba(255,255,255,0.25)",
     },
     plotOptions: {
       area: {
@@ -143,6 +155,7 @@ export default function UnsoldHouse() {
       {
         type: "area",
         name: "미분양 물량",
+        yAxis: 1,
         data: unsoldHouseData,
         tooltip: {
           valueSuffix: "호",
@@ -150,30 +163,33 @@ export default function UnsoldHouse() {
       },
       {
         type: "line",
-        name: "수도권 아파트 매매지수",
+        name: "미분양 너나위님 기준",
         yAxis: 1,
-        data: housePriceIndexData,
-        tooltip: {
-          valueSuffix: "%",
-        },
-      },
-      {
-        type: "line",
-        name: "수도권 아파트 전세지수",
-        yAxis: 1,
-        data: rentalPriceIndexData,
-        tooltip: {
-          valueSuffix: "%",
-        },
-      },
-      {
-        type: "line",
-        name: "너나위님 기준",
-        yAxis: 0,
         data: standard,
         tooltip: {
           valueSuffix: "호",
         },
+        color: Highcharts.getOptions().colors[2],
+      },
+      {
+        type: "line",
+        name: "수도권 아파트 매매지수",
+        yAxis: 0,
+        data: housePriceIndexData,
+        tooltip: {
+          valueSuffix: "%",
+        },
+        color: Highcharts.getOptions().colors[3],
+      },
+      {
+        type: "line",
+        name: "수도권 아파트 전세지수",
+        yAxis: 0,
+        data: rentalPriceIndexData,
+        tooltip: {
+          valueSuffix: "%",
+        },
+        color: Highcharts.getOptions().colors[1],
       },
     ],
   };
