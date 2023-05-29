@@ -55,7 +55,7 @@ router.get("/", (req, res) => {
       // console.log("확인점", categories);
       const data = filteredData.map((item) => {
         const year = item.baseMm.slice(0, 4);
-        const month = item.baseMm.slice(4, 6);
+        const month = item.baseMm.slice(4, 6) - 1;
         const fixedData = parseFloat(item.val).toFixed(0);
         return [Date.UTC(year, month, 1), parseFloat(fixedData)];
       });

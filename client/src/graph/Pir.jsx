@@ -52,18 +52,18 @@ export default function Pir() {
    */
 
   // 중첩배열용
-  const getAverage = (arr) => {
-    const sum = arr.reduce((acc, cur) => acc + cur[1], 0);
-    const avg = sum / arr.length;
-    return avg;
-  };
+  // const getAverage = (arr) => {
+  //   const sum = arr.reduce((acc, cur) => acc + cur[1], 0);
+  //   const avg = sum / arr.length;
+  //   return avg;
+  // };
 
-  const avg =
-    pirData &&
-    pirData.map((item) => [
-      item[0],
-      parseFloat(getAverage(pirData).toFixed(1)),
-    ]);
+  // const avg =
+  //   pirData &&
+  //   pirData.map((item) => [
+  //     item[0],
+  //     parseFloat(getAverage(pirData).toFixed(1)),
+  //   ]);
 
   // 대박....
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function Pir() {
         const jeonsePriceIndexResponse = responses[2];
         const jeonsePriceRatioResponse = responses[3];
 
-        setPirData(pirResponse.data.data);
+        setPirData(pirResponse.data.data.filter((item) => item !== null));
         setHousePriceIndexData(housePriceIndexResponse.data.data);
         setJeonsePriceIndexData(jeonsePriceIndexResponse.data.data);
         setJeonsePriceRatioData(jeonsePriceRatioResponse.data.data);
@@ -100,6 +100,8 @@ export default function Pir() {
         setLoading(false);
       });
   }, []);
+
+  console.log(pirData);
   //   위의 코드는 여러 개의 axios 요청을 병렬로 처리하고, 모든 요청이 완료된 후에 한 번의 상태 업데이트를 수행하는 방식입니다. 이 방법은 성능과 효율성 면에서 일반적으로 효과적입니다.
   // 병렬로 요청을 처리하기 때문에 각 요청이 독립적으로 실행되므로 전체적인 처리 시간이 단일 요청의 처리 시간보다 효율적으로 단축될 수 있습니다. 이는 네트워크 요청이 병렬로 처리되므로 여러 개의 요청이 동시에 진행되는 것을 의미합니다.
   // 또한, Promise.all()을 사용하여 모든 요청이 완료될 때까지 기다린 후 한 번의 상태 업데이트를 수행하기 때문에, 상태 업데이트를 여러 번 수행하는 것보다 성능적으로 유리할 수 있습니다. 상태 업데이트는 리렌더링을 유발하므로, 한 번의 업데이트는 리렌더링을 한 번만 발생시키기 때문에 효율적입니다.
@@ -157,8 +159,9 @@ export default function Pir() {
             color: Highcharts.getOptions().colors[0],
           },
         },
+        min: 0,
         max: 120,
-        tickAmount: 6,
+        tickAmount: 7,
       },
       {
         // Secondary yAxis
@@ -177,8 +180,9 @@ export default function Pir() {
           },
         },
         opposite: true,
-        max: 25,
-        tickAmount: 6,
+        min: 0,
+        max: 30,
+        tickAmount: 7,
       },
     ],
     tooltip: {
@@ -231,36 +235,6 @@ export default function Pir() {
     },
     series: [
       {
-        name: "서울 아파트 PIR", // 아직아님
-        type: "area",
-        yAxis: 1,
-        data: pirData,
-        tooltip: {
-          valueSuffix: "", //" mm"
-        },
-        fillColor: {
-          linearGradient: {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 1,
-          },
-          stops: [
-            [0, Highcharts.getOptions().colors[7]],
-            [
-              1,
-              Highcharts.color(Highcharts.getOptions().colors[1])
-                .setOpacity(0)
-                .get("rgba"),
-            ],
-          ],
-        },
-        marker: {
-          fillColor: Highcharts.getOptions().colors[7], // 점의 색상 설정
-        },
-        lineColor: Highcharts.getOptions().colors[7], // 선 색상 설정
-      },
-      {
         name: "서울 아파트 전세가율",
         type: "area",
         fillColor: {
@@ -292,6 +266,37 @@ export default function Pir() {
         },
       },
       {
+        name: "서울 아파트 PIR", // 아직아님
+        type: "area",
+        yAxis: 1,
+        data: pirData,
+        tooltip: {
+          valueSuffix: "", //" mm"
+        },
+        fillColor: {
+          linearGradient: {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 1,
+          },
+          stops: [
+            [0, Highcharts.getOptions().colors[7]],
+            [
+              1,
+              Highcharts.color(Highcharts.getOptions().colors[1])
+                .setOpacity(0)
+                .get("rgba"),
+            ],
+          ],
+        },
+        marker: {
+          fillColor: Highcharts.getOptions().colors[7], // 점의 색상 설정
+        },
+        lineColor: Highcharts.getOptions().colors[7], // 선 색상 설정
+      },
+
+      {
         name: "서울 아파트 매매 지수", // 지역이름 변수로 놓자
         type: "spline",
         data: housePriceIndexData,
@@ -307,15 +312,15 @@ export default function Pir() {
           valueSuffix: "%",
         },
       },
-      {
-        name: "PIR평균", // 지역이름 변수로 놓자
-        type: "spline",
-        yAxis: 1, // 이거 있으면 좌측 눈금 따라가나보다!
-        data: avg,
-        tooltip: {
-          valueSuffix: "", //" mm"
-        },
-      },
+      // {
+      //   name: "PIR평균", // 지역이름 변수로 놓자
+      //   type: "spline",
+      //   yAxis: 1, // 이거 있으면 좌측 눈금 따라가나보다!
+      //   data: avg,
+      //   tooltip: {
+      //     valueSuffix: "", //" mm"
+      //   },
+      // },
     ],
     // plotOptions: {
     //   series: {

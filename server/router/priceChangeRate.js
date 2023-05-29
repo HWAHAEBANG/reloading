@@ -11,10 +11,19 @@ router.get("/", (req, res) => {
   axios
     .get(url)
     .then((response) => {
-      console.log("어디부터", response.data.dataBody.data);
-      console.log("어디부터", response.data.dataBody.data.업데이트일자);
-      console.log("어디부터", response.data.dataBody.data.데이터리스트);
-      console.log("어디부터", response.data.dataBody.data.날짜리스트);
+      // console.log("업데이트", response.data.dataBody.data.업데이트일자);
+      const DATA_VALUE_LIST = response.data.dataBody.data.데이터리스트.filter(
+        (item) => item.지역코드 === "1100000000" && item.지역명 === "서울"
+      )[0].dataList;
+      const PRD_DE_LIST = response.data.dataBody.data.날짜리스트;
+      const data = PRD_DE_LIST.map((date, index) => {
+        const year = date.slice(0, 4);
+        const month = date.slice(4, 6) - 1;
+        const day = date.slice(6);
+        const fixedData = parseFloat(DATA_VALUE_LIST[index]).toFixed(3);
+        return [Date.UTC(year, month, day), parseFloat(fixedData)];
+      });
+
       // const data = response.data.map((item) => {
       //   const year = item.PRD_DE.slice(0, 4);
       //   const month = item.PRD_DE.slice(4, 6);
@@ -23,6 +32,7 @@ router.get("/", (req, res) => {
       //   return [Date.UTC(year, month, day), parseFloat(fixedData)];
       // });
 
+      console.log("숙제검사", data);
       // console.log(categories);
 
       // console.log(categories);

@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
     .then((response) => {
       const data = response.data.StatisticSearch.row.map((item) => {
         const year = item.TIME.slice(0, 4);
-        const month = item.TIME.slice(4, 6);
+        const month = item.TIME.slice(4, 6) - 1;
         const fixedData = parseFloat(item.DATA_VALUE).toFixed(2);
         return [Date.UTC(year, month, 1), parseFloat(fixedData)];
       });

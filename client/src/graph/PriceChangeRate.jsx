@@ -58,6 +58,23 @@ export default function PriceChangeRate() {
       type: "datetime",
       // categories: ["Apples", "Oranges", "Pears", "Grapes", "Bananas"],
     },
+    yAxis: {
+      // Primary yAxis
+      labels: {
+        // 좌축 눈금 단위
+        format: "{value}", //%
+        style: {
+          color: Highcharts.getOptions().colors[0],
+        },
+      },
+
+      title: {
+        enabled: false,
+      },
+      tickAmount: 12,
+      max: 1.4,
+      // tickInterval: 40,
+    },
     credits: {
       enabled: false,
     },
@@ -77,6 +94,7 @@ export default function PriceChangeRate() {
       },
     },
   };
+
   return (
     <div>
       {loading ? (

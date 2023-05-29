@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
       const data = response.data.SttsApiTblData[1].row.map(
         (item) => {
           const year = item.WRTTIME_IDTFR_ID.slice(0, 4);
-          const month = item.WRTTIME_IDTFR_ID[5] * 3 - 2;
+          const month = item.WRTTIME_IDTFR_ID[5] * 3 - 3;
           const fixedData = item.DTA_VAL;
           return [Date.UTC(year, month, 1), parseFloat(fixedData)];
         }
