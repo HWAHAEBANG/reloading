@@ -78,7 +78,7 @@ export default function JeonsePriceRatio() {
       // height: "100%",
     },
     title: {
-      text: "서울 전세가율",
+      text: "서울 아파트 전세가율",
     },
     xAxis: {
       type: "datetime",
@@ -124,7 +124,7 @@ export default function JeonsePriceRatio() {
     series: [
       {
         type: "area",
-        name: "서울 전세가율",
+        name: "서울 아파트 전세가율",
         // yAxis: 1,
         data: jeonsePriceRatioData,
         tooltip: {
@@ -153,7 +153,7 @@ export default function JeonsePriceRatio() {
       //   data: [3, 4, 3, 5, 4, 10, 12],
       // },
       {
-        name: "서울 전세가율 평균",
+        name: "서울 아파트 전세가율 평균",
         type: "line", // 꺾은 선 그래프 추가
         data: avg,
         // yAxis: 1,

@@ -1,80 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
-
-const KOSIS_KEY = process.env.KOSIS_KEY;
-
+// DB 연결부 ==================================================================================
+const connectDB = require("../config/connectDB.js");
+const db = connectDB.init();
+// ===========================================================================================
 router.get("/", (req, res) => {
-  const url =
-    "https://data-api.kbland.kr/bfmstat/weekMnthlyHuseTrnd/prcIndxInxrdcRt?%EA%B8%B0%EA%B0%84=&%EB%A7%A4%EB%A7%A4%EC%A0%84%EC%84%B8%EC%BD%94%EB%93%9C=01&%EB%A7%A4%EB%AC%BC%EC%A2%85%EB%B3%84%EA%B5%AC%EB%B6%84=01&%EC%9B%94%EA%B0%84%EC%A3%BC%EA%B0%84%EA%B5%AC%EB%B6%84%EC%BD%94%EB%93%9C=02&%EC%A7%80%EC%97%AD%EC%BD%94%EB%93%9C=&type=false&excelApi=true";
-
-  axios
-    .get(url)
-    .then((response) => {
-      // console.log("업데이트", response.data.dataBody.data.업데이트일자);
-      const DATA_VALUE_LIST = response.data.dataBody.data.데이터리스트.filter(
-        (item) => item.지역코드 === "1100000000" && item.지역명 === "서울"
-      )[0].dataList;
-      const PRD_DE_LIST = response.data.dataBody.data.날짜리스트;
-      const data = PRD_DE_LIST.map((date, index) => {
-        const year = date.slice(0, 4);
-        const month = date.slice(4, 6) - 1;
-        const day = date.slice(6);
-        const fixedData = parseFloat(DATA_VALUE_LIST[index]).toFixed(3);
-        return [Date.UTC(year, month, day), parseFloat(fixedData)];
+  try {
+    const sqlQuery = `SELECT year, month, day, value FROM weekly_price_index_changes_apt_seoul;`;
+    db.query(sqlQuery, (err, result) => {
+      if (err) return console.log(err);
+      const data = result.map((item) => {
+        return [
+          Date.UTC(item.year, item.month - 1, item.day),
+          parseFloat(item.value.toFixed(3)),
+        ];
       });
 
-      // const data = response.data.map((item) => {
-      //   const year = item.PRD_DE.slice(0, 4);
-      //   const month = item.PRD_DE.slice(4, 6);
-      //   const day = item.PRD_DE.slice(6);
-      //   const fixedData = parseFloat(item.DT).toFixed(4);
-      //   return [Date.UTC(year, month, day), parseFloat(fixedData)];
-      // });
-
-      console.log("숙제검사", data);
-      // console.log(categories);
-
-      // console.log(categories);
-
-      // console.log("확인점", categories);
-      // const data = response.data.SttsApiTblData[1].row.map(
-      //   (item) => item.DTA_VAL
-      // );
       res.status(200).send({ data: data });
-
-      // res.status(200).send({ categories: categories, data: data });
-    })
-    .catch((error) => res.status(500).send(error.message));
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;
-
-// router.get("/", (req, res) => {
-//   axios
-//     .get(
-//       `https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=${KOSIS_KEY}&itmId=T001+&objL1=a7+&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=D&startPrdDe=20080407&endPrdDe=20230410&orgId=408&tblId=DT_304004_WEEK_001`
-//     )
-//     .then((response) => {
-//       const data = response.data.map((item) => {
-//         const year = item.PRD_DE.slice(0, 4);
-//         const month = item.PRD_DE.slice(4, 6);
-//         const day = item.PRD_DE.slice(6);
-//         const fixedData = parseFloat(item.DT).toFixed(4);
-//         return [Date.UTC(year, month, day), parseFloat(fixedData)];
-//       });
-
-//       // console.log(categories);
-//       console.log(data);
-//       // console.log(categories);
-
-//       // console.log("확인점", categories);
-//       // const data = response.data.SttsApiTblData[1].row.map(
-//       //   (item) => item.DTA_VAL
-//       // );
-//       res.status(200).send({ data: data });
-
-//       // res.status(200).send({ categories: categories, data: data });
-//     })
-//     .catch((error) => res.status(500).send(error.message));
-// });

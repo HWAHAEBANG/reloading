@@ -6,7 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const authMiddleware = require("./middlewares/authMiddleware.js");
-const test = require("./jobs/fetchAndSyncData.js");
+const executeScheduledUpdate = require("./jobs/fetchAndSyncData.js");
 
 //==========================================
 
@@ -98,6 +98,7 @@ app.use(
 );
 
 const TRANSACTION_VOLUME_JEONSE_SEOUL = require("./router/transactionVolumeJeonseSeoul");
+const test = require("./jobs/fetchAndSyncData.js");
 
 app.use(
   "/allCharts/transactionVolumeJeonseSeoul",
@@ -110,6 +111,6 @@ app.listen(PORT, () => {
   console.log(`${PORT}번 포트가 열렸다..!`);
 });
 
-// jobs =======
-test();
-console.log("테스트 시작");
+// schedule ================================
+executeScheduledUpdate();
+// test();

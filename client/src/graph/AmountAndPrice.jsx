@@ -247,7 +247,7 @@ export default function AmountAndPrice() {
           .get("rgba"),
       },
       {
-        name: "서울 매매 지수", // 지역이름 변수로 놓자
+        name: "서울 아파트 매매 지수", // 지역이름 변수로 놓자
         type: "spline",
         yAxis: 0,
         data: housePriceIndexData,
@@ -258,7 +258,7 @@ export default function AmountAndPrice() {
         // color: Highcharts.getOptions().colors[8],
       },
       {
-        name: "서울 전세 지수", // 지역이름 변수로 놓자
+        name: "서울 아파트 전세 지수", // 지역이름 변수로 놓자
         type: "spline",
         yAxis: 0,
         data: jeonsePriceIndexData,

@@ -1,37 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
-
-const HAI_KEY = process.env.HAI_KEY;
-// router.use()
-
+// DB 연결부 ==================================================================================
+const connectDB = require("../config/connectDB.js");
+const db = connectDB.init();
+// ===========================================================================================
 router.get("/", (req, res) => {
-  axios
-    .get(
-      `https://houstat.hf.go.kr/research/openapi/SttsApiTblData.do?STATBL_ID=T186503126543136&DTACYCLE_CD=QY&ITM_DATANO=10002&START_DTA_DT=200401&END_DTA_DT=203004&TYPE=json&pIndex=1&pSize=1000&key=${HAI_KEY}`
-    )
-    .then((response) => {
-      const data = response.data.SttsApiTblData[1].row.map(
-        (item) => {
-          const year = item.WRTTIME_IDTFR_ID.slice(0, 4);
-          const month = item.WRTTIME_IDTFR_ID[5] * 3 - 3;
-          const fixedData = item.DTA_VAL;
-          return [Date.UTC(year, month, 1), parseFloat(fixedData)];
-        }
-        // `${item.WRTTIME_IDTFR_ID.slice(0, 4)}년 ${
-        //   item.WRTTIME_IDTFR_ID[5] * 3
-        // }분기`
-      );
+  try {
+    const sqlQuery = `SELECT year, month, day, value FROM hai_seoul;`;
+    db.query(sqlQuery, (err, result) => {
+      if (err) return console.log(err);
+      const data = result.map((item) => {
+        return [
+          Date.UTC(item.year, item.month - 1, item.day),
+          parseFloat(item.value),
+        ];
+      });
 
-      // const data = response.data.SttsApiTblData[1].row.map(
-      //   (item) => item.DTA_VAL
-      // );
       res.status(200).send({ data: data });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send(error.message);
     });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;

@@ -30,7 +30,7 @@ export default function Gauge() {
       plotShadow: false,
     },
     title: {
-      text: "부동산 시장 과열 지수",
+      text: "부동산 시장 과열 게이지",
       floating: true,
       x: 0, // x값을 설정하여 가로 방향으로 이동시킵니다.
       y: 10, // y값을 설정하여 세로 방향으로 이동시킵니다.

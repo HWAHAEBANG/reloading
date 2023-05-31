@@ -136,9 +136,9 @@ export default function Pir() {
     title: {
       text: "PIR : 주택 구매 능력 지표",
     },
-    subtitle: {
-      text: "Price to Income Ratio",
-    },
+    // subtitle: {
+    //   text: "Price to Income Ratio",
+    // },
     xAxis: {
       type: "datetime",
     },

@@ -52,7 +52,7 @@ export default function PriceChangeRate() {
       backgroundColor: "transparent",
     },
     title: {
-      text: "주간 매매가 증감률(변동률)",
+      text: "서울 아파트 주간 매매지수 증감률",
     },
     xAxis: {
       type: "datetime",
