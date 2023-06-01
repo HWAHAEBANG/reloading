@@ -36,6 +36,11 @@
   transform: scale(1.02);
 }
 
+.nonClick:hover {
+  transform: none;
+  cursor: auto;
+}
+
 /* x축: 10칸, y축: 10칸 */
 .box1 {
   /* hai */
@@ -51,7 +56,7 @@
   /* 게이지 */
   grid-column: 9/ 11;
   grid-row: 1/5;
-  padding-top: 40px;
+  /* padding-top: 40px; */
 }
 .box4 {
   grid-column: 3 / 5;

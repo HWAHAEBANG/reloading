@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import RingLoader from "react-spinners/RingLoader";
+import axios from "axios";
 
 export default function Gauge() {
   // loading ===========================
@@ -20,6 +21,106 @@ export default function Gauge() {
   const [loading, setLoading] = useState(false);
   // ===================================
 
+  // ===================================
+
+  const [haiDataSeoul, setHaiDataSeoul] = useState();
+
+  const [pirData, setPirData] = useState();
+
+  const [transactionVolumeSalesSeoul, setTransactionVolumeSalesSeoul] =
+    useState();
+
+  const [housePriceIndexData, setHousePriceIndexData] = useState();
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`http://localhost:5000/allCharts/hai`, {
+        withCredentials: true,
+      }),
+
+      axios.get(`http://localhost:5000/allCharts/pir`, {
+        withCredentials: true,
+      }),
+
+      axios.get(`http://localhost:5000/allCharts/transactionVolumeSalesSeoul`, {
+        withCredentials: true,
+      }),
+
+      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
+    ])
+
+      .then((responses) => {
+        const haiResponse = responses[0];
+
+        const pirResponse = responses[1];
+
+        const transactionVolumeSalesSeoulResponse = responses[2];
+
+        const housePriceIndexResponse = responses[3];
+
+        // 가장 최신 데이터와 3개월 전 데이터를 비교
+        // 증감률 = ((현재 값 - 이전 값) / 이전 값) * 100
+
+        setHaiDataSeoul(
+          Math.round(
+            ((haiResponse.data.data.slice(-1)[0][1] -
+              haiResponse.data.data.slice(-7, -6)[0][1]) /
+              haiResponse.data.data.slice(-7, -6)[0][1]) *
+              100
+          )
+        );
+
+        setPirData(
+          Math.round(
+            ((pirResponse.data.data.slice(-1)[0][1] -
+              pirResponse.data.data.slice(-7, -6)[0][1]) /
+              pirResponse.data.data.slice(-7, -6)[0][1]) *
+              100
+          )
+        );
+
+        setTransactionVolumeSalesSeoul(
+          Math.round(
+            ((transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][1] -
+              transactionVolumeSalesSeoulResponse.data.data.slice(
+                -7,
+                -6
+              )[0][1]) /
+              transactionVolumeSalesSeoulResponse.data.data.slice(
+                -7,
+                -6
+              )[0][1]) *
+              100
+          )
+        );
+
+        setHousePriceIndexData(
+          Math.round(
+            ((housePriceIndexResponse.data.data.slice(-1)[0][1] -
+              housePriceIndexResponse.data.data.slice(-7, -6)[0][1]) /
+              housePriceIndexResponse.data.data.slice(-7, -6)[0][1]) *
+              100
+          )
+        );
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
+  console.log("hai", haiDataSeoul);
+  console.log("pir", pirData);
+  console.log("양", transactionVolumeSalesSeoul);
+  console.log("지수", housePriceIndexData);
+
+  //====================================================
+
   const options = {
     chart: {
       type: "gauge",
@@ -28,14 +129,16 @@ export default function Gauge() {
       plotBackgroundImage: null,
       plotBorderWidth: 0,
       plotShadow: false,
+      height: "330px",
     },
     title: {
-      text: "부동산 시장 과열 게이지",
+      text: "부동산 시장 온도 게이지",
       floating: true,
       x: 0, // x값을 설정하여 가로 방향으로 이동시킵니다.
-      y: 10, // y값을 설정하여 세로 방향으로 이동시킵니다.
+      y: 50, // y값을 설정하여 세로 방향으로 이동시킵니다.
     },
     pane: {
+      center: ["50%", "75%"], // 하 찾았다.
       startAngle: -100,
       endAngle: 100,
       background: [
@@ -58,7 +161,7 @@ export default function Gauge() {
           innerRadius: "77%",
         },
       ],
-      size: "80%",
+      size: "90%",
     },
 
     // 차트 데이터 설정
@@ -116,10 +219,10 @@ export default function Gauge() {
 
     series: [
       {
-        name: "Speed",
+        name: "시장 분위기",
         data: [30],
         tooltip: {
-          valueSuffix: " km/h",
+          valueSuffix: "%",
         },
         // 차트 색상 설정
         dial: {

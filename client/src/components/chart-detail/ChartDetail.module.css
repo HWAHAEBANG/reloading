@@ -70,7 +70,7 @@
   bottom: 0;
   left: 30px;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .sourceArea:hover .sourceBox {
@@ -161,6 +161,7 @@
 .helperContent {
   font-size: 15px;
   line-height: 30px;
+  margin-top: 10px;
 }
 
 .helperContent span {

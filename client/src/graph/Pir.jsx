@@ -101,13 +101,35 @@ export default function Pir() {
       });
   }, []);
 
-  console.log(pirData);
+  // console.log(pirData);
   //   위의 코드는 여러 개의 axios 요청을 병렬로 처리하고, 모든 요청이 완료된 후에 한 번의 상태 업데이트를 수행하는 방식입니다. 이 방법은 성능과 효율성 면에서 일반적으로 효과적입니다.
   // 병렬로 요청을 처리하기 때문에 각 요청이 독립적으로 실행되므로 전체적인 처리 시간이 단일 요청의 처리 시간보다 효율적으로 단축될 수 있습니다. 이는 네트워크 요청이 병렬로 처리되므로 여러 개의 요청이 동시에 진행되는 것을 의미합니다.
   // 또한, Promise.all()을 사용하여 모든 요청이 완료될 때까지 기다린 후 한 번의 상태 업데이트를 수행하기 때문에, 상태 업데이트를 여러 번 수행하는 것보다 성능적으로 유리할 수 있습니다. 상태 업데이트는 리렌더링을 유발하므로, 한 번의 업데이트는 리렌더링을 한 번만 발생시키기 때문에 효율적입니다.
   // 성능에 영향을 주는 요소는 네트워크 지연, 서버 응답 시간 등 다양한 요소가 있습니다. 코드 자체의 성능은 개발 환경, 네트워크 상태, 서버 성능 등에 따라 달라질 수 있습니다. 따라서 실제로 코드를 실행해보고 성능을 측정하거나, 프로파일링 도구를 사용하여 성능 향상을 위한 최적화 작업을 수행하는 것이 좋습니다.
   // 그러나 일반적으로 병렬 처리와 한 번의 상태 업데이트를 수행하는 방식은 많은 요청을 처리하고 성능을 향상시키는 데 효과적인 방법 중 하나입니다.
   //====
+
+  // 중첩배열용
+  const getAverage = (arr) => {
+    const sum = arr.reduce((acc, cur) => acc + cur[1], 0);
+    const avg = sum / arr.length;
+    return avg;
+  };
+
+  const jeonsePriceRatioAvg =
+    jeonsePriceRatioData &&
+    jeonsePriceRatioData.map((item) => [
+      item[0],
+      parseFloat(getAverage(jeonsePriceRatioData).toFixed(1)),
+    ]);
+
+  const pirAvg =
+    pirData &&
+    pirData.map((item) => [
+      item[0],
+      parseFloat(getAverage(pirData).toFixed(1)),
+    ]);
+
   const options = {
     chart: {
       zoomType: "xy",
@@ -134,7 +156,7 @@ export default function Pir() {
       ],
     },
     title: {
-      text: "PIR : 주택 구매 능력 지표",
+      text: "서울 아파트 PIR (주택 구매 능력 지표)",
     },
     // subtitle: {
     //   text: "Price to Income Ratio",
@@ -185,8 +207,12 @@ export default function Pir() {
         tickAmount: 7,
       },
     ],
+    // tooltip: {
+    //   shared: true,
+    // },
     tooltip: {
-      shared: true,
+      split: true,
+      valueSuffix: " units",
     },
     legend: {
       layout: "vertical",
@@ -271,7 +297,7 @@ export default function Pir() {
         yAxis: 1,
         data: pirData,
         tooltip: {
-          valueSuffix: "", //" mm"
+          valueSuffix: "년", //" mm"
         },
         fillColor: {
           linearGradient: {
@@ -310,6 +336,24 @@ export default function Pir() {
         data: jeonsePriceIndexData,
         tooltip: {
           valueSuffix: "%",
+        },
+      },
+      {
+        name: "서울 아파트 전세가율 평균",
+        type: "line", // 꺾은 선 그래프 추가
+        data: jeonsePriceRatioAvg,
+        // yAxis: 1,
+        tooltip: {
+          valueSuffix: "%",
+        },
+      },
+      {
+        name: "서울 아파트 PIR 평균",
+        type: "line", // 꺾은 선 그래프 추가
+        data: pirAvg,
+        yAxis: 1,
+        tooltip: {
+          valueSuffix: "년",
         },
       },
       // {

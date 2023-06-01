@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Signal.module.css";
 import RedLamp from "../components/ui/RedLamp";
 import GreenLamp from "../components/ui/GreenLamp";
 import RingLoader from "react-spinners/RingLoader";
+import axios from "axios";
 
 export default function Signal() {
   // loading ===========================
@@ -20,6 +21,130 @@ export default function Signal() {
 
   const [loading, setLoading] = useState(false);
   // ===================================
+
+  const [transactionVolumeSalesSeoul, setTransactionVolumeSalesSeoul] =
+    useState();
+  const [transactionVolumeJeonseSeoul, setTransactionVolumeJeonseSeoul] =
+    useState();
+  const [priceChangeRateData, setPriceChangeRateData] = useState();
+
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([
+      axios.get(`http://localhost:5000/allCharts/transactionVolumeSalesSeoul`, {
+        withCredentials: true,
+      }),
+      axios.get(
+        `http://localhost:5000/allCharts/transactionVolumeJeonseSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(`http://localhost:5000/allCharts/priceChangeRate`, {
+        withCredentials: true,
+      }),
+    ])
+      .then((responses) => {
+        const transactionVolumeSalesSeoulResponse = responses[0];
+        const transactionVolumeJeonseSeoulResponse = responses[1];
+        const priceChangeRateResponse = responses[2];
+
+        // 데이터 할당 =====================================================================
+
+        // 서울 아파트 매매 거래량 =========================================================
+        // 서울 아파트 매매 거래량 =========================================================
+        setTransactionVolumeSalesSeoul({
+          year: new Date(
+            transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][0]
+          ).getFullYear(),
+          month:
+            new Date(
+              transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][0]
+            ).getMonth() + 1, // +1 해주지 않으면 전달이 출력된다.
+          value: transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][1],
+        });
+        // 서울 아파트 전세 거래량 =========================================================
+        setTransactionVolumeJeonseSeoul({
+          year: new Date(
+            transactionVolumeJeonseSeoulResponse.data.data.slice(-1)[0][0]
+          ).getFullYear(),
+          month:
+            new Date(
+              transactionVolumeJeonseSeoulResponse.data.data.slice(-1)[0][0]
+            ).getMonth() + 1, // +1 해주지 않으면 전달이 출력된다.
+          value: transactionVolumeJeonseSeoulResponse.data.data.slice(-1)[0][1],
+        });
+
+        // 서울 아파트 주간 매매지수 증감률 =================================================
+        const dataList = priceChangeRateResponse.data.data; // 보기 좋기 변수에 재할당
+        let lastMinusValueIndex; // 가장 마지막 음수값이 있는 인덱스를 저장할 변수
+
+        // 배열을 뒤에서 부터 돌면서 마지막 음수값을 찾음
+        for (let i = dataList.length - 1; i >= 0; i--) {
+          if (dataList[i][1] < 0) {
+            lastMinusValueIndex = i;
+            break; // 음수 값이 발견되면 lastMinusValueIndex에 인덱스를 할당하고 반복문 종료
+          } else {
+            lastMinusValueIndex = -1; // 사실상 도달할 일이 없는 else문.
+          }
+        }
+
+        // 상승이 몇주 연속 진행되었나를 상태에 저장 (인덱스에서 인덱스를 빼주는 개념이기 때문에 배열 길이에서 1 빼주는 것임)
+        setPriceChangeRateData(
+          /* dataList.length - 1 - lastMinusValueIndex */ 51
+        );
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        // 에러 처리
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
+  // ======================================================================
+  // 데이터 조건문 =================================================
+  const [isConditionMet1, setIsConditionMet1] = useState(false);
+  const [isConditionMet2, setIsConditionMet2] = useState(false);
+  const [isConditionMet3, setIsConditionMet3] = useState(false);
+
+  useEffect(() => {
+    if (
+      !transactionVolumeSalesSeoul ||
+      !transactionVolumeJeonseSeoul ||
+      !priceChangeRateData /* 증감률 추가 */
+    )
+      return;
+    // 매매 거래량이 10000을 초과하는가
+    if (transactionVolumeSalesSeoul.value >= 10000) {
+      setIsConditionMet1(true);
+    } else {
+      setIsConditionMet1(false);
+    }
+
+    // 매매 거개량이 전세거래량을 추월했는가?
+    if (
+      transactionVolumeSalesSeoul.value >= transactionVolumeJeonseSeoul.value
+    ) {
+      setIsConditionMet2(true);
+    } else {
+      setIsConditionMet2(false);
+    }
+
+    // 증감율의 상승기조가 1년 이상 지속되었는가?
+    if (priceChangeRateData >= 52) {
+      setIsConditionMet3(true);
+    } else {
+      setIsConditionMet3(false);
+    }
+  }, [
+    transactionVolumeSalesSeoul,
+    transactionVolumeJeonseSeoul,
+    priceChangeRateData,
+  ]);
+
+  // ======================================================================
   return (
     <div className={styles.mainContainer}>
       {loading ? (
@@ -38,21 +163,57 @@ export default function Signal() {
           <span className={styles.title}>
             시장 반등의 증상과 현황
             <br />
-            <span className={styles.label}>(기준 : 서울)</span>
+            <span className={styles.label}>(기준 : 서울 아파트)</span>
           </span>
 
           <div className={styles.contents}>
             <div className={styles.content}>
               <p className={styles.symptom}>
                 <span className={styles.counter}>증상1</span>
-                <span>&nbsp;&nbsp;월별 매매 거래량이 1만건을 초과한다.</span>
+                <span>
+                  &nbsp;&nbsp;월별 매매 거래량이 1만건 이상을 기록한다.
+                </span>
               </p>
               <div className={styles.situation}>
-                <GreenLamp />
+                {isConditionMet1 ? <GreenLamp /> : <RedLamp />}
                 <div className={styles.text}>
-                  <p> 현재 매매 거래량이 1만건을 돌파하였습니다.</p>
-                  <p>
-                    <span>2023년 5월</span> 기준 거래량 <span>11000건</span>{" "}
+                  {isConditionMet1 ? (
+                    <p className={styles.greenText}>
+                      {" "}
+                      현재 매매 거래량이 1만건을 돌파하였습니다.
+                    </p>
+                  ) : (
+                    <p className={styles.redText}>
+                      {" "}
+                      현재 매매 거래량은 1만건 미만입니다.
+                    </p>
+                  )}
+                  <p
+                    className={
+                      isConditionMet1 ? styles.greenText : styles.redText
+                    }
+                  >
+                    <span>
+                      -{" "}
+                      {`${
+                        transactionVolumeSalesSeoul
+                          ? transactionVolumeSalesSeoul.year
+                          : "" // && 쓰지않은 이유는 undefined가 UI에 출력되는 것을 방지하기 위함.
+                      }년 ${
+                        transactionVolumeSalesSeoul
+                          ? transactionVolumeSalesSeoul.month
+                          : ""
+                      }월`}
+                      기준{" "}
+                    </span>
+                    매매 거래량
+                    <span>
+                      {" "}
+                      {transactionVolumeSalesSeoul
+                        ? transactionVolumeSalesSeoul.value
+                        : ""}
+                      건
+                    </span>
                   </p>
                 </div>
               </div>
@@ -66,11 +227,70 @@ export default function Signal() {
                 </span>
               </p>
               <div className={styles.situation}>
-                <RedLamp />
+                {isConditionMet2 ? <GreenLamp /> : <RedLamp />}
                 <div className={styles.text}>
-                  <p> 현재 전세 거래량이 보다 우세합니다.</p>
-                  <p>
-                    <span>2023년 5월</span> 기준 거래량 <span>11000건</span>{" "}
+                  {isConditionMet2 ? (
+                    <p className={styles.greenText}>
+                      {" "}
+                      현재 매매 거래량이 전세 거래량을 추월했습니다.{" "}
+                    </p>
+                  ) : (
+                    <p className={styles.redText}>
+                      {" "}
+                      현재 매매 거래량 보다 전세 거래량이 우세합니다.
+                    </p>
+                  )}
+                  <p
+                    className={
+                      isConditionMet2 ? styles.greenText : styles.redText
+                    }
+                  >
+                    <span>
+                      -{" "}
+                      {`${
+                        transactionVolumeSalesSeoul
+                          ? transactionVolumeSalesSeoul.year
+                          : ""
+                      }년 ${
+                        transactionVolumeSalesSeoul
+                          ? transactionVolumeSalesSeoul.month
+                          : ""
+                      }월`}
+                      기준{" "}
+                    </span>
+                    매매 거래량{" "}
+                    <span>
+                      {transactionVolumeSalesSeoul
+                        ? transactionVolumeSalesSeoul.value
+                        : ""}
+                      건
+                    </span>
+                  </p>
+                  <p
+                    className={
+                      isConditionMet2 ? styles.greenText : styles.redText
+                    }
+                  >
+                    <span>
+                      -{" "}
+                      {`${
+                        transactionVolumeJeonseSeoul
+                          ? transactionVolumeJeonseSeoul.year
+                          : ""
+                      }년 ${
+                        transactionVolumeJeonseSeoul
+                          ? transactionVolumeJeonseSeoul.month
+                          : ""
+                      }월`}
+                      기준{" "}
+                    </span>
+                    전세 거래량{" "}
+                    <span>
+                      {transactionVolumeJeonseSeoul
+                        ? transactionVolumeJeonseSeoul.value
+                        : ""}
+                      건
+                    </span>
                   </p>
                 </div>
               </div>
@@ -79,14 +299,18 @@ export default function Signal() {
             <div className={styles.content}>
               <p className={styles.symptom}>
                 <span className={styles.counter}>증상3</span>
-                <span>&nbsp;&nbsp;매매가 상승세가 1년이상 지속된다.</span>
+                <span>&nbsp;&nbsp;주간 매매가 증감률이 1년 이상 상승세다.</span>
               </p>
               <div className={styles.situation}>
-                <GreenLamp />
+                {isConditionMet3 ? <GreenLamp /> : <RedLamp />}
                 <div className={styles.text}>
-                  <p> 현재 상승세가 7개월간 지속되고 있습니다.</p>
-                  <p>
-                    <span>2023년 5월</span> 기준 거래량 <span>11000건</span>{" "}
+                  <p
+                    className={
+                      isConditionMet3 ? styles.greenText : styles.redText
+                    }
+                  >
+                    현재 상승세가 <span>{priceChangeRateData}주</span>간
+                    지속되고 있습니다.
                   </p>
                 </div>
               </div>

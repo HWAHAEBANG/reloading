@@ -42,7 +42,7 @@ export default function MyCharts() {
       });
   }, []);
 
-  console.log("디비연결 이상무", chartsData);
+  // console.log("디비연결 이상무", chartsData);
   // ===================================================
   // sort filter ===================================== // 블로그 포스팅
 

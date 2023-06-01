@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
       const data = result.map((item) => {
         return [
           Date.UTC(item.year, item.month - 1, item.day),
-          parseFloat(item.value),
+          parseFloat(item.value.toFixed(1)),
         ];
       });
 

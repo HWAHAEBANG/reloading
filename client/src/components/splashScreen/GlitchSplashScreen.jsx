@@ -61,14 +61,14 @@ export default function GlitchSplashScreen() {
       })
       .then((response) => {
         faidIn();
-        console.log("존재하는 계정입니다.");
+        // console.log("존재하는 계정입니다.");
         setExistingId(true);
         pwInputRef.current.focus();
         setAlertMessage("");
       })
       .catch((error) => {
         wrong();
-        setAlertMessage("존재하지 않는 계정입니다.");
+        // setAlertMessage("존재하지 않는 계정입니다.");
         console.log("에러코드", error.response.status, error.response.data);
       });
   };

@@ -28,7 +28,7 @@ export default function VerifyEmailModal({
   const countdownTime = 10 * 60 * 1000;
 
   const handleComplete = () => {
-    console.log("타이머 종료");
+    // console.log("타이머 종료");
     setIsRunning(false); // 타이머가 종료되면 실행 중인 상태를 false로 변경
   };
 

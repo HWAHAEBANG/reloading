@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./TopBar.module.css";
 import { IoMdArrowDropright, IoMdArrowDropleft } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
+import { FaHandshake, FaRegHandshake } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserInfoAction, logoutAction } from "../../redux";
@@ -46,7 +47,8 @@ export default function TopBar({ showNav, setShowNav }) {
         <Link to='/'>
           <h2 className={styles.logo1}>RE:LOADING</h2>
         </Link>
-        <RxCross2 className={styles.crossIcon} />
+        {/* <RxCross2 className={styles.crossIcon} /> */}
+        <FaHandshake className={styles.crossIcon} />
         <a href='https://www.weolbu.com/' target='_blank'>
           <img
             className={styles.logo2}

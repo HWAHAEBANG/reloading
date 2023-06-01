@@ -48,11 +48,12 @@ export default function PriceChangeRate() {
 
   const options = {
     chart: {
+      zoomType: "xy",
       type: "column",
       backgroundColor: "transparent",
     },
     title: {
-      text: "서울 아파트 주간 매매지수 증감률",
+      text: "서울 아파트 주간 매매가 증감률",
     },
     xAxis: {
       type: "datetime",
@@ -63,24 +64,32 @@ export default function PriceChangeRate() {
       labels: {
         // 좌축 눈금 단위
         format: "{value}", //%
-        style: {
-          color: Highcharts.getOptions().colors[0],
-        },
+        // style: {
+        //   color: Highcharts.getOptions().colors[0],
+        // },
       },
 
       title: {
-        enabled: false,
+        enabled: true,
+        text: "주간 매매가 증감률 (%)",
       },
       tickAmount: 12,
       max: 1.4,
       // tickInterval: 40,
     },
+    tooltip: {
+      split: true,
+      valueSuffix: " units",
+    },
     credits: {
+      enabled: false,
+    },
+    legend: {
       enabled: false,
     },
     series: [
       {
-        name: "주간 매매가 증감률(변동율)",
+        name: "주간 매매가 증감률",
         type: "area",
         data: priceChangeRateData,
         tooltip: {

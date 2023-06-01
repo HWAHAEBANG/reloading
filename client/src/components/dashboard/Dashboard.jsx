@@ -40,7 +40,6 @@ export default function Dashboard() {
       });
   }, []);
 
-  console.log("대시보드 디비연결 이상무", chartsData);
   // ===================================================
   const navigate = useNavigate();
 
@@ -112,9 +111,9 @@ export default function Dashboard() {
       </div>
       <div
         id='signal'
-        onClick={enter}
-        to='/allCharts/signal'
-        className={`${styles.box} ${styles.box7}`}
+        // onClick={enter}
+        // to='/allCharts/signal'
+        className={`${styles.box} ${styles.box7} ${styles.nonClick}`}
       >
         <Signal />
       </div>

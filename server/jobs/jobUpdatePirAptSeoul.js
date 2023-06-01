@@ -53,9 +53,17 @@ const jobUpdatePirAptSeoul = schedule.scheduleJob(updateRule, function () {
             [latestDataApi.value, latestDataApi.date],
             (err, result) => {
               if (err) return console.log(err);
-              console.log(
-                "PIR : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
-              );
+              //============================================================================
+              const messageText =
+                "'서울 아파트 PIR'의 최근 일자 데이터가 수정되었습니다.";
+              const messageQuery = `INSERT INTO data_update_notice(message) VALUES(?) `;
+              db.query(messageQuery, [messageText], (err, result) => {
+                if (err) return console.log(err);
+                console.log(
+                  "PIR : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
+                );
+              });
+              //============================================================================
             }
           );
         }
@@ -71,7 +79,17 @@ const jobUpdatePirAptSeoul = schedule.scheduleJob(updateRule, function () {
           [latestDataApi.date, year, month, day, latestDataApi.value],
           (err, result) => {
             if (err) return console.log(err);
-            console.log("PIR : 새로운 데이터가 감지되어 DB에 추가하였습니다.");
+            //============================================================================
+            const messageText =
+              "'서울 아파트 PIR'에 최신 데이터가 등록되었습니다.";
+            const messageQuery = `INSERT INTO data_update_notice(message) VALUES(?) `;
+            db.query(messageQuery, [messageText], (err, result) => {
+              if (err) return console.log(err);
+              console.log(
+                "PIR : 새로운 데이터가 감지되어 DB에 추가하였습니다."
+              );
+            });
+            //============================================================================
           }
         );
       }

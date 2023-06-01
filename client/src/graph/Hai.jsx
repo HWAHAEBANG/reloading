@@ -81,7 +81,7 @@ export default function Hai() {
       });
   }, []);
 
-  console.log("체크", baseRateKoreaResponse);
+  // console.log("체크", baseRateKoreaResponse);
 
   const options = {
     chart: {
@@ -99,10 +99,10 @@ export default function Hai() {
       },
     },
     title: {
-      text: "HAI : 주택 구입 부담 지수",
+      text: "서울 HAI (주택 구입 부담 지수)",
     },
     // subtitle: {
-    //   text: "Housing Affordability Index",
+    //   text: "주택 구입 부담 지수",
     // },
     xAxis: { type: "datetime" },
     // [
@@ -124,7 +124,7 @@ export default function Hai() {
 
         title: {
           // 좌측 눈금 이름
-          text: "HAI, 매매지수",
+          text: "HAI, 매매 지수 (%)",
           style: {
             color: Highcharts.getOptions().colors[0],
           },
@@ -137,14 +137,14 @@ export default function Hai() {
         // Secondary yAxis
         title: {
           // 우측 눈금 이름
-          text: "기준금리",
+          text: "기준금리 (%)",
           style: {
             color: "#95DFFD",
           },
         },
         labels: {
           // 우축 눈금 단위
-          format: "{value}%", //"{value} mm"
+          format: "{value}", //"{value} mm"
           style: {
             color: "#95DFFD",
           },
@@ -155,7 +155,8 @@ export default function Hai() {
       },
     ],
     tooltip: {
-      shared: true,
+      split: true,
+      valueSuffix: " units",
     },
     legend: {
       layout: "vertical",
@@ -175,7 +176,7 @@ export default function Hai() {
         yAxis: 0,
         data: haiDataSeoul,
         tooltip: {
-          valueSuffix: "", //" mm"
+          valueSuffix: "%", //" mm"
         },
       },
       {
@@ -184,7 +185,7 @@ export default function Hai() {
         yAxis: 0, // 이거 있으면 좌측 눈금 따라가나보다!
         data: avg,
         tooltip: {
-          valueSuffix: "", //" mm"
+          valueSuffix: "%", //" mm"
         },
       },
       {

@@ -112,8 +112,6 @@ export default function AmountAndPrice() {
       });
   }, []);
 
-  console.log("하잇", transactionVolumeJeonseSeoul);
-
   const options = {
     chart: {
       zoomType: "xy",
@@ -142,7 +140,7 @@ export default function AmountAndPrice() {
         },
         title: {
           // 좌측 눈금 이름
-          text: "가격 지수 (%)",
+          text: "매매 / 전세 지수 (%)",
           // style: {
           //   color: Highcharts.getOptions().colors[1],
           // },
@@ -162,7 +160,16 @@ export default function AmountAndPrice() {
         },
         labels: {
           // 우축 눈금 단위
-          format: "{value}", //"{value} mm"
+          // format: "{value}", //"{value} mm"
+          //==============================================
+          formatter: function () {
+            // 4자리 이상의 수에 쉼표 추가
+            if (Math.abs(this.value) >= 1000) {
+              return Highcharts.numberFormat(this.value, 0, "", ",");
+            }
+            return this.value;
+          },
+          //==============================================
           // style: {
           //   color: Highcharts.getOptions().colors[0],
           // },
@@ -174,7 +181,8 @@ export default function AmountAndPrice() {
       },
     ],
     tooltip: {
-      shared: true,
+      split: true,
+      valueSuffix: " units",
     },
     legend: {
       layout: "vertical",
@@ -229,6 +237,20 @@ export default function AmountAndPrice() {
         data: transactionVolumeSalesSeoul,
         tooltip: {
           valueSuffix: "건", //" mm"
+          // ==================================
+          pointFormatter: function () {
+            // 4자리 이상의 수에 쉼표 추가
+            if (Math.abs(this.y) >= 1000) {
+              return (
+                this.series.name +
+                ": <b>" +
+                Highcharts.numberFormat(this.y, 0, "", ",") +
+                "건</b><br/>"
+              );
+            }
+            return this.series.name + ": <b>" + this.y + "</b><br/>";
+          },
+          // ==================================
         },
         // color: Highcharts.getOptions().colors[2],
         color: Highcharts.color("#ec7878").setOpacity(0.7).get("rgba"),
@@ -240,7 +262,21 @@ export default function AmountAndPrice() {
         yAxis: 1,
         data: transactionVolumeJeonseSeoul,
         tooltip: {
-          valueSuffix: "", //" mm"
+          // valueSuffix: "건", //" mm"
+          // ==================================
+          pointFormatter: function () {
+            // 4자리 이상의 수에 쉼표 추가
+            if (Math.abs(this.y) >= 1000) {
+              return (
+                this.series.name +
+                ": <b>" +
+                Highcharts.numberFormat(this.y, 0, "", ",") +
+                "건</b><br/>"
+              );
+            }
+            return this.series.name + ": <b>" + this.y + "</b><br/>";
+          },
+          // ==================================
         },
         color: Highcharts.color(Highcharts.getOptions().colors[0])
           .setOpacity(0.7)

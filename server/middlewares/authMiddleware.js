@@ -52,6 +52,7 @@ const authMiddleware = (req, res, next) => {
       db.query(sqlQuery, [decodedFreshToken.id], (err, result) => {
         if (err) res.status(500).json(err);
         if (result.length === 0) {
+          // 오류 발생구간!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           res.status(403).json("There Is No That Refresh Token in DB");
         } else {
           // DB 가져온 refresh token을 브라우저에서 가져온 refresh token과 비교

@@ -97,14 +97,38 @@ export default function UnsoldHouse() {
       {
         title: {
           text: "미분양 물량 (호)",
+          style: {
+            color: Highcharts.getOptions().colors[0],
+          },
         },
         tickAmount: 10,
         max: 45000,
         opposite: true,
+
+        labels: {
+          // 우축 눈금 단위
+          // format: "{value}", //"{value} mm"
+          //==============================================
+          formatter: function () {
+            // 4자리 이상의 수에 쉼표 추가
+            if (Math.abs(this.value) >= 1000) {
+              return Highcharts.numberFormat(this.value, 0, "", ",");
+            }
+            return this.value;
+          },
+          //==============================================
+          style: {
+            color: Highcharts.getOptions().colors[0],
+          },
+        },
       },
     ],
+    // tooltip: {
+    //   shared: true,
+    // },
     tooltip: {
-      shared: true,
+      split: true,
+      valueSuffix: " units",
     },
     legend: {
       layout: "vertical",
@@ -154,11 +178,25 @@ export default function UnsoldHouse() {
     series: [
       {
         type: "area",
-        name: "미분양 물량",
+        name: "수도권 미분양 물량",
         yAxis: 1,
         data: unsoldHouseData,
         tooltip: {
-          valueSuffix: "호",
+          // valueSuffix: "호",
+          // ==================================
+          pointFormatter: function () {
+            // 4자리 이상의 수에 쉼표 추가
+            if (Math.abs(this.y) >= 1000) {
+              return (
+                this.series.name +
+                ": <b>" +
+                Highcharts.numberFormat(this.y, 0, "", ",") +
+                "호</b><br/>"
+              );
+            }
+            return this.series.name + ": <b>" + this.y + "</b><br/>";
+          },
+          // ==================================
         },
       },
       {
@@ -167,7 +205,21 @@ export default function UnsoldHouse() {
         yAxis: 1,
         data: standard,
         tooltip: {
-          valueSuffix: "호",
+          // valueSuffix: "호",
+          // ==================================
+          pointFormatter: function () {
+            // 4자리 이상의 수에 쉼표 추가
+            if (Math.abs(this.y) >= 1000) {
+              return (
+                this.series.name +
+                ": <b>" +
+                Highcharts.numberFormat(this.y, 0, "", ",") +
+                "호</b><br/>"
+              );
+            }
+            return this.series.name + ": <b>" + this.y + "</b><br/>";
+          },
+          // ==================================
         },
         color: Highcharts.getOptions().colors[2],
       },

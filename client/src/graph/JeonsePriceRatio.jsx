@@ -86,15 +86,15 @@ export default function JeonsePriceRatio() {
     yAxis: [
       {
         title: {
-          enabled: false,
-          //   text: "매매 / 전세지수, 전세가율",
+          enabled: true,
+          text: "매매 / 전세 지수, 전세가율 (%)",
           // style: {
           //   color: Highcharts.getOptions().colors[0],
           // },
         },
         labels: {
           // 우축 눈금 단위
-          format: "{value}%", //"{value} mm"
+          format: "{value}", //"{value} mm"
           // style: {
           //   color: Highcharts.getOptions().colors[0],
           // },
