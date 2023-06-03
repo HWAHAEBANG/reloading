@@ -1,0 +1,212 @@
+.mainContainer {
+  width: 100%;
+  height: 95%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.subContainer {
+  position: relative;
+  width: 100%;
+  height: 0%;
+  border-radius: 15px;
+  border: 1px solid mediumaquamarine;
+  animation: boxExtend 0.5s forwards;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  overflow: hidden;
+}
+
+@keyframes boxExtend {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+.topArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.title {
+  /* padding: 0 25px; */
+  font-size: 40px;
+}
+
+.contentsArea {
+  display: flex;
+  flex-direction: column;
+  /* flex: 1; */
+  height: 83%;
+  gap: 20px;
+  /* background-color: red; */
+}
+
+.explainArea {
+  /* background-color: red; */
+  line-height: 30px;
+}
+
+.explainArea span {
+  color: mediumaquamarine;
+}
+
+.notificationBox,
+.dataUpdateBox,
+.releaseNoteBox {
+  flex-basis: calc(50% - 15px);
+  flex-grow: 1;
+}
+
+.boardArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* .notificationBox {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  height: 100%;
+}
+
+.dataUpdateBox {
+  display: flex;
+  flex-direction: column;
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+}
+
+.releaseNoteBox {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+} */
+
+.subTitle {
+  height: 25px;
+  margin-left: 3px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.listContainer {
+  background-color: rgba(145, 185, 174, 0.25);
+  border-radius: 5px;
+  padding: 5px 0;
+  overflow-y: scroll;
+}
+
+.notificationBox .listContainer {
+  max-height: 360px; /* 원하는 높이로 설정 */
+}
+
+.dataUpdateBox .listContainer {
+  max-height: 360px; /* 원하는 높이로 설정 */
+}
+
+.releaseNoteBox .listContainer {
+  max-height: 200px; /* 원하는 높이로 설정 */
+  flex: 1;
+}
+
+.listContainerInner {
+  /* 깔끔한 스크롤 조건 */
+  display: flex;
+  flex-direction: column;
+}
+
+.post {
+  border-bottom: 1px solid #fff;
+  /* padding: 15px 10px; */
+  margin: 0 10px;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-fill-mode: both;
+}
+
+.postHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  padding: 15px 10px;
+}
+
+.postHeader:hover {
+  background-color: rgba(43, 146, 116, 0.25);
+}
+
+.postHeader span {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.postHeader span:nth-child(2) {
+  flex: 1;
+}
+
+.newContainer {
+  position: relative;
+}
+
+.new {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 25px;
+  color: rgb(255, 118, 39);
+  transform: translate(-50%, -50%);
+  animation: twinkling 1s infinite;
+}
+
+@keyframes twinkling {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.postBody {
+  background-color: rgba(145, 185, 174, 0.25);
+  display: flex;
+  height: 200px;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.postBodyInner p {
+  line-height: 30px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -145,6 +145,11 @@ router.post("/pwCheck", (req, res) => {
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
       });
 
+      const cntSqlQuery = `UPDATE users SET visit_cnt = visit_cnt + 1 WHERE id = ?;`;
+      db.query(cntSqlQuery, [result[0].id], (err, result) => {
+        if (err) res.status(500).json(err);
+      });
+
       res.status(200).json("Login Success");
     } else {
       res.status(403).json("Wrong Password");
@@ -646,5 +651,34 @@ router.post("/sendFindPwEmail", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+// 이메일 서비스 동의 ====================================================================
+router.post("/emailServiceEnabled", (req, res) => {
+  try {
+    const presentId = req.body.data.presentId;
+    const sqlQuery = `UPDATE users SET email_service_enabled = TRUE WHERE id = ?;`;
+    db.query(sqlQuery, [presentId], (err, result) => {
+      if (err) res.status(500).json(err);
+      res.status(200).json("emailServiceEnabled Seuccess");
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+//=======================================================================================
+// 이메일 서비스 비동의 ====================================================================
+router.post("/emailServiceDisabled", (req, res) => {
+  try {
+    const presentId = req.body.data.presentId;
+    const sqlQuery = `UPDATE users SET email_service_enabled = FALSE WHERE id = ?;`;
+    db.query(sqlQuery, [presentId], (err, result) => {
+      if (err) res.status(500).json(err);
+      res.status(200).json("emailServiceDisabled Seuccess");
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+//=======================================================================================
 
 module.exports = router;

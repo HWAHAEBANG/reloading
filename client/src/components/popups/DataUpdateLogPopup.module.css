@@ -1,0 +1,91 @@
+.dataUpdateLogPopup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 15px;
+  overflow: hidden;
+  animation-delay: 2s;
+  animation: boxExtend 0.5s forwards;
+}
+
+@keyframes boxExtend {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 400px;
+  }
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+  border: 1px solid mediumaquamarine;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.title {
+  color: mediumaquamarine;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.subTitle {
+  font-size: 18px;
+}
+
+.subTitle span {
+  color: mediumaquamarine;
+}
+
+.listContainer {
+  background-color: rgba(145, 185, 174, 0.25);
+  height: 180px;
+  border-radius: 5px;
+}
+
+.listContainerInner {
+  padding: 10px 20px;
+}
+
+.listContainerInner p {
+  line-height: 25px;
+}
+
+.postScript {
+  margin: 10px;
+  font-size: 14px;
+}
+
+.btnList {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn {
+  border: 1px solid mediumaquamarine;
+  padding: 0 10px;
+  width: 120px;
+  height: 35px;
+  background-color: transparent;
+  color: aquamarine;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition-duration: 0.2s;
+}
+
+.btn:hover {
+  background-color: aquamarine;
+  color: black;
+  font-weight: 700;
+}

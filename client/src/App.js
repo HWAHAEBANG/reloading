@@ -9,6 +9,9 @@ import styles from "./App.module.css";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import axios from "axios";
+import ImportantNotificationPopup from "./components/popups/ImportantNotificationPopup";
+import DataUpdateLogPopup from "./components/popups/DataUpdateLogPopup";
+import FirstVisitPopup from "./components/popups/FirstVisitPopup";
 
 function App() {
   const [showNav, setShowNav] = useState(false);
@@ -22,6 +25,11 @@ function App() {
       >
         <TopBar showNav={showNav} setShowNav={setShowNav} />
         <Outlet />
+      </div>
+      <div className={styles.popupBg}>
+        {/* <FirstVisitPopup /> */}
+        {/* <DataUpdateLogPopup /> */}
+        <ImportantNotificationPopup />
       </div>
     </div>
   );

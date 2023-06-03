@@ -50,6 +50,8 @@ const executeScheduledUpdate = () => {
   // 한국 기준금리
   jobUpdateBaseRateKorea;
 
+  // + 회원정보 toDayFirstVisit 초기화 (+ 하는김에 emailService 도 추가)
+
   //=============================================================================================================
 
   // const agent = new https.Agent({ rejectUnauthorized: false }); // SSL 인증서 오류 무시

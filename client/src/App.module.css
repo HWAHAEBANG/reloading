@@ -26,3 +26,13 @@
 .showNavBar {
   transform: perspective(200px) rotateY(-2deg) translate(300px) scale(0.95);
 }
+
+.popupBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}

@@ -4,7 +4,6 @@ import ChartCard from "../chart-card/ChartCard";
 import { TiArrowSortedUp, TiArrowSortedDown } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
 import axios from "axios";
-import axiosInstance from "../../util/axiosInstance";
 import { useSelector } from "react-redux";
 import useSound from "use-sound";
 

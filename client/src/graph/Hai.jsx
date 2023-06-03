@@ -199,7 +199,7 @@ export default function Hai() {
         },
       },
       {
-        name: "기준 금리", // 지역이름 변수로 놓자
+        name: "한국 기준 금리", // 지역이름 변수로 놓자
         type: "spline",
         data: baseRateKoreaResponse,
         yAxis: 1, // 이거 있으면 좌측 눈금 따라가나보다!

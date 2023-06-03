@@ -7,13 +7,16 @@ import {
 } from "react-icons/bs";
 import { FaUserCircle, FaUserEdit } from "react-icons/fa";
 import { IoIosCafe, IoIosHome, IoIosPeople } from "react-icons/io";
-// import { HiBellAlert } from "react-icons/hib";
 import { MdSpaceDashboard } from "react-icons/md";
-import { FcComboChart } from "react-icons/fc";
 import { ImNewspaper } from "react-icons/im";
-import { GrBarChart } from "react-icons/gr";
-import { AiOutlineBarChart } from "react-icons/ai";
-import Background from "../ui/Background";
+import {
+  AiOutlineBarChart,
+  AiFillNotification,
+  AiTwotoneNotification,
+} from "react-icons/ai";
+import { RiMailCheckLine, RiMailCloseLine } from "react-icons/ri";
+import { MdFiberNew } from "react-icons/md";
+
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction, clearUserInfoAction } from "../../redux";
@@ -69,6 +72,44 @@ export default function NavBar({ showNav, setShowNav }) {
       });
   };
 
+  const [toggleEmailBtn, setToggleEmailBtn] = useState(
+    userInfo.userInfo.email_service_enabled
+  );
+
+  const handleClickEmailUnactive = () => {
+    axios
+      .post(`http://localhost:5000/users/emailServiceDisabled`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
+      .then((Response) => {
+        setToggleEmailBtn(false);
+        alert("이메일 알림 서비스가 비활성화 되었습니다.");
+        //엑세트 토큰 새로 받아와야하나? 정보수정에서 어떻게 했었지? ui에는 티 안나니까 상관없나?상관없을듯
+      });
+  };
+
+  const handleClickEmailActive = () => {
+    axios
+      .post(`http://localhost:5000/users/emailServiceEnabled`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
+      .then((Response) => {
+        setToggleEmailBtn(true);
+        alert(
+          "이메일 알림 서비스가 활성화 되었습니다. 최신 데이터 업데이트 시 이메일로 변동 내역을 전송해드립니다."
+        );
+        //엑세트 토큰 새로 받아와야하나? 정보수정에서 어떻게 했었지? ui에는 티 안나니까 상관없나?상관없을듯
+      });
+  };
+
   // sound ======
   const [move] = useSound("/sounds/move.wav", { volume: 1 });
   const [grow] = useSound("/sounds/grow.wav", { volume: 1 });
@@ -118,15 +159,15 @@ export default function NavBar({ showNav, setShowNav }) {
               <FaUserEdit />
             </div>
           </Link>
-          <div
-            onClick={() => {
-              alert(
-                "[개발중] 업데이트 차트 카카오톡 메시지 알림 서비스 구현 예정"
-              );
-            }}
-          >
-            <BsFillBellFill />
-          </div>
+          {toggleEmailBtn ? (
+            <div onClick={handleClickEmailUnactive}>
+              <RiMailCheckLine />
+            </div>
+          ) : (
+            <div onClick={handleClickEmailActive}>
+              <RiMailCloseLine />
+            </div>
+          )}
         </div>
       </div>
       <hr />
@@ -168,6 +209,17 @@ export default function NavBar({ showNav, setShowNav }) {
           <div className={styles.menuList} onClick={handleEnter}>
             <ImNewspaper />
             <p>Topic News</p>
+          </div>
+        </Link>
+        <Link to='/notification'>
+          <div className={styles.menuList} onClick={handleEnter}>
+            <AiFillNotification />
+            <p>Notification</p>
+            <span className={styles.newContainer}>
+              {/*박스 안커지게 하면서 위치 잡아주기 위해존재 */}
+              {/* 업데이트 기준 로직 구현후 리팩토링 예정. 일단은 항상 떠있게 하기 */}
+              <MdFiberNew className={styles.new} />
+            </span>
           </div>
         </Link>
       </div>

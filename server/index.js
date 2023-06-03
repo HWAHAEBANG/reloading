@@ -54,6 +54,9 @@ app.use("/users", USERS);
 const TOPIC_NEWS = require("./router/topicNews.js");
 app.use("/topicNews", authMiddleware, TOPIC_NEWS);
 
+const NOTIFICATION = require("./router/notification.js");
+app.use("/notification", authMiddleware, NOTIFICATION);
+
 // chart ==================================
 const HAI = require("./router/hai.js");
 app.use("/allCharts/hai", HAI);
@@ -99,6 +102,7 @@ app.use(
 
 const TRANSACTION_VOLUME_JEONSE_SEOUL = require("./router/transactionVolumeJeonseSeoul");
 const test = require("./jobs/fetchAndSyncData.js");
+const dailyDataResetScheduler = require("./jobs/dailyDataResetScheduler.js");
 
 app.use(
   "/allCharts/transactionVolumeJeonseSeoul",
@@ -113,4 +117,5 @@ app.listen(PORT, () => {
 
 // schedule ================================
 executeScheduledUpdate();
+dailyDataResetScheduler();
 // test();

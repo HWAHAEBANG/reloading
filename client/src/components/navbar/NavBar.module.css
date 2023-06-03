@@ -47,8 +47,13 @@
 .buttonList div {
   background-color: rgba(0, 0, 0, 0.7);
   filter: invert();
-  padding: 3px 15px;
+  padding: 3px 4px;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  width: 50px;
 }
 
 .buttonList div:hover {
@@ -98,7 +103,7 @@
 }
 
 .menuList {
-  margin-top: 20px;
+  margin-top: 15px;
   padding: 10px 10px;
   border-radius: 10px;
   display: flex;
@@ -117,6 +122,40 @@
 
 .menuList p {
   margin-left: 20px;
+}
+
+.newContainer {
+  position: relative;
+  width: 10px;
+  height: 0;
+  background-color: red;
+}
+
+.new {
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 0; */
+  font-size: 25px;
+  color: rgb(255, 118, 39);
+  transform: translate(30%, -50%);
+  animation: twinkling 1s infinite;
+}
+
+.menuList:hover .new {
+  /* 이거 없으면 list hover시 파란색을 바뀜 */
+  color: rgb(255, 118, 39);
+}
+
+@keyframes twinkling {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5);
+  }
+  100% {
+    filter: brightness(1);
+  }
 }
 
 .otherLinkSection {

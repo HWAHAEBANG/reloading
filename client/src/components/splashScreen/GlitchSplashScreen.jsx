@@ -118,6 +118,7 @@ export default function GlitchSplashScreen() {
   };
   // 회원가입 여부와 회원정보 리덕스에 저장  =======================================
   const getAccessToken = () => {
+    // 해쉬 안받아오도록 리팩토링 요망
     axios
       .get(`http://localhost:5000/users/accesstoken`, {
         method: "GET",
@@ -324,18 +325,18 @@ export default function GlitchSplashScreen() {
       )}
       <div className={styles.linkContainer}>
         <p className={styles.link}>
-          Forgot
+          Forgot{" "}
           <span id='findId' onClick={openModal}>
             ID
-          </span>
-          or
+          </span>{" "}
+          or{" "}
           <span id='findPw' onClick={openModal}>
             Password
-          </span>
+          </span>{" "}
           ?
         </p>
         <p className={styles.link}>
-          Not Yet registered?
+          Not Yet registered?{" "}
           <Link to='/users/signUp' onClick={() => move()}>
             Sign up
           </Link>
