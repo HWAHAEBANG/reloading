@@ -13,7 +13,7 @@ const https = require("https");
 const updateRule = require("./updateRule.js");
 
 // DB 연결부 ================================================================================
-const connectDB = require("../config/connectDB.js");
+const connectDB = require("../../config/connectDB.js");
 // const { route } = require("./allCharts.js");
 const db = connectDB.init();
 // connectDB.open(db);

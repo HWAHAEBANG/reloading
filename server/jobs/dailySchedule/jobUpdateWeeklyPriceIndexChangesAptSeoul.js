@@ -4,7 +4,7 @@ const https = require("https");
 const updateRule = require("./updateRule.js");
 
 // DB 연결부 ================================================================================
-const connectDB = require("../config/connectDB.js");
+const connectDB = require("../../config/connectDB.js");
 // const { route } = require("./allCharts.js");
 const db = connectDB.init();
 // connectDB.open(db);
@@ -16,7 +16,7 @@ const jobUpdateWeeklyPriceIndexChangesAptSeoul = schedule.scheduleJob(
   updateRule,
   function () {
     console.log(
-      "현재시간 00시 00분 서울 아파트 주간 매매 지수 증감율 데이터 최신화를 진행합니다."
+      "현재시간 00시 00분 서울 아파트 주간 매매가 증감율 데이터 최신화를 진행합니다."
     );
     try {
       // DB의 가장 최신 데이터의 날짜와 값 가져오기
@@ -60,7 +60,7 @@ const jobUpdateWeeklyPriceIndexChangesAptSeoul = schedule.scheduleJob(
             if (latestDataApi.date === latestDataDb.date) {
               if (latestDataApi.value === latestDataDb.value) {
                 console.log(
-                  "서울 아파트 주간 매매 지수 증감율 : 현재 DB는 최신 상태 입니다. "
+                  "서울 아파트 주간 매매가 증감율 : 현재 DB는 최신 상태 입니다. "
                 );
               } else {
                 const updateSqlQuery = `UPDATE weekly_price_index_changes_apt_seoul SET value = ? WHERE origin_date = ?`;
@@ -69,9 +69,25 @@ const jobUpdateWeeklyPriceIndexChangesAptSeoul = schedule.scheduleJob(
                   [latestDataApi.value, latestDataApi.date],
                   (err, result) => {
                     if (err) return console.log(err);
-                    console.log(
-                      "서울 아파트 주간 매매 지수 증감율 : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
+
+                    //=====================================================================
+                    const message =
+                      "서울 아파트 주간 매매가 증감율 : 최근 일자의 데이터가 수정되었습니다.";
+                    const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
+                    db.query(
+                      notificationQuery,
+                      [message, "modify"],
+                      (err, result) => {
+                        if (err)
+                          return console.log(
+                            "업데이트 공지 테이블에 추가하지 못했습니다."
+                          );
+                        console.log(
+                          "서울 아파트 주간 매매가 증감율 : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
+                        );
+                      }
                     );
+                    //=====================================================================
                   }
                 );
               }
@@ -87,9 +103,25 @@ const jobUpdateWeeklyPriceIndexChangesAptSeoul = schedule.scheduleJob(
                 [latestDataApi.date, year, month, day, latestDataApi.value],
                 (err, result) => {
                   if (err) return console.log(err);
-                  console.log(
-                    "서울 아파트 주간 매매 지수 증감율 : 새로운 데이터가 감지되어 DB에 추가하였습니다."
+
+                  //========================================================================
+                  const message =
+                    "서울 아파트 주간 매매가 증감율 : 새로운 데이터가 추가되었습니다.";
+                  const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
+                  db.query(
+                    notificationQuery,
+                    [message, "add"],
+                    (err, result) => {
+                      if (err)
+                        return console.log(
+                          "업데이트 공지 테이블에 추가하지 못했습니다."
+                        );
+                      console.log(
+                        "서울 아파트 주간 매매가 증감율 : 새로운 데이터가 감지되어 DB에 추가하였습니다."
+                      );
+                    }
                   );
+                  //========================================================================
                 }
               );
             }

@@ -20,6 +20,7 @@ export default function Dashboard() {
   const userInfo = useSelector((state) => state.userInfo);
 
   const [chartsData, setChartsData] = useState();
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/allCharts`, {
@@ -115,7 +116,7 @@ export default function Dashboard() {
         // to='/allCharts/signal'
         className={`${styles.box} ${styles.box7} ${styles.nonClick}`}
       >
-        <Signal />
+        <Signal chartsData={chartsData} />
       </div>
       <div
         id='priceChangeRate'

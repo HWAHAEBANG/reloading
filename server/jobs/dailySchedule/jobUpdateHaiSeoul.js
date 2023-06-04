@@ -4,7 +4,7 @@ const https = require("https");
 const updateRule = require("./updateRule.js");
 
 // DB 연결부 ================================================================================
-const connectDB = require("../config/connectDB.js");
+const connectDB = require("../../config/connectDB.js");
 // const { route } = require("./allCharts.js");
 const db = connectDB.init();
 // connectDB.open(db);
@@ -66,6 +66,24 @@ const jobUpdateHaiSeoul = schedule.scheduleJob(updateRule, function () {
                   console.log(
                     "서울 HAI : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
                   );
+                  //=====================================================================
+                  const message =
+                    "서울 HAI : 최근 일자의 데이터가 수정되었습니다.";
+                  const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
+                  db.query(
+                    notificationQuery,
+                    [message, "modify"],
+                    (err, result) => {
+                      if (err)
+                        return console.log(
+                          "업데이트 공지 테이블에 추가하지 못했습니다."
+                        );
+                      console.log(
+                        "서울 HAI : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
+                      );
+                    }
+                  );
+                  //=====================================================================
                 }
               );
             }
@@ -81,9 +99,19 @@ const jobUpdateHaiSeoul = schedule.scheduleJob(updateRule, function () {
               [latestDataApi.date, year, month, day, latestDataApi.value],
               (err, result) => {
                 if (err) return console.log(err);
-                console.log(
-                  "서울 HAI : 새로운 데이터가 감지되어 DB에 추가하였습니다."
-                );
+                //========================================================================
+                const message = "서울 HAI : 새로운 데이터가 추가되었습니다.";
+                const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
+                db.query(notificationQuery, [message, "add"], (err, result) => {
+                  if (err)
+                    return console.log(
+                      "업데이트 공지 테이블에 추가하지 못했습니다."
+                    );
+                  console.log(
+                    "서울 HAI : 새로운 데이터가 감지되어 DB에 추가하였습니다."
+                  );
+                });
+                //========================================================================
               }
             );
           }

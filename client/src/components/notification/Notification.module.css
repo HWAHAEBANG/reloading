@@ -145,6 +145,7 @@
   align-items: center;
   gap: 30px;
   padding: 15px 10px;
+  cursor: pointer;
 }
 
 .postHeader:hover {

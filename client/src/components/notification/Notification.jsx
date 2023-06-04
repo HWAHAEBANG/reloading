@@ -155,11 +155,12 @@ export default function Notification() {
                         {notificationPostBodyVisible[item.no - 1] ? (
                           <div className={`${styles.postBody} scrollBar`}>
                             <div className={styles.postBodyInner}>
-                              {JSON.parse(item.description).map(
-                                (item, index) => (
-                                  <p key={index}>{item}</p>
-                                )
-                              )}
+                              <p
+                                className={styles.notiDescripton}
+                                dangerouslySetInnerHTML={{
+                                  __html: item.description,
+                                }}
+                              ></p>
                             </div>
                           </div>
                         ) : (

@@ -23,10 +23,11 @@ const componentMapping = {
 };
 
 export default function ChartDetail() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const backToList = () => {
-    navigate("/allCharts");
+    window.history.go(-1); // 브라우저의 뒤로가기 동작 수행
+    // navigate("/allCharts");
   };
 
   const {

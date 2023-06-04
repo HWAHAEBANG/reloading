@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./DataUpdateLogPopup.module.css";
 import axios from "axios";
 
-export default function DataUpdateLogPopup() {
+export default function DataUpdateLogPopup({ onClose }) {
   const handleClose = () => {};
 
   const today = new Date().toISOString().slice(0, 10);
-  console.log(today);
 
   const [dataUpdateLog, setDataUpdateLog] = useState();
   useEffect(() => {
@@ -49,18 +48,18 @@ export default function DataUpdateLogPopup() {
       });
   }, []);
 
-  console.log("힝", dataUpdateLog);
-
   return (
     <div className={styles.dataUpdateLogPopup}>
       <div className={styles.inner}>
-        <p className={styles.title}>DATA UPDATED</p>
+        <div className={styles.titleContainer}>
+          <p className={styles.title}>DATA UPDATED</p>
+          <p className={styles.koTitle}>데이터 업데이트 이력</p>
+        </div>
         <p className={styles.subTitle}>
           <span></span>금일 ({dataUpdateLog && dataUpdateLog[0].date}) 다음{" "}
           {dataUpdateLog && dataUpdateLog[0].message.length}건 변동사항이 차트에
           반영되었습니다.
         </p>
-        <br />
         <div className={`${styles.listContainer} scrollBar`}>
           <div className={styles.listContainerInner}>
             {dataUpdateLog &&
@@ -73,7 +72,7 @@ export default function DataUpdateLogPopup() {
           위 내용은 Notification 메뉴에서 다시 확인하실 수 있습니다.
         </p>
         <div className={styles.btnList}>
-          <button className={styles.btn} onClick={handleClose}>
+          <button className={styles.btn} onClick={() => onClose(false)}>
             CLOSE
           </button>
         </div>

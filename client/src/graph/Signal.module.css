@@ -25,7 +25,7 @@
   flex-direction: column;
   gap: 50px;
   text-align: left;
-  margin-top: 70px;
+  margin-top: 40px;
 }
 
 .content {
@@ -83,10 +83,14 @@
   font-weight: 700;
 }
 
-/* .greenLamp {
-  color: red;
+.recentAmountDataLink {
+  margin-top: 10px;
+  margin-left: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.5;
 }
 
-.redLamp {
-  color: red;
-} */
+.recentAmountDataLink:hover {
+  opacity: 1;
+}

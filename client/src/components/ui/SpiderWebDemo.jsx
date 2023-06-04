@@ -49,7 +49,7 @@ export default function SpiderWebDemo() {
     //   x: 0,
     // },
     pane: {
-      size: "98%",
+      size: "96%",
     },
     xAxis: {
       categories: [

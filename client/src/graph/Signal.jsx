@@ -4,8 +4,9 @@ import RedLamp from "../components/ui/RedLamp";
 import GreenLamp from "../components/ui/GreenLamp";
 import RingLoader from "react-spinners/RingLoader";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Signal() {
+export default function Signal({ chartsData }) {
   // loading ===========================
   const loaderBox = {
     display: "flex",
@@ -21,12 +22,21 @@ export default function Signal() {
 
   const [loading, setLoading] = useState(false);
   // ===================================
+  const navigate = useNavigate();
+  const move = () => {
+    navigate("/allCharts/amountAndPrice", {
+      state: {
+        data: chartsData.filter((item) => item.id === "amountAndPrice")[0],
+      },
+    });
+  };
 
+  //======================================
   const [transactionVolumeSalesSeoul, setTransactionVolumeSalesSeoul] =
     useState();
   const [transactionVolumeJeonseSeoul, setTransactionVolumeJeonseSeoul] =
     useState();
-  const [priceChangeRateData, setPriceChangeRateData] = useState();
+  const [priceChangeRateData, setPriceChangeRateData] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -55,24 +65,24 @@ export default function Signal() {
         // 서울 아파트 매매 거래량 =========================================================
         setTransactionVolumeSalesSeoul({
           year: new Date(
-            transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][0]
+            transactionVolumeSalesSeoulResponse.data.data.slice(-2)[0][0]
           ).getFullYear(),
           month:
             new Date(
-              transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][0]
+              transactionVolumeSalesSeoulResponse.data.data.slice(-2)[0][0]
             ).getMonth() + 1, // +1 해주지 않으면 전달이 출력된다.
-          value: transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][1],
+          value: transactionVolumeSalesSeoulResponse.data.data.slice(-2)[0][1],
         });
         // 서울 아파트 전세 거래량 =========================================================
         setTransactionVolumeJeonseSeoul({
           year: new Date(
-            transactionVolumeJeonseSeoulResponse.data.data.slice(-1)[0][0]
+            transactionVolumeJeonseSeoulResponse.data.data.slice(-2)[0][0]
           ).getFullYear(),
           month:
             new Date(
-              transactionVolumeJeonseSeoulResponse.data.data.slice(-1)[0][0]
+              transactionVolumeJeonseSeoulResponse.data.data.slice(-2)[0][0]
             ).getMonth() + 1, // +1 해주지 않으면 전달이 출력된다.
-          value: transactionVolumeJeonseSeoulResponse.data.data.slice(-1)[0][1],
+          value: transactionVolumeJeonseSeoulResponse.data.data.slice(-2)[0][1],
         });
 
         // 서울 아파트 주간 매매지수 증감률 =================================================
@@ -89,10 +99,23 @@ export default function Signal() {
           }
         }
 
-        // 상승이 몇주 연속 진행되었나를 상태에 저장 (인덱스에서 인덱스를 빼주는 개념이기 때문에 배열 길이에서 1 빼주는 것임)
-        setPriceChangeRateData(
-          /* dataList.length - 1 - lastMinusValueIndex */ 51
-        );
+        let lastPlusValueIndex; // 가장 마지막 양수값이 있는 인덱스를 저장할 변수
+
+        // 배열을 뒤에서 부터 돌면서 마지막 양수값을 찾음
+        for (let i = dataList.length - 1; i >= 0; i--) {
+          if (dataList[i][1] > 0) {
+            lastPlusValueIndex = i;
+            break; // 양수 값이 발견되면 lastMinusValueIndex에 인덱스를 할당하고 반복문 종료
+          } else {
+            lastPlusValueIndex = -1; // 사실상 도달할 일이 없는 else문.
+          }
+        }
+
+        // 상승과 하락이 몇주 연속 진행되었나를 상태에 객체로 저장 (인덱스에서 인덱스를 빼주는 개념이기 때문에 배열 길이에서 1 빼주는 것임)
+        setPriceChangeRateData({
+          uptrend: dataList.length - 1 - lastMinusValueIndex,
+          downtrend: dataList.length - 1 - lastPlusValueIndex,
+        });
 
         setLoading(false);
       })
@@ -113,7 +136,7 @@ export default function Signal() {
     if (
       !transactionVolumeSalesSeoul ||
       !transactionVolumeJeonseSeoul ||
-      !priceChangeRateData /* 증감률 추가 */
+      !priceChangeRateData.uptrend /* 증감률 추가 */
     )
       return;
     // 매매 거래량이 10000을 초과하는가
@@ -133,7 +156,7 @@ export default function Signal() {
     }
 
     // 증감율의 상승기조가 1년 이상 지속되었는가?
-    if (priceChangeRateData >= 52) {
+    if (priceChangeRateData.uptrend >= 52) {
       setIsConditionMet3(true);
     } else {
       setIsConditionMet3(false);
@@ -141,7 +164,8 @@ export default function Signal() {
   }, [
     transactionVolumeSalesSeoul,
     transactionVolumeJeonseSeoul,
-    priceChangeRateData,
+    priceChangeRateData.uptrend,
+    priceChangeRateData.downtrend,
   ]);
 
   // ======================================================================
@@ -214,6 +238,12 @@ export default function Signal() {
                         : ""}
                       건
                     </span>
+                  </p>
+                  <p className={styles.recentAmountDataLink} onClick={move}>
+                    {transactionVolumeSalesSeoul
+                      ? transactionVolumeSalesSeoul.month + 1
+                      : ""}
+                    월 실시간 데이터 확인하기
                   </p>
                 </div>
               </div>
@@ -292,6 +322,12 @@ export default function Signal() {
                       건
                     </span>
                   </p>
+                  <p className={styles.recentAmountDataLink} onClick={move}>
+                    {transactionVolumeSalesSeoul
+                      ? transactionVolumeSalesSeoul.month + 1
+                      : ""}
+                    월 실시간 데이터 확인하기
+                  </p>
                 </div>
               </div>
             </div>
@@ -309,8 +345,22 @@ export default function Signal() {
                       isConditionMet3 ? styles.greenText : styles.redText
                     }
                   >
-                    현재 상승세가 <span>{priceChangeRateData}주</span>간
-                    지속되고 있습니다.
+                    현재 상승세가{" "}
+                    <span>
+                      {priceChangeRateData && priceChangeRateData.uptrend}주
+                    </span>
+                    간 지속되고 있습니다.
+                  </p>
+                  <p
+                    className={
+                      isConditionMet3 ? styles.greenText : styles.redText
+                    }
+                  >
+                    현재 하락세가{" "}
+                    <span>
+                      {priceChangeRateData && priceChangeRateData.downtrend}주
+                    </span>
+                    간 지속되고 있습니다.
                   </p>
                 </div>
               </div>

@@ -2,46 +2,23 @@ import React, { useEffect, useState } from "react";
 import styles from "./ImportantNotificationPopup.module.css";
 import axios from "axios";
 
-export default function ImportantNotificationPopup() {
+export default function ImportantNotificationPopup({ onClose }) {
   const handleClose = () => {};
 
   const today = new Date().toISOString().slice(0, 10);
   console.log(today);
 
-  const [dataUpdateLog, setDataUpdateLog] = useState();
+  const [notification, setNotification] = useState();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/notification/dataUpdateLog`, {
+      .get(`http://localhost:5000/notification/notification`, {
         withCredentials: true,
       })
       .then((response) => {
         if (response.data.length === 0) {
           return;
         } else {
-          //  데이터 업데이트 로그 파싱 로직 =======================================================
-          const logList = response.data.data;
-
-          let insertNo = 0;
-          const parsedDataUpdateLogList = logList.reduce((acc, cur) => {
-            const dateIndex = acc.findIndex(
-              (item) => item.date === cur.created_at.split("T")[0]
-            );
-            if (dateIndex === -1) {
-              insertNo++;
-              acc.push({
-                no: insertNo,
-                date: cur.created_at.split("T")[0],
-                message: [cur.message],
-              });
-            } else {
-              acc[dateIndex].message.push(cur.message);
-            }
-            return acc;
-          }, []);
-          setDataUpdateLog(
-            parsedDataUpdateLogList.filter((item) => item.date === today)
-          );
-          // ==================================================================================
+          setNotification(response.data.data[0]);
         }
       })
       .catch((error) => {
@@ -49,27 +26,37 @@ export default function ImportantNotificationPopup() {
       });
   }, []);
 
-  console.log("힝", dataUpdateLog);
-
   return (
     <div className={styles.importantNotificationPopup}>
       <div className={styles.inner}>
-        <p className={styles.title}>NOTIFICATION</p>
-        <p className={styles.subTitle}>공지사항</p>
-        <br />
+        <div className={styles.titleContainer}>
+          <p className={styles.title}>NOTIFICATION</p>
+          <p className={styles.koTitle}>공지사항</p>
+        </div>
         <div className={`${styles.listContainer} scrollBar`}>
           <div className={styles.listContainerInner}>
-            {dataUpdateLog &&
-              dataUpdateLog[0].message.map((item, index) => (
-                <p key={index}>- {item}</p>
-              ))}
+            <p className={styles.notiTitle}>
+              {notification && notification.title}
+            </p>
+            <p className={styles.notiAuthor}>
+              작성자 : {notification && notification.author}
+            </p>
+            <p className={styles.notiDate}>
+              작성일시 : {notification && notification.created_at.split("T")[0]}
+            </p>
+            <p
+              className={styles.notiDescripton}
+              dangerouslySetInnerHTML={{
+                __html: notification && notification.description,
+              }}
+            ></p>
           </div>
         </div>
         <p className={styles.postScript}>
           위 내용은 Notification 메뉴에서 다시 확인하실 수 있습니다.
         </p>
         <div className={styles.btnList}>
-          <button className={styles.btn} onClick={handleClose}>
+          <button className={styles.btn} onClick={() => onClose(false)}>
             CLOSE
           </button>
         </div>

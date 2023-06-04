@@ -3,7 +3,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
+  width: 900px;
   height: 0;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 20px;
@@ -30,32 +30,53 @@
   padding: 20px;
 }
 
+.titleContainer {
+  display: flex;
+  align-items: end;
+}
+
 .title {
   color: mediumaquamarine;
   font-size: 30px;
   font-weight: 700;
 }
 
-.subTitle {
-  font-size: 18px;
-}
-
-.subTitle span {
-  color: mediumaquamarine;
+.koTitle {
+  font-size: 15px;
+  margin: 0 0 6px 5px;
 }
 
 .listContainer {
   background-color: rgba(145, 185, 174, 0.25);
-  height: 280px;
+  height: 320px;
   border-radius: 5px;
+  margin-top: 10px;
 }
 
 .listContainerInner {
   padding: 10px 20px;
 }
 
-.listContainerInner p {
-  line-height: 25px;
+.notiTitle {
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: mediumaquamarine;
+  font-weight: 700;
+}
+
+.notiAuthor {
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.notiDate {
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.notiDescripton {
+  font-size: 15px;
+  line-height: 30px;
 }
 
 .postScript {
@@ -82,6 +103,7 @@
   font-size: 15px;
   box-sizing: border-box;
   transition-duration: 0.2s;
+  cursor: pointer;
 }
 
 .btn:hover {

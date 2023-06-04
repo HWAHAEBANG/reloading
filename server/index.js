@@ -6,7 +6,11 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const authMiddleware = require("./middlewares/authMiddleware.js");
-const executeScheduledUpdate = require("./jobs/fetchAndSyncData.js");
+
+// const test = require("./jobs/dailySchedule/fetchAndSyncData.js");
+// const dailyDataResetScheduler = require("./jobs/dailyDataResetScheduler.js");
+const executeScheduledUpdate = require("./jobs/dailySchedule/fetchAndSyncData.js");
+const executeScheduledRefetch = require("./jobs/weekleySchedule/refetchAndSyncData.js");
 
 //==========================================
 
@@ -101,8 +105,6 @@ app.use(
 );
 
 const TRANSACTION_VOLUME_JEONSE_SEOUL = require("./router/transactionVolumeJeonseSeoul");
-const test = require("./jobs/fetchAndSyncData.js");
-const dailyDataResetScheduler = require("./jobs/dailyDataResetScheduler.js");
 
 app.use(
   "/allCharts/transactionVolumeJeonseSeoul",
@@ -117,5 +119,5 @@ app.listen(PORT, () => {
 
 // schedule ================================
 executeScheduledUpdate();
-dailyDataResetScheduler();
+executeScheduledRefetch();
 // test();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Access.module.css";
 import TypeWriterEffect from "react-typewriter-effect";
 import { BsPlusLg } from "react-icons/bs";
@@ -9,6 +9,10 @@ export default function Access() {
   const navigate = useNavigate();
 
   const userInfo = useSelector((state) => state.userInfo);
+
+  // const [isFirstVisit, setIsFirstVisit] = useState(
+  //   userInfo && userInfo.userInfo.today_visit_cnt <= 1
+  // );
 
   setTimeout(() => {
     navigate("/");
@@ -107,18 +111,35 @@ export default function Access() {
           </div>
         </div>
         <div className={styles.bottomText}>
-          <TypeWriterEffect
-            textStyle={{
-              fontFamily: "PixelCaps",
-              fontSize: "21.5px",
-              lineHeight: "0px",
-            }}
-            startDelay={5000}
-            // cursorColor={"#03e9f4"}
-            text='WELCOME BACK'
-            typeSpeed={20}
-            // scrollArea={myAppRef}
-          />
+          {userInfo &&
+          userInfo.userInfo &&
+          userInfo.userInfo.total_visit_cnt <= 1 ? (
+            <TypeWriterEffect
+              textStyle={{
+                fontFamily: "PixelCaps",
+                fontSize: "21.5px",
+                lineHeight: "0px",
+              }}
+              startDelay={5000}
+              // cursorColor={"#03e9f4"}
+              text='NICE TO MEET YOU'
+              typeSpeed={20}
+              // scrollArea={myAppRef}
+            />
+          ) : (
+            <TypeWriterEffect
+              textStyle={{
+                fontFamily: "PixelCaps",
+                fontSize: "21.5px",
+                lineHeight: "0px",
+              }}
+              startDelay={5000}
+              // cursorColor={"#03e9f4"}
+              text='WELCOME BACK'
+              typeSpeed={20}
+              // scrollArea={myAppRef}
+            />
+          )}
         </div>
       </div>
     </div>

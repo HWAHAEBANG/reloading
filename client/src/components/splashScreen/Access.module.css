@@ -6,7 +6,7 @@
   justify-content: center;
   animation: box-collapse 0.5s forwards;
   animation-delay: 8s;
-  width: 400px;
+  width: 500px;
   height: 400px;
   overflow: hidden;
 }

@@ -145,8 +145,13 @@ router.post("/pwCheck", (req, res) => {
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
       });
 
-      const cntSqlQuery = `UPDATE users SET visit_cnt = visit_cnt + 1 WHERE id = ?;`;
-      db.query(cntSqlQuery, [result[0].id], (err, result) => {
+      const todayCntSqlQuery = `UPDATE users SET today_visit_cnt = today_visit_cnt + 1 WHERE id = ?;`;
+      db.query(todayCntSqlQuery, [result[0].id], (err, result) => {
+        if (err) res.status(500).json(err);
+      });
+
+      const totalCntSqlQuery = `UPDATE users SET total_visit_cnt = total_visit_cnt + 1 WHERE id = ?;`;
+      db.query(totalCntSqlQuery, [result[0].id], (err, result) => {
         if (err) res.status(500).json(err);
       });
 
@@ -168,7 +173,7 @@ router.get("/accesstoken", (req, res) => {
       res.status(403).json("Can Not Get Info");
     } else {
       console.log(result);
-      const { pw, ...others } = result[0];
+      const { salt, hash, ...others } = result[0];
       res.status(200).json(others);
     }
   });
@@ -680,5 +685,22 @@ router.post("/emailServiceDisabled", (req, res) => {
   }
 });
 //=======================================================================================
-
+// 방문자 수 조회 ========================================================================
+router.get("/visitorCnt", (req, res) => {
+  const sqlQuery = `SELECT sum(today_visit_cnt), sum(total_visit_cnt) FROM users`;
+  db.query(sqlQuery, (err, result) => {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      const todayVisitCnt = result[0]["sum(today_visit_cnt)"];
+      const totalVisitCnt = result[0]["sum(total_visit_cnt)"];
+      const visitorCnt = {
+        today: todayVisitCnt,
+        total: totalVisitCnt,
+      };
+      res.status(200).json(visitorCnt);
+    }
+  });
+});
+//=======================================================================================
 module.exports = router;

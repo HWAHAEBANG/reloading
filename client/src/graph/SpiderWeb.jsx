@@ -136,7 +136,8 @@ export default function SpiderWeb() {
         setTransactionVolumeSalesSeoul(
           // 최대 19833 최소 559
           Math.round(
-            ((transactionVolumeSalesSeoulResponse.data.data.slice(-1)[0][1] -
+            // 현재 월은 수집중이라 너무 적으므로 직전 월 데이터 사용
+            ((transactionVolumeSalesSeoulResponse.data.data.slice(-2)[0][1] -
               559) /
               (19833 - 599)) *
               100

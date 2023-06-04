@@ -118,6 +118,7 @@
   font-size: 15px;
   box-sizing: border-box;
   transition-duration: 0.2s;
+  cursor: pointer;
 }
 
 .btn:hover {

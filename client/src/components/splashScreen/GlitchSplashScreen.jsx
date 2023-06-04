@@ -84,18 +84,11 @@ export default function GlitchSplashScreen() {
         },
       })
       .then((response) => {
-        faidIn();
-        setTimeout(() => access(), 1000);
-        setTimeout(() => disk(), 10000);
         setAlertMessage("");
         getAccessToken();
         // getRefreshToken(); 없어도 되지 않나
 
         setCorrectPw(true);
-        setTimeout(() => {
-          navigate("/users/access");
-        }, 500);
-
         setInputId(""); // 혹시 남아있을까봐
         setInputPw(""); // 혹시 남아있을까봐
       })
@@ -128,6 +121,20 @@ export default function GlitchSplashScreen() {
         // setIsLogin(true);
         dispatch(loginAction() /* (true) */); // true 왜썼음?
         dispatch(setUserInfoAction(response.data));
+      })
+      .then(() => {
+        /**
+         * 다음에 페이지로 넘어가는 이 로직을 dispatch가 실행되기 전이나, 동등산 시점에 실행할 경우
+         * 우선순위가 밀려, 리덕스에 저장되지 않은채 다음 페이지에서 useSelect가 실행된다.
+         * 이 함수가 선언된 곳도 안되고, 이 위에 then 안에서도 안된다.
+         * 반드시 then을 두개 써서 디스패치와 동기적으로 실행되게 해야한다.
+         */
+        setTimeout(() => {
+          navigate("/users/access");
+        }, 500);
+        faidIn();
+        setTimeout(() => access(), 1000);
+        setTimeout(() => disk(), 10000);
       })
       .catch((error) => {
         console.log(error);

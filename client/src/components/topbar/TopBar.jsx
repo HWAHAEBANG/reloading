@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./TopBar.module.css";
 import { IoMdArrowDropright, IoMdArrowDropleft } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
 import { FaHandshake, FaRegHandshake } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,19 +18,35 @@ export default function TopBar({ showNav, setShowNav }) {
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
 
+  const [visitorCnt, setVisitorCnt] = useState();
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/users/visitorCnt`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setVisitorCnt(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const logout = () => {
     axios
       .post(`http://localhost:5000/users/logout`, {
-        method: "POST",
         withCredentials: true,
         data: {
           presentId: userInfo.userInfo.id,
         },
       })
-      .then((Response) => {
+      .then((response) => {
         dispatch(logoutAction());
         dispatch(clearUserInfoAction());
         navigate("/users/login");
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -57,7 +72,15 @@ export default function TopBar({ showNav, setShowNav }) {
           />
         </a>
       </div>
-      {/* <button onClick={enter}>임시포탈</button> */}
+      <div className={styles.visitCntBox}>
+        <p className={styles.visitCntTitle}>VISITORS</p>
+        <p className={styles.visitCnt}>
+          <span>TODAY </span>
+          {visitorCnt && visitorCnt.today}&nbsp;&nbsp;|&nbsp;&nbsp;
+          <span>TOTAL </span>
+          {visitorCnt && visitorCnt.total}
+        </p>
+      </div>
       {isLoggedIn.isLoggedIn ? (
         <button className={styles.logoutBtn} onClick={logout}>
           Logout

@@ -4,7 +4,7 @@ const https = require("https");
 const updateRule = require("./updateRule.js");
 
 // DB 연결부 ================================================================================
-const connectDB = require("../config/connectDB.js");
+const connectDB = require("../../config/connectDB.js");
 // const { route } = require("./allCharts.js");
 const db = connectDB.init();
 // connectDB.open(db);
@@ -12,16 +12,16 @@ const db = connectDB.init();
 
 const KOSIS_KEY = process.env.KOSIS_KEY;
 
-const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
+const jobUpdateJeonsePriceIndexAptSeoul = schedule.scheduleJob(
   updateRule,
   function () {
     console.log(
-      "현재시간 00시 00분 수도권 아파트 전세 지수 데이터 최신화를 진행합니다."
+      "현재시간 00시 00분 서울 아파트 전세 지수 데이터 최신화를 진행합니다."
     );
     try {
       // DB의 가장 최신 데이터의 날짜와 값 가져오기
       const checkSqlQuery =
-        "SELECT origin_date,value FROM jeonse_price_index_apt_around_seoul WHERE no = (SELECT MAX(no) FROM jeonse_price_index_apt_around_seoul);";
+        "SELECT origin_date,value FROM jeonse_price_index_apt_seoul WHERE no = (SELECT MAX(no) FROM jeonse_price_index_apt_seoul);";
       db.query(checkSqlQuery, async (err, result) => {
         if (err) console.log("DB 정보를 불러올 수 없음", err);
 
@@ -34,7 +34,7 @@ const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
         // api에서 데이터 받아옴
         axios
           .post(
-            `https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=${KOSIS_KEY}&itmId=sales+&objL1=01+&objL2=a1+&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=200311&endPrdDe=203012&orgId=408&tblId=DT_40803_N0002`
+            `https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=${KOSIS_KEY}&itmId=sales+&objL1=01+&objL2=a7+&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=200311&endPrdDe=203012&orgId=408&tblId=DT_40803_N0002`
           )
           .then((response) => {
             const filteredData = response.data.map((item) => ({
@@ -60,18 +60,34 @@ const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
             if (latestDataApi.date === latestDataDb.date) {
               if (latestDataApi.value === latestDataDb.value) {
                 console.log(
-                  "수도권 아파트 전세 지수 : 현재 DB는 최신 상태 입니다. "
+                  "서울 아파트 전세 지수 : 현재 DB는 최신 상태 입니다. "
                 );
               } else {
-                const updateSqlQuery = `UPDATE jeonse_price_index_apt_around_seoul SET value = ? WHERE origin_date = ?`;
+                const updateSqlQuery = `UPDATE jeonse_price_index_apt_seoul SET value = ? WHERE origin_date = ?`;
                 db.query(
                   updateSqlQuery,
                   [latestDataApi.value, latestDataApi.date],
                   (err, result) => {
                     if (err) return console.log(err);
-                    console.log(
-                      "수도권 아파트 전세 지수 : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
+
+                    //=====================================================================
+                    const message =
+                      "서울 아파트 전세 지수 : 최근 일자의 데이터가 수정되었습니다.";
+                    const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
+                    db.query(
+                      notificationQuery,
+                      [message, "modify"],
+                      (err, result) => {
+                        if (err)
+                          return console.log(
+                            "업데이트 공지 테이블에 추가하지 못했습니다."
+                          );
+                        console.log(
+                          "서울 아파트 전세 지수 : 데이터에 변경사항이 감지되어 DB를 수정하였습니다."
+                        );
+                      }
                     );
+                    //=====================================================================
                   }
                 );
               }
@@ -81,15 +97,31 @@ const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
               const month = latestDataApi.date.slice(4, 6);
               const day = 1;
               const insertSqlQuery =
-                "INSERT INTO jeonse_price_index_apt_around_seoul(origin_date,year,month,day,value) VALUES(?,?,?,?,?);";
+                "INSERT INTO jeonse_price_index_apt_seoul(origin_date,year,month,day,value) VALUES(?,?,?,?,?);";
               db.query(
                 insertSqlQuery,
                 [latestDataApi.date, year, month, day, latestDataApi.value],
                 (err, result) => {
                   if (err) return console.log(err);
-                  console.log(
-                    "수도권 아파트 전세 지수 : 새로운 데이터가 감지되어 DB에 추가하였습니다."
+
+                  //========================================================================
+                  const message =
+                    "서울 아파트 전세 지수 : 새로운 데이터가 추가되었습니다.";
+                  const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
+                  db.query(
+                    notificationQuery,
+                    [message, "add"],
+                    (err, result) => {
+                      if (err)
+                        return console.log(
+                          "업데이트 공지 테이블에 추가하지 못했습니다."
+                        );
+                      console.log(
+                        "서울 아파트 전세 지수 : 새로운 데이터가 감지되어 DB에 추가하였습니다."
+                      );
+                    }
                   );
+                  //========================================================================
                 }
               );
             }
@@ -101,4 +133,4 @@ const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
   }
 );
 
-module.exports = jobUpdateJeonsePriceIndexAptAroundSeoul;
+module.exports = jobUpdateJeonsePriceIndexAptSeoul;

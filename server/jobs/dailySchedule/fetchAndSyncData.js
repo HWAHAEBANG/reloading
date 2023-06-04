@@ -1,12 +1,6 @@
-const schedule = require("node-schedule");
-const axios = require("axios");
-const https = require("https");
+// job import ================================================================================
 const jobUpdatePirAptSeoul = require("./jobUpdatePirAptSeoul.js");
 const jobUpdateTransactionVolumeSalesAptSeoul = require("./jobUpdateTransactionVolumeSalesAptSeoul.js");
-
-// // DB 연결부 ================================================================================
-const connectDB = require("../config/connectDB.js");
-const updateRule = require("./updateRule.js");
 const jobUpdateTransactionVolumeJeonseAptSeoul = require("./jobUpdateTransactionVolumeJeonseAptSeoul.js");
 const jobUpdateHaiSeoul = require("./jobUpdateHaiSeoul.js");
 const jobUpdateHousePriceIndexAptSeoul = require("./jobUpdateHousePriceIndexAptSeoul.js");
@@ -17,14 +11,10 @@ const jobUpdateWeeklyPriceIndexChangesAptSeoul = require("./jobUpdateWeeklyPrice
 const jobUpdateUnsoldHouseAroundSeoul = require("./jobUpdateUnsoldHouseAroundSeoul.js");
 const jobUpdateJeonsePriceRatioAptSeoul = require("./jobUpdateJeonsePriceRatioAptSeoul.js");
 const jobUpdateBaseRateKorea = require("./jobUpdateBaseRateKorea.js");
-// const { route } = require("./allCharts.js");
-const db = connectDB.init();
-// connectDB.open(db);
 // ===========================================================================================
-
-// 예약된 작업 실행
+// 예약된 작업 실행 ===========================================================================
 const executeScheduledUpdate = () => {
-  console.log("스케줄러 작업이 정상적으로 실행되었습니다.");
+  console.log("일일단위 스케줄러 작업이 정상적으로 실행되었습니다.");
   // 서울 아파트 PIR
   jobUpdatePirAptSeoul;
   // 서울 아파트 매매 거래량
@@ -51,12 +41,12 @@ const executeScheduledUpdate = () => {
   jobUpdateBaseRateKorea;
 
   // + 회원정보 toDayFirstVisit 초기화 (+ 하는김에 emailService 도 추가)
-
-  //=============================================================================================================
-
-  // const agent = new https.Agent({ rejectUnauthorized: false }); // SSL 인증서 오류 무시
 };
+
 module.exports = executeScheduledUpdate;
+//=============================================================================================================
+
+// const agent = new https.Agent({ rejectUnauthorized: false }); // SSL 인증서 오류 무시
 // =============================================================================================
 
 // // // 이하 최초 데이터 추가시 사용할 로직?

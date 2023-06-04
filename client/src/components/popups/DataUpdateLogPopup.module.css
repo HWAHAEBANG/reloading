@@ -30,14 +30,25 @@
   padding: 20px;
 }
 
+.titleContainer {
+  display: flex;
+  align-items: end;
+  margin-bottom: 10px;
+}
+
 .title {
   color: mediumaquamarine;
   font-size: 30px;
   font-weight: 700;
 }
 
+.koTitle {
+  font-size: 15px;
+  margin: 0 0 6px 7px;
+}
+
 .subTitle {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .subTitle span {
@@ -48,6 +59,7 @@
   background-color: rgba(145, 185, 174, 0.25);
   height: 180px;
   border-radius: 5px;
+  margin-top: 10px;
 }
 
 .listContainerInner {
@@ -55,6 +67,7 @@
 }
 
 .listContainerInner p {
+  font-size: 15px;
   line-height: 25px;
 }
 
@@ -82,6 +95,7 @@
   font-size: 15px;
   box-sizing: border-box;
   transition-duration: 0.2s;
+  cursor: pointer;
 }
 
 .btn:hover {

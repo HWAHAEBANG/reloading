@@ -3,15 +3,14 @@ import styles from "./FirstVisitPopup.module.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export default function FirstVisitPopup() {
+export default function FirstVisitPopup({ onClose }) {
   const userInfo = useSelector((state) => state.userInfo);
 
   const navigate = useNavigate();
 
-  const handleClose = () => {};
-
   const handleNavigate = () => {
     navigate("/aboutUs");
+    onClose(false);
   };
 
   return (
@@ -32,7 +31,7 @@ export default function FirstVisitPopup() {
           <br />
           <span>RE:LOADING</span> 의 모든 데이터는 공신력있는{" "}
           <span>각종 정부 사이트</span> 또는 <span>공신력있는 플랫폼</span>
-          들로부터 제공받음으로써 <span>높은 정확성</span>을 보장하며{" "}
+          들로부터 제공받음으로써 <span>높은 정확성</span>을 보장하며,{" "}
           <span>일일 단위 업데이트</span>를 통해 <span>최신성을 유지</span>
           합니다.
           <br />
@@ -44,7 +43,7 @@ export default function FirstVisitPopup() {
           <button className={styles.btn} onClick={handleNavigate}>
             SEE MORE
           </button>
-          <button className={styles.btn} onClick={handleClose}>
+          <button className={styles.btn} onClick={() => onClose(false)}>
             CLOSE
           </button>
         </div>
