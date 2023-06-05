@@ -16,7 +16,7 @@ const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
   updateRule,
   function () {
     console.log(
-      "현재시간 00시 00분 수도권 아파트 전세 지수 데이터 최신화를 진행합니다."
+      "현재시간 02시 00분 수도권 아파트 전세 지수 데이터 최신화를 진행합니다."
     );
     try {
       // DB의 가장 최신 데이터의 날짜와 값 가져오기
@@ -72,7 +72,7 @@ const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
 
                     //=====================================================================
                     const message =
-                      "수도권 아파트 전세 지수 : 최근 일자의 데이터가 수정되었습니다.";
+                      "수도권 아파트 전세 지수 : 최근 일자 데이터 변동";
                     const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                     db.query(
                       notificationQuery,
@@ -105,8 +105,7 @@ const jobUpdateJeonsePriceIndexAptAroundSeoul = schedule.scheduleJob(
                   if (err) return console.log(err);
 
                   //========================================================================
-                  const message =
-                    "수도권 아파트 전세 지수 : 새로운 데이터가 추가되었습니다.";
+                  const message = "수도권 아파트 전세 지수 : 최신 데이터 추가";
                   const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                   db.query(
                     notificationQuery,

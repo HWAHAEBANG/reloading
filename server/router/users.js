@@ -414,11 +414,25 @@ router.post("/sendEmail", (req, res) => {
               from: process.env.SMTP_USER,
               to: recipientEmail,
               subject: "RE:LOADING 이메일 인증 코드",
-              text: `
-                다음 인증코드를 사이트의 입력란이 입력해주세요.
-                인증 코드: ${verificationCode}
-                본 인증 코드는 발급 기준 10분뒤 만기됩니다.
-              `,
+              // text: `
+              //   다음 인증코드를 사이트의 입력란이 입력해주세요.
+              //   인증 코드: ${verificationCode}
+              //   본 인증 코드는 발급 기준 10분뒤 만기됩니다.
+              // `,
+
+              html: `
+              <table style="width: 100%; max-width: 600px; margin: 0 auto;">
+              <tr>
+              <td style="text-align: center; background-color: #f5f5f5; padding-bottom: 50px; border-radius: 10px;">
+              <img src="https://res.cloudinary.com/dh6tdcdyj/image/upload/v1685938086/logoBg_lmdhiz.png" alt="로고 이미지" style=" border-radius: 10px; margin-bottom:30px">
+                  <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">다음 인증코드를 사이트의 입력란이 입력해주세요.</p>
+                  <p>인증코드 : <span style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">${verificationCode}</span></p>
+                  <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">본 인증 코드는 발급 기준 10분뒤 만기됩니다.</p>
+                  <br/>
+                </td>
+              </tr>
+            </table>
+        `,
             };
 
             const response = await transporter.sendMail(mailOptions);
@@ -557,11 +571,26 @@ router.post("/sendFindIdEmail", (req, res) => {
               from: process.env.SMTP_USER,
               to: recipientEmail,
               subject: "RE:LOADING 아이디 찾기 결과",
-              text: `
-              RE:LOADING을 다시 찾아주셔서 감사합니다.
+              //     text: `
+              //     RE:LOADING을 다시 찾아주셔서 감사합니다.
 
-              문의하신 회원님의 아이디는 "${foundId}"입니다.
-          `,
+              //     문의하신 회원님의 아이디는 "${foundId}"입니다.
+              // `,
+              html: `
+              <table style="width: 100%; max-width: 600px; margin: 0 auto;">
+              <tr>
+              <td style="text-align: center; background-color: #f5f5f5; padding-bottom: 50px; border-radius: 10px;">
+              <img src="https://res.cloudinary.com/dh6tdcdyj/image/upload/v1685938086/logoBg_lmdhiz.png" alt="로고 이미지" style=" border-radius: 10px; margin-bottom:30px">
+              <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">RE:LOADING을 다시 찾아주셔서 감사합니다.</p>
+              <p>문의하신 회원님의 아이디는 " <span style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">${foundId}</span> " 입니다.</p>
+              <br/>
+                      <br/>
+                      <a href="http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <br/>
+            </td>
+          </tr>
+        </table>
+    `,
             };
 
             const response = await transporter.sendMail(mailOptions);
@@ -627,13 +656,29 @@ router.post("/sendFindPwEmail", async (req, res) => {
                 from: process.env.SMTP_USER,
                 to: recipientEmail,
                 subject: "RE:LOADING 임시 비밀번호 발송",
-                text: `
-              RE:LOADING을 다시 찾아주셔서 감사합니다.
+                //       text: `
+                //     RE:LOADING을 다시 찾아주셔서 감사합니다.
 
-              문의하신 회원님의 임시 비밀번호는 "${tempPw}"입니다.
+                //     문의하신 회원님의 임시 비밀번호는 " ${tempPw} "입니다.
 
-              계정의 보안을 위해 임시 비밀번호로 로그인 후 비밀번호를 반드시 변경하시기 바랍니다.
-          `,
+                //     계정의 보안을 위해 임시 비밀번호로 로그인 후 비밀번호를 반드시 변경하시기 바랍니다.
+                // `,
+                html: `
+                <table style="width: 100%; max-width: 600px; margin: 0 auto;">
+                <tr>
+                <td style="text-align: center; background-color: #f5f5f5; padding-bottom: 50px; border-radius: 10px;">
+                <img src="https://res.cloudinary.com/dh6tdcdyj/image/upload/v1685938086/logoBg_lmdhiz.png" alt="로고 이미지" style=" border-radius: 10px; margin-bottom:30px">
+              <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">RE:LOADING을 다시 찾아주셔서 감사합니다.</p>
+              <p>문의하신 회원님의 임시 비밀번호는 " <span style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">${tempPw}</span> " 입니다.</p>
+              <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;"> 계정의 보안을 위해 임시 비밀번호로 로그인 후 비밀번호를 반드시 변경하시기 바랍니다.</p>
+              <br/>
+                      <br/>
+                      <a href="http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <br/>
+            </td>
+          </tr>
+        </table>
+    `,
               };
 
               const response = await transporter.sendMail(mailOptions);

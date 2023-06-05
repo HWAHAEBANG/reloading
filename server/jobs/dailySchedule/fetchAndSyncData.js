@@ -11,6 +11,7 @@ const jobUpdateWeeklyPriceIndexChangesAptSeoul = require("./jobUpdateWeeklyPrice
 const jobUpdateUnsoldHouseAroundSeoul = require("./jobUpdateUnsoldHouseAroundSeoul.js");
 const jobUpdateJeonsePriceRatioAptSeoul = require("./jobUpdateJeonsePriceRatioAptSeoul.js");
 const jobUpdateBaseRateKorea = require("./jobUpdateBaseRateKorea.js");
+const jobResetTodayFirstVisit = require("./jobResetTodayFirstVisit.js");
 // ===========================================================================================
 // 예약된 작업 실행 ===========================================================================
 const executeScheduledUpdate = () => {
@@ -39,8 +40,8 @@ const executeScheduledUpdate = () => {
   jobUpdateJeonsePriceRatioAptSeoul;
   // 한국 기준금리
   jobUpdateBaseRateKorea;
-
-  // + 회원정보 toDayFirstVisit 초기화 (+ 하는김에 emailService 도 추가)
+  // 금일 방문 횟수 카운터를 초기화
+  jobResetTodayFirstVisit;
 };
 
 module.exports = executeScheduledUpdate;

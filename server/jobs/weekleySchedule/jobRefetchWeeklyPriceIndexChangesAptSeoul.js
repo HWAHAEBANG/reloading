@@ -67,7 +67,7 @@ const jobRefetchWeeklyPriceIndexChangesAptSeoul = schedule.scheduleJob(
                   ) {
                     //=====================================================================================
                     const message =
-                      "서울 아파트 주간 매매가 증감률 : 모든 데이터를 새 데이터로 교체 완료하였습니다.";
+                      "서울 아파트 주간 매매가 증감률 : 모든 데이터를 새 데이터로 교체 완료";
                     const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                     db.query(
                       notificationQuery,

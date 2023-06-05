@@ -1048,7 +1048,7 @@ export default function EditUserInfo() {
                 data-testid='loader'
               />
             ) : (
-              <span>Create an account</span>
+              <span>Save</span>
             )}
           </button>
           <p className={styles.link}>

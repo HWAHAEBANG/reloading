@@ -57,7 +57,7 @@ const jobRefetchUnsoldHouseAroundSeoul = schedule.scheduleJob(
                   if (insertCount === response.data.length) {
                     //=====================================================================================
                     const message =
-                      "수도권 미분양 물량 : 모든 데이터를 새 데이터로 교체 완료하였습니다.";
+                      "수도권 미분양 물량 : 모든 데이터를 새 데이터로 교체 완료";
                     const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                     db.query(
                       notificationQuery,

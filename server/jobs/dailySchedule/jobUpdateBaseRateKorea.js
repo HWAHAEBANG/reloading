@@ -9,7 +9,7 @@ const db = connectDB.init();
 const ECOS_KEY = process.env.ECOS_KEY;
 
 const jobUpdateBaseRateKorea = schedule.scheduleJob(updateRule, function () {
-  console.log("현재시간 00시 00분 한국 기준금리 데이터 최신화를 진행합니다.");
+  console.log("현재시간 02시 00분 한국 기준금리 데이터 최신화를 진행합니다.");
   try {
     // DB의 가장 최신 데이터의 날짜와 값 가져오기
     const checkSqlQuery =
@@ -62,8 +62,7 @@ const jobUpdateBaseRateKorea = schedule.scheduleJob(updateRule, function () {
                 (err, result) => {
                   if (err) return console.log(err);
                   //=====================================================================
-                  const message =
-                    "한국 기준금리 : 최근 일자의 데이터가 수정되었습니다.";
+                  const message = "한국 기준금리 : 최근 일자 데이터 변동";
                   const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                   db.query(
                     notificationQuery,
@@ -95,8 +94,7 @@ const jobUpdateBaseRateKorea = schedule.scheduleJob(updateRule, function () {
               (err, result) => {
                 if (err) return console.log(err);
                 //========================================================================
-                const message =
-                  "한국 기준금리 : 새로운 데이터가 추가되었습니다.";
+                const message = "한국 기준금리 : 최신 데이터 추가";
                 const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                 db.query(notificationQuery, [message, "add"], (err, result) => {
                   if (err)

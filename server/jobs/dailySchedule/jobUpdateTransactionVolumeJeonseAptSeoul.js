@@ -24,7 +24,7 @@ const jobUpdateTransactionVolumeJeonseAptSeoul = schedule.scheduleJob(
   updateRule,
   function () {
     console.log(
-      "현재시간 00시 00분 서울 전세 거래량 데이터 최신화를 진행합니다."
+      "현재시간 02시 00분 서울 전세 거래량 데이터 최신화를 진행합니다."
     );
     try {
       // DB의 가장 최신 데이터의 날짜와 값 가져오기
@@ -168,7 +168,7 @@ const jobUpdateTransactionVolumeJeonseAptSeoul = schedule.scheduleJob(
                         // 모든 데이터 추가 완료 후에 실행할 코드
                         if (insertCount === insertData.length) {
                           const message =
-                            "서울 아파트 전세 거래량 : 최근 몇개월간의 데이터가 수정되었습니다.";
+                            "서울 아파트 전세 거래량 : 최근 몇개월 데이터의 변동 사항 반영 ( 변동 요인 : 취소거래 )";
                           const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                           db.query(
                             notificationQuery,
@@ -236,7 +236,7 @@ const jobUpdateTransactionVolumeJeonseAptSeoul = schedule.scheduleJob(
                       // 모든 데이터 추가 완료 후에 실행할 코드
                       if (insertCount === insertData.length) {
                         const message =
-                          "서울 아파트 전세 거래량 : 새로운 데이터가 추가되었습니다.";
+                          "서울 아파트 전세 거래량 : 최신 데이터 추가";
                         const notificationQuery = `INSERT INTO data_update_logs (message,update_type) VALUES (?,?);`;
                         db.query(
                           notificationQuery,
@@ -298,7 +298,7 @@ module.exports = jobUpdateTransactionVolumeJeonseAptSeoul;
 //   updateRule,
 //   function () {
 //     console.log(
-//       "현재시간 00시 00분 서울 전세 거래량 데이터 최신화를 진행합니다."
+//       "현재시간 02시 00분 서울 전세 거래량 데이터 최신화를 진행합니다."
 //     );
 //     try {
 //       // DB의 가장 최신 데이터의 날짜와 값 가져오기
