@@ -68,7 +68,7 @@ export default function GlitchSplashScreen() {
       })
       .catch((error) => {
         wrong();
-        // setAlertMessage("존재하지 않는 계정입니다.");
+        setAlertMessage("존재하지 않는 계정입니다.");
         console.log("에러코드", error.response.status, error.response.data);
       });
   };
@@ -107,6 +107,11 @@ export default function GlitchSplashScreen() {
   const pwCheck = (e) => {
     if (e.keyCode === 13) {
       handleSubmitPw();
+    }
+    if (e.getModifierState("CapsLock")) {
+      setAlertMessage("CAPS LOCK이 켜져 있습니다.");
+    } else {
+      setAlertMessage();
     }
   };
   // 회원가입 여부와 회원정보 리덕스에 저장  =======================================

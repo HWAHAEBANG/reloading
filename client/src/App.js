@@ -12,10 +12,11 @@ import ImportantNotificationPopup from "./components/popups/ImportantNotificatio
 import DataUpdateLogPopup from "./components/popups/DataUpdateLogPopup";
 import FirstVisitPopup from "./components/popups/FirstVisitPopup";
 import { useSelector } from "react-redux";
+import SuggestModal from "./components/popups/SuggestModal";
 
 function App() {
   const [showNav, setShowNav] = useState(false); // for Nav Button
-
+  const [visibleSuggestModal, setVisibleSuggestModal] = useState(false);
   //popup condition =======================================================
   /**
    * Condition Rule:사용자별 첫방문 여부와 업데이트 유무에 따라 보여줄 팝업을 다르게 설정.
@@ -74,11 +75,6 @@ function App() {
       });
   }, []);
 
-  console.log("완전 첫 방문이신지?", isFirstVisitTotal);
-  console.log("오늘 첫 방문이신지?", isFirstVisitToday);
-  console.log("새로운 데이터 있는지?", hasTodayDataUpdate);
-  console.log("새로운 공지 있는지?", hasTodayNotification);
-
   //=======================================================================
 
   return (
@@ -88,7 +84,11 @@ function App() {
       <div
         className={`${styles.subContainer} ${showNav ? styles.showNavBar : ""}`}
       >
-        <TopBar showNav={showNav} setShowNav={setShowNav} />
+        <TopBar
+          showNav={showNav}
+          setShowNav={setShowNav}
+          setVisibleSuggestModal={setVisibleSuggestModal}
+        />
         <Outlet />
       </div>
       {/* 조건별 생성 팝업  ======================================*/}
@@ -115,7 +115,16 @@ function App() {
       ) : (
         ""
       )}
-      {/* 조건별 생성 팝업  ======================================*/}
+      {/* ==========================================================*/}
+      {/* 개발자에게 제안 모달  ======================================*/}
+      {visibleSuggestModal ? (
+        <div className={styles.popupBg}>
+          <SuggestModal onClose={setVisibleSuggestModal} />
+        </div>
+      ) : (
+        ""
+      )}
+      {/* ==========================================================*/}
     </div>
   );
 }

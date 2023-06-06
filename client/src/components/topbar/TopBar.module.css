@@ -90,6 +90,23 @@
     0 0 100px #03e9f4; */
 }
 
+.suggestBtn {
+  background: none;
+  padding: 5px 10px;
+  color: mediumaquamarine;
+  border: 1px solid mediumaquamarine;
+  cursor: pointer;
+  transition: 0.2s;
+  height: 27px;
+  line-height: 16px;
+  margin-right: 10px;
+}
+
+.suggestBtn:hover {
+  background-color: mediumaquamarine;
+  color: #000000;
+}
+
 .logoutBtn {
   background: none;
   padding: 5px 10px;
@@ -97,6 +114,7 @@
   border: 1px solid mediumaquamarine;
   cursor: pointer;
   transition: 0.2s;
+  height: 27px;
 }
 
 .logoutBtn:hover {

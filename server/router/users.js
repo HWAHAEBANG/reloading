@@ -585,7 +585,7 @@ router.post("/sendFindIdEmail", (req, res) => {
               <p>문의하신 회원님의 아이디는 " <span style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">${foundId}</span> " 입니다.</p>
               <br/>
                       <br/>
-                      <a href="http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <a href="http://localhost:5000/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
                       <br/>
             </td>
           </tr>
@@ -673,7 +673,7 @@ router.post("/sendFindPwEmail", async (req, res) => {
               <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;"> 계정의 보안을 위해 임시 비밀번호로 로그인 후 비밀번호를 반드시 변경하시기 바랍니다.</p>
               <br/>
                       <br/>
-                      <a href="http://reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <a href="http://localhost:5000/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
                       <br/>
             </td>
           </tr>
@@ -747,5 +747,69 @@ router.get("/visitorCnt", (req, res) => {
     }
   });
 });
+//=======================================================================================
+//===========================================================================================
+
+router.post("/sendSuggest", (req, res) => {
+  try {
+    // 이메일 전송
+    const { presentUserInfo, text } = req.body.data;
+
+    // SMTP 전송 설정
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    // 이메일 전송 함수
+    const sendEmail = async (presentUserInfo, text) => {
+      try {
+        const mailOptions = {
+          from: process.env.SMTP_USER,
+          to: "bcl0206@gmail.com",
+          subject: "RE:LOADING 회원님의 소중한 의견이 도착하였습니다.",
+          html: `
+              <table style="width: 100%; max-width: 600px; margin: 0 auto;">
+              <tr>
+              <td style="text-align: center; background-color: #f5f5f5; padding-bottom: 50px; border-radius: 10px;">
+              <img src="https://res.cloudinary.com/dh6tdcdyj/image/upload/v1685938086/logoBg_lmdhiz.png" alt="로고 이미지" style=" border-radius: 10px; margin-bottom:30px">
+              <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">회원님의 소중한 의견이 도착하였습니다</p>
+              <p> 발신자 id : ${presentUserInfo.id} </p>
+              <p> 발신자 성명 : ${presentUserInfo.name}</p>
+              <p> 발신자 닉네임 : ${presentUserInfo.nickname}</p>
+              <p> 발신자 이메일 : ${presentUserInfo.email}</p>
+              <p> 본문</p>
+              <p> ${text}</p>
+              <br/>
+                      <br/>
+                      <a href="http://localhost:5000/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <br/>
+            </td>
+          </tr>
+        </table>
+    `,
+        };
+
+        const response = await transporter.sendMail(mailOptions);
+
+        console.log("이메일이 성공적으로 전송되었습니다.", response);
+        res.status(200).json("Send Complete");
+      } catch (error) {
+        console.error("이메일 전송 중 오류가 발생했습니다.", error);
+        res.status(500).json(error);
+      }
+    };
+
+    // 실행
+    // 이메일 전송
+    sendEmail(presentUserInfo, text);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 //=======================================================================================
 module.exports = router;

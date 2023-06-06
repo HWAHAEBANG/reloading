@@ -91,6 +91,22 @@ export default function EditUserInfo() {
     nicknameRegex: /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/,
   };
 
+  const detectCapsLock = (e) => {
+    if (e.getModifierState("CapsLock")) {
+      setAlertMessage((prevState) => ({
+        ...prevState,
+        pw: "CAPS LOCK이 켜져 있습니다.",
+        pwCheck: "CAPS LOCK이 켜져 있습니다.",
+      }));
+    } else {
+      setAlertMessage((prevState) => ({
+        ...prevState,
+        pw: "",
+        pwCheck: "",
+      }));
+    }
+  };
+
   // 입력값 검증(추후 성능 테스트하여 useEffect나 useCallback 으로 리팩토링 고려 )
   const handleInputValue = (e) => {
     switch (e.target.name) {
@@ -799,6 +815,7 @@ export default function EditUserInfo() {
                   name='pw'
                   value={inputValue.pw}
                   onChange={handleInputValue}
+                  onKeyDown={detectCapsLock}
                   disabled={!inputValue.authenticationStatus}
                 />
               </div>
@@ -833,6 +850,7 @@ export default function EditUserInfo() {
                   name='pwCheck'
                   value={inputValue.pwCheck}
                   onChange={handleInputValue}
+                  onKeyDown={detectCapsLock}
                   disabled={!inputValue.authenticationStatus}
                 />
               </div>

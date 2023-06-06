@@ -22,6 +22,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://api.cloudinary.com/v1_1/dh6tdcdyj/image/upload",
+      "http://www.reloading.co.kr",
     ],
     methods: ["GET", "POST"], // 사용할 메서드
     credentials: true, // 사용자와 클라이언트 서버간에 쿠키를 사용해서 통신을 할 것이기 떄문에.

@@ -7,7 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUserInfoAction, logoutAction } from "../../redux";
 import axios from "axios";
 
-export default function TopBar({ showNav, setShowNav }) {
+export default function TopBar({
+  showNav,
+  setShowNav,
+  setVisibleSuggestModal,
+}) {
   const navigate = useNavigate();
 
   const enter = () => {
@@ -81,6 +85,15 @@ export default function TopBar({ showNav, setShowNav }) {
           {visitorCnt && visitorCnt.total}
         </p>
       </div>
+      <button
+        className={styles.suggestBtn}
+        onClick={() => {
+          setVisibleSuggestModal(true);
+        }}
+      >
+        개발자에게 제안
+      </button>
+
       {isLoggedIn.isLoggedIn ? (
         <button className={styles.logoutBtn} onClick={logout}>
           Logout
