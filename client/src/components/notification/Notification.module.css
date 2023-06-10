@@ -17,7 +17,6 @@
   display: flex;
   flex-direction: column;
   padding: 30px;
-  overflow: hidden;
 }
 
 @keyframes boxExtend {
@@ -45,7 +44,7 @@
   display: flex;
   flex-direction: column;
   /* flex: 1; */
-  height: 83%;
+  height: 95%;
   gap: 20px;
   /* background-color: red; */
 }
@@ -100,13 +99,14 @@
   margin-bottom: 10px;
   font-size: 20px;
   font-weight: 700;
+  line-height: 20px;
 }
 
 .listContainer {
   background-color: rgba(145, 185, 174, 0.25);
   border-radius: 5px;
   padding: 5px 0;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .notificationBox .listContainer {
@@ -118,7 +118,7 @@
 }
 
 .releaseNoteBox .listContainer {
-  max-height: 200px; /* 원하는 높이로 설정 */
+  max-height: 360px; /* 원하는 높이로 설정 */
   flex: 1;
 }
 
@@ -137,6 +137,7 @@
   animation-timing-function: ease-out;
   animation-delay: 0s;
   animation-fill-mode: both;
+  white-space: nowrap;
 }
 
 .postHeader {
@@ -162,6 +163,10 @@
   flex: 1;
 }
 
+.contentTitle {
+  width: 100%;
+}
+
 .newContainer {
   position: relative;
 }
@@ -174,6 +179,12 @@
   color: rgb(255, 118, 39);
   transform: translate(-50%, -50%);
   animation: twinkling 1s infinite;
+}
+
+.favicon {
+  width: 15px;
+  height: 15px;
+  margin: 5px 5px 0 0;
 }
 
 @keyframes twinkling {
@@ -209,5 +220,79 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* PC , 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  /*스타일입력*/
+}
+
+/* 테블릿 세로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  /*스타일입력*/
+}
+
+/* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width: 480px) and (max-width: 767px) {
+  /*스타일입력*/
+}
+
+/* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
+@media all and (max-width: 479px) {
+  .mainContainer {
+    padding: 10px;
+  }
+
+  .subContainer {
+    padding: 20px;
+    overflow-y: scroll;
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .explainArea {
+    font-size: 13px;
+  }
+
+  .boardArea {
+    display: block;
+  }
+
+  .notificationBox .listContainer {
+    max-height: 200px; /* 원하는 높이로 설정 */
+    margin-bottom: 20px;
+  }
+
+  .dataUpdateBox .listContainer {
+    max-height: 200px; /* 원하는 높이로 설정 */
+    margin-bottom: 20px;
+  }
+
+  .releaseNoteBox .listContainer {
+    max-height: 200px; /* 원하는 높이로 설정 */
+    margin-bottom: 20px;
+  }
+
+  .notificationBox .contentTitle,
+  .releaseNoteBox .contentTitle {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+  }
+
+  .notificationBox .postHeader,
+  .releaseNoteBox .postHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    padding: 15px 10px 40px 10px;
+    cursor: pointer;
+    white-space: nowrap;
   }
 }

@@ -51,14 +51,17 @@ export default function GlitchSplashScreen() {
 
   const handleSubmitId = () => {
     axios
-      .post(`http://localhost:5000/users/idCheck`, {
-        // url: "http://localhost:5000/users/idCheck", // 안되는뎅
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputId: inputId, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/idCheck`,
+        {
+          // url: "/users/idCheck", // 안되는뎅
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputId: inputId, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+          },
+        }
+      )
       .then((response) => {
         faidIn();
         // console.log("존재하는 계정입니다.");
@@ -75,14 +78,17 @@ export default function GlitchSplashScreen() {
 
   const handleSubmitPw = () => {
     axios
-      .post(`http://localhost:5000/users/pwCheck`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputId: inputId,
-          inputPw: inputPw,
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/pwCheck`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputId: inputId,
+            inputPw: inputPw,
+          },
+        }
+      )
       .then((response) => {
         setAlertMessage("");
         getAccessToken();
@@ -118,10 +124,13 @@ export default function GlitchSplashScreen() {
   const getAccessToken = () => {
     // 해쉬 안받아오도록 리팩토링 요망
     axios
-      .get(`http://localhost:5000/users/accesstoken`, {
-        method: "GET",
-        withCredentials: true,
-      })
+      .get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/accesstoken`,
+        {
+          method: "GET",
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         // setIsLogin(true);
         dispatch(loginAction() /* (true) */); // true 왜썼음?

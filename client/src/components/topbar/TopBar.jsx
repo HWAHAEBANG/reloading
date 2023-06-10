@@ -22,28 +22,31 @@ export default function TopBar({
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
 
-  const [visitorCnt, setVisitorCnt] = useState();
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/users/visitorCnt`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setVisitorCnt(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // const [visitorCnt, setVisitorCnt] = useState();
+  // useEffect(() => {
+  //   axios
+  //     .get(`/users/visitorCnt`, {
+  //       withCredentials: true,
+  //     })
+  //     .then((response) => {
+  //       setVisitorCnt(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   const logout = () => {
     axios
-      .post(`http://localhost:5000/users/logout`, {
-        withCredentials: true,
-        data: {
-          presentId: userInfo.userInfo.id,
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/logout`,
+        {
+          withCredentials: true,
+          data: {
+            presentId: userInfo.userInfo.id,
+          },
+        }
+      )
       .then((response) => {
         dispatch(logoutAction());
         dispatch(clearUserInfoAction());
@@ -76,7 +79,7 @@ export default function TopBar({
           />
         </a>
       </div>
-      <div className={styles.visitCntBox}>
+      {/* <div className={styles.visitCntBox}>
         <p className={styles.visitCntTitle}>VISITORS</p>
         <p className={styles.visitCnt}>
           <span>TODAY </span>
@@ -84,25 +87,27 @@ export default function TopBar({
           <span>TOTAL </span>
           {visitorCnt && visitorCnt.total}
         </p>
-      </div>
-      <button
-        className={styles.suggestBtn}
-        onClick={() => {
-          setVisibleSuggestModal(true);
-        }}
-      >
-        개발자에게 제안
-      </button>
+      </div> */}
+      <div>
+        <button
+          className={styles.suggestBtn}
+          onClick={() => {
+            setVisibleSuggestModal(true);
+          }}
+        >
+          개발자에게 제안
+        </button>
 
-      {isLoggedIn.isLoggedIn ? (
-        <button className={styles.logoutBtn} onClick={logout}>
-          Logout
-        </button>
-      ) : (
-        <button className={styles.logoutBtn} onClick={enter}>
-          Login
-        </button>
-      )}
+        {isLoggedIn.isLoggedIn ? (
+          <button className={styles.logoutBtn} onClick={logout}>
+            Logout
+          </button>
+        ) : (
+          <button className={styles.logoutBtn} onClick={enter}>
+            Login
+          </button>
+        )}
+      </div>
     </div>
   );
 }

@@ -27,15 +27,24 @@ export default function JeonsePriceRatio() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/jeonsePriceRatio`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/housePriceIndexSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/JeonsePriceIndexSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
       .then((responses) => {
         const jeonsePriceRatioResponse = responses[0];

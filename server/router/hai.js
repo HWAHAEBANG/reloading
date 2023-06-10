@@ -4,6 +4,7 @@ const router = express.Router();
 const connectDB = require("../config/connectDB.js");
 const db = connectDB.init();
 // ===========================================================================================
+
 router.get("/", (req, res) => {
   try {
     const sqlQuery = `SELECT year, month, day, value FROM hai_seoul;`;

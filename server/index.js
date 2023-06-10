@@ -22,13 +22,23 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://api.cloudinary.com/v1_1/dh6tdcdyj/image/upload",
-      "http://www.reloading.co.kr",
+      "http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com",
     ],
     methods: ["GET", "POST"], // 사용할 메서드
     credentials: true, // 사용자와 클라이언트 서버간에 쿠키를 사용해서 통신을 할 것이기 떄문에.
   })
 );
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// // CORS 설정
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*"); // 모든 도메인 허용
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // 허용할 HTTP 메서드
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 허용할 헤더
+//   res.setHeader("Access-Control-Allow-Credentials", true); // 인증 정보 허용
+
+//   next();
+// });
 
 /**
  * body-parser 미들웨어는 HTTP 요청의 본문을 파싱하여 JSON 객체나 URL-encoded 문자열 등의 형태로 변환해주는 역할을 합니다. 이렇게 변환된 데이터는 req.body 객체에 저장되어 다른 라우팅 핸들러에서 사용될 수 있습니다.
@@ -40,76 +50,88 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 서버가 허용되지 않은 파일을 가져가려고하면 굉장한 보안이슈가 있을 수 있기 때문에 이 같이 하는 것.
 // 서버를 켜놨다는 이유로 내 PC에 있는 모든 파일을 막 접속을 하거나 한다면 굉장히 위험하므로.
 app.use(express.static("build"));
-// 루트 경로로 들어왔을 때 다음 파일을 보낸다.
+
+// app.use(
+//   /^\/(aboutUs|allCharts|myCharts|topicNews|notification)/,
+//   express.static("build")
+// );
+
+// app.use("/allCharts/*", express.static("build"));
+
 app.get("/", (req, res) => {
-  res.sendFile(__dirname, "/build/index.html");
-  // 해당하는 파일 경로를 정어운다,  __dirname는 루트경로를 의미/
+  // res.sendFile(__dirname, "/build/index.html");
+  res.sendFile(__dirname + "/build/index.html");
+
+  // 해당하는 파일 경로를 적어준다,  __dirname는 루트경로를 의미/
 });
 
 // page ===================================
 
+const ABOUT_US = require("./router/aboutUS.js");
+app.use("/api/aboutUS", authMiddleware, ABOUT_US);
+
 const ALL_CHARTS = require("./router/allCharts.js");
-app.use("/allCharts", authMiddleware, ALL_CHARTS);
+app.use("/api/allCharts", authMiddleware, ALL_CHARTS);
 
 const My_CHARTS = require("./router/myCharts.js");
-app.use("/myCharts", authMiddleware, My_CHARTS);
+app.use("/api/myCharts", authMiddleware, My_CHARTS);
 
 const USERS = require("./router/users.js");
-app.use("/users", USERS);
+app.use("/api/users", USERS);
 
 const TOPIC_NEWS = require("./router/topicNews.js");
-app.use("/topicNews", authMiddleware, TOPIC_NEWS);
+app.use("/api/topicNews", authMiddleware, TOPIC_NEWS);
 
 const NOTIFICATION = require("./router/notification.js");
-app.use("/notification", authMiddleware, NOTIFICATION);
+app.use("/api/notification", authMiddleware, NOTIFICATION);
 
 // chart ==================================
 const HAI = require("./router/hai.js");
-app.use("/allCharts/hai", HAI);
+app.use("/api/allCharts/hai", HAI);
 
 const PIR = require("./router/pir.js");
-app.use("/allCharts/pir", PIR);
+app.use("/api/allCharts/pir", PIR);
 
 const UNSOLDHOUSE = require("./router/unsoldHouse.js");
-app.use("/allCharts/unsoldHouse", UNSOLDHOUSE);
+app.use("/api/allCharts/unsoldHouse", UNSOLDHOUSE);
 
 const HOUSE_PRICE_INDEX_SEOUL = require("./router/housePriceIndexSeoul.js");
-app.use("/allCharts/housePriceIndexSeoul", HOUSE_PRICE_INDEX_SEOUL);
+app.use("/api/allCharts/housePriceIndexSeoul", HOUSE_PRICE_INDEX_SEOUL);
 
 const JEONSE_PRICE_INDEX_SEOUL = require("./router/JeonsePriceIndexSeoul.js"); // 파일명수정 필요
-app.use("/allCharts/JeonsePriceIndexSeoul", JEONSE_PRICE_INDEX_SEOUL);
+app.use("/api/allCharts/JeonsePriceIndexSeoul", JEONSE_PRICE_INDEX_SEOUL);
 
 const HOUSE_PRICE_INDEX_AROUND_SEOUL = require("./router/housePriceIndexAroundSeoul.js");
 app.use(
-  "/allCharts/housePriceIndexAroundSeoul",
+  "/api/allCharts/housePriceIndexAroundSeoul",
   HOUSE_PRICE_INDEX_AROUND_SEOUL
 );
 
 const JEONSE_PRICE_INDEX_AROUND_SEOUL = require("./router/JeonsePriceIndexAroundSeoul.js");
 app.use(
-  "/allCharts/JeonsePriceIndexAroundSeoul",
+  "/api/allCharts/JeonsePriceIndexAroundSeoul",
   JEONSE_PRICE_INDEX_AROUND_SEOUL
 );
 
 const JEONSE_PRICE_RATIO = require("./router/jeonsePriceRatio.js");
-app.use("/allCharts/jeonsePriceRatio", JEONSE_PRICE_RATIO);
+app.use("/api/allCharts/jeonsePriceRatio", JEONSE_PRICE_RATIO);
 
 const PRICE_CHANGE_RATE = require("./router/priceChangeRate.js");
-app.use("/allCharts/priceChangeRate", PRICE_CHANGE_RATE);
+app.use("/api/allCharts/priceChangeRate", PRICE_CHANGE_RATE);
 
 const BASE_RATE_KOREA = require("./router/baseRateKorea.js");
-app.use("/allCharts/baseRateKorea", BASE_RATE_KOREA);
+app.use("/api/allCharts/baseRateKorea", BASE_RATE_KOREA);
 
 const TRANSACTION_VOLUME_SALES_SEOUL = require("./router/transactionVolumeSalesSeoul.js");
 app.use(
-  "/allCharts/transactionVolumeSalesSeoul",
+  "/api/allCharts/transactionVolumeSalesSeoul",
   TRANSACTION_VOLUME_SALES_SEOUL
 );
 
 const TRANSACTION_VOLUME_JEONSE_SEOUL = require("./router/transactionVolumeJeonseSeoul");
 
 app.use(
-  "/allCharts/transactionVolumeJeonseSeoul",
+  "/api/allCharts/transactionVolumeJeonseSeoul",
   TRANSACTION_VOLUME_JEONSE_SEOUL
 );
 

@@ -131,7 +131,7 @@ router.post("/pwCheck", (req, res) => {
       // token 전송 (쿠키를 통해)
       res.cookie("accessToken", accessToken, {
         // domain:
-        // "http://localhost:5000/", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "/", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값 , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -139,7 +139,7 @@ router.post("/pwCheck", (req, res) => {
 
       res.cookie("refreshToken", refreshToken, {
         // domain:
-        // "http://localhost:5000/", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
+        // "/", //이거 썼더니, 3000도 여전히 안되고, 5000까지 안 돼버림.
         // secure: true, //https와 http 차이를 명시 하는 것 (http면 false), 쿠키가 SSL이나 HTTPS 연결을 통해서만 반횐될지 여부를 명시하는 값, , false 줬더니 쿠키 안옴;
         httpOnly: true, //JS와 http 중에 어디서 접근이 가능할지 지정하는 옵션으로, true를 주면 자바스크립트에서 쿠키의 접근이 불가능해짐!
         // sameSite: "none", // + 쿠키가 같은 도메인에서만 접근할 수 있어야 하는지 여부를 결정하는 값
@@ -585,7 +585,7 @@ router.post("/sendFindIdEmail", (req, res) => {
               <p>문의하신 회원님의 아이디는 " <span style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">${foundId}</span> " 입니다.</p>
               <br/>
                       <br/>
-                      <a href="http://localhost:5000/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <a href="/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
                       <br/>
             </td>
           </tr>
@@ -673,7 +673,7 @@ router.post("/sendFindPwEmail", async (req, res) => {
               <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;"> 계정의 보안을 위해 임시 비밀번호로 로그인 후 비밀번호를 반드시 변경하시기 바랍니다.</p>
               <br/>
                       <br/>
-                      <a href="http://localhost:5000/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <a href="/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
                       <br/>
             </td>
           </tr>
@@ -785,7 +785,7 @@ router.post("/sendSuggest", (req, res) => {
               <p> ${text}</p>
               <br/>
                       <br/>
-                      <a href="http://localhost:5000/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <a href="/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
                       <br/>
             </td>
           </tr>

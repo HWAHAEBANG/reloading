@@ -11,9 +11,12 @@ export default function ImportantNotificationPopup({ onClose }) {
   const [notification, setNotification] = useState();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/notification/notification`, {
-        withCredentials: true,
-      })
+      .get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/notification/notification`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         if (response.data.length === 0) {
           return;

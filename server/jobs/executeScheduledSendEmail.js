@@ -105,7 +105,7 @@ const executeScheduledSendEmail = () => {
                       </ul>
                       <br/>
                       <br/>
-                      <a href="http://localhost:5000/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
+                      <a href="/" style="text-align: center; padding: 10px 20px; background: #148888; border-radious:5px; color:#f5f5f5; margin:20px">RE:ROADING 으로 바로 이동하기</a>
                     </td>
                   </tr>
                 </table>

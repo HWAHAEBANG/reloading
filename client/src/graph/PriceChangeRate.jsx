@@ -26,9 +26,12 @@ export default function PriceChangeRate() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/allCharts/priceChangeRate`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/priceChangeRate`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
       .then((responses) => {
         const priceChangeRateResponse = responses[0];

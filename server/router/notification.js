@@ -4,6 +4,7 @@ const router = express.Router();
 const connectDB = require("../config/connectDB.js");
 const db = connectDB.init();
 // ===========================================================================================
+
 router.get("/notification", (req, res) => {
   try {
     const sqlQuery = `SELECT * FROM notification;`;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./NavBar.module.css";
 import {
   BsFillBellFill,
@@ -23,7 +23,11 @@ import { logoutAction, clearUserInfoAction } from "../../redux";
 import axios from "axios";
 import useSound from "use-sound";
 
-export default function NavBar({ showNav, setShowNav }) {
+export default function NavBar({
+  showNav,
+  setShowNav,
+  setVisibleSuggestModal,
+}) {
   const [autoClose, setAutoClose] = useState(true);
 
   const handleChecked = (e) => {
@@ -58,13 +62,16 @@ export default function NavBar({ showNav, setShowNav }) {
 
   const logout = () => {
     axios
-      .post(`http://localhost:5000/users/logout`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          presentId: userInfo.userInfo.id,
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/logout`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            presentId: userInfo.userInfo.id,
+          },
+        }
+      )
       .then((Response) => {
         dispatch(logoutAction());
         dispatch(clearUserInfoAction());
@@ -78,13 +85,16 @@ export default function NavBar({ showNav, setShowNav }) {
 
   const handleClickEmailUnactive = () => {
     axios
-      .post(`http://localhost:5000/users/emailServiceDisabled`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          presentId: userInfo.userInfo.id,
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/emailServiceDisabled`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            presentId: userInfo.userInfo.id,
+          },
+        }
+      )
       .then((Response) => {
         setToggleEmailBtn(false);
         alert("이메일 알림 서비스가 비활성화 되었습니다.");
@@ -94,13 +104,16 @@ export default function NavBar({ showNav, setShowNav }) {
 
   const handleClickEmailActive = () => {
     axios
-      .post(`http://localhost:5000/users/emailServiceEnabled`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          presentId: userInfo.userInfo.id,
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/emailServiceEnabled`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            presentId: userInfo.userInfo.id,
+          },
+        }
+      )
       .then((Response) => {
         setToggleEmailBtn(true);
         alert(
@@ -110,6 +123,23 @@ export default function NavBar({ showNav, setShowNav }) {
       });
   };
 
+  const [visitorCnt, setVisitorCnt] = useState();
+  useEffect(() => {
+    axios
+      .get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/visitorCnt`,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        setVisitorCnt(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   // sound ======
   const [move] = useSound("/sounds/move.wav", { volume: 1 });
   const [grow] = useSound("/sounds/grow.wav", { volume: 1 });
@@ -118,9 +148,18 @@ export default function NavBar({ showNav, setShowNav }) {
     <div
       className={`${styles.mainContainer} ${
         showNav ? styles.innerContainer : ""
-      }`}
+      } scrollBar`}
     >
       <div className={styles.userInfoSection}>
+        <div className={styles.visitCntBox}>
+          <p className={styles.visitCntTitle}>VISITORS</p>
+          <p className={styles.visitCnt}>
+            <span>TODAY </span>
+            {visitorCnt && visitorCnt.today}&nbsp;&nbsp;|&nbsp;&nbsp;
+            <span>TOTAL </span>
+            {visitorCnt && visitorCnt.total}
+          </p>
+        </div>
         <div className={styles.userInfo}>
           {
             /* userInfo.avatar */ true ? (
@@ -223,7 +262,14 @@ export default function NavBar({ showNav, setShowNav }) {
           </div>
         </Link>
       </div>
-
+      <button
+        className={styles.suggestBtn}
+        onClick={() => {
+          setVisibleSuggestModal(true);
+        }}
+      >
+        개발자에게 제안
+      </button>
       <dir className={styles.otherLinkSection}>
         <div className={styles.linkList} onClick={handleEnter}>
           <IoIosHome />

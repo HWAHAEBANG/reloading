@@ -167,6 +167,8 @@
   padding: 10px;
   position: relative;
   cursor: pointer;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 
 .maincontainer0:hover {
@@ -228,6 +230,8 @@
   padding: 10px;
   position: relative;
   cursor: pointer;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .maincontainer1:hover {
@@ -289,6 +293,8 @@
   padding: 10px;
   position: relative;
   cursor: pointer;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .maincontainer2:hover {
@@ -350,6 +356,8 @@
   padding: 10px;
   position: relative;
   cursor: pointer;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .maincontainer3:hover {
@@ -411,6 +419,8 @@
   padding: 10px;
   position: relative;
   cursor: pointer;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .maincontainer4:hover {

@@ -6,6 +6,13 @@ const connectDB = require("../config/connectDB.js");
 const db = connectDB.init();
 connectDB.open(db);
 //=============================================
+// 루트 경로로 들어왔을 때 다음 파일을 보낸다.
+// router.use(express.static("build"));
+// router.get("/", (req, res) => {
+//   res.sendFile(__dirname, "/build/index.html");
+//   // 해당하는 파일 경로를 정어운다,  __dirname는 루트경로를 의미/
+// });
+//===================
 //조인!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.get("/", (req, res) => {
   // const { userId } = req.query; // 클라이언트로부터 현재 로그인 중인 회원의 ID 받아옴

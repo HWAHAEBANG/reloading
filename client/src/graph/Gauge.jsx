@@ -34,21 +34,33 @@ export default function Gauge() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/allCharts/hai`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/hai`,
+        {
+          withCredentials: true,
+        }
+      ),
 
-      axios.get(`http://localhost:5000/allCharts/pir`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/pir`,
+        {
+          withCredentials: true,
+        }
+      ),
 
-      axios.get(`http://localhost:5000/allCharts/transactionVolumeSalesSeoul`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/transactionVolumeSalesSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
 
-      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/housePriceIndexSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
 
       .then((responses) => {
@@ -132,7 +144,7 @@ export default function Gauge() {
       height: "330px",
     },
     title: {
-      text: "부동산 시장 온도 게이지",
+      text: "시장 과열 측정 미터기",
       floating: true,
       x: 0, // x값을 설정하여 가로 방향으로 이동시킵니다.
       y: 50, // y값을 설정하여 세로 방향으로 이동시킵니다.
@@ -266,10 +278,25 @@ export default function Gauge() {
       ) : (
         <HighchartsReact highcharts={Highcharts} options={options} />
       )}
+      <div style={block}>COMMING SOON</div>
     </div>
   );
 }
 
+const block = {
+  position: "absolute",
+  top: "130px",
+  width: "100%",
+  height: "60px",
+  background: "rgb(255, 180, 0)",
+  color: "#191B1C",
+  textAlign: "center",
+  fontSize: "30px",
+  lineHeight: "60px",
+  fontWeight: "900",
+  filter: "blur(1px) opacity(0.7)",
+  // backdropFilter: "blur(10px)",
+};
 // const options = {
 //   chart: {
 //     type: "gauge",

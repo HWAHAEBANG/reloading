@@ -34,15 +34,24 @@ export default function UnsoldHouse() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/allCharts/unsoldHouse`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/housePriceIndexAroundSeoul`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexAroundSeoul`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/unsoldHouse`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/housePriceIndexAroundSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/JeonsePriceIndexAroundSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
       .then((responses) => {
         const unsoldHouseResponse = responses[0];

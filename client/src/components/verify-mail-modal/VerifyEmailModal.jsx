@@ -55,14 +55,17 @@ export default function VerifyEmailModal({
     setCountdownDate(Date.now() + countdownTime);
     setLoading(true);
     axios
-      .post(`http://localhost:5000/users/sendEmail`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          emailId: inputValue.emailId,
-          emailAddress: inputValue.emailAddress,
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/sendEmail`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            emailId: inputValue.emailId,
+            emailAddress: inputValue.emailAddress,
+          },
+        }
+      )
       .then(() => {
         alert("메일이 전송되었습니다. 메일함을 확인해주세요");
         setLoading(false);
@@ -96,15 +99,18 @@ export default function VerifyEmailModal({
 
   const handleVerify = () => {
     axios
-      .post(`http://localhost:5000/users/verifyEmail`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputCode: inputCode,
-          emailId: inputValue.emailId,
-          emailAddress: inputValue.emailAddress,
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/verifyEmail`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputCode: inputCode,
+            emailId: inputValue.emailId,
+            emailAddress: inputValue.emailAddress,
+          },
+        }
+      )
       .then((response) => {
         if (response.status === 200) {
           setResultVisible(true);

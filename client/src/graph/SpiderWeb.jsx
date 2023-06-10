@@ -40,24 +40,42 @@ export default function SpiderWeb() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/allCharts/jeonsePriceRatio`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/hai`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/unsoldHouse`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/pir`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/priceChangeRate`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/transactionVolumeSalesSeoul`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/jeonsePriceRatio`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/hai`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/unsoldHouse`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/pir`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/priceChangeRate`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/transactionVolumeSalesSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
       .then((responses) => {
         const jeonsePriceRatioResponse = responses[0];

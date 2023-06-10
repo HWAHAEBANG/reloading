@@ -6,13 +6,15 @@ import { Outlet } from "react-router-dom";
 import TopBar from "./components/topbar/TopBar";
 import NavBar from "./components/navbar/NavBar";
 import styles from "./App.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+
 import ImportantNotificationPopup from "./components/popups/ImportantNotificationPopup";
 import DataUpdateLogPopup from "./components/popups/DataUpdateLogPopup";
 import FirstVisitPopup from "./components/popups/FirstVisitPopup";
 import { useSelector } from "react-redux";
 import SuggestModal from "./components/popups/SuggestModal";
+import Particle from "./components/ui/Particle";
 
 function App() {
   const [showNav, setShowNav] = useState(false); // for Nav Button
@@ -40,10 +42,10 @@ function App() {
   const [hasTodayDataUpdate, setHasTodayDataUpdate] = useState();
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/notification/notification`, {
+      axios.get(`/api/notification/notification`, {
         withCredentials: true,
       }),
-      axios.get(`http://localhost:5000/notification/dataUpdateLog`, {
+      axios.get(`/api/notification/dataUpdateLog`, {
         withCredentials: true,
       }),
     ])
@@ -79,7 +81,12 @@ function App() {
 
   return (
     <div className={styles.mainContainer}>
-      <NavBar showNav={showNav} setShowNav={setShowNav} />{" "}
+      {/* <Particle /> */}
+      <NavBar
+        showNav={showNav}
+        setShowNav={setShowNav}
+        setVisibleSuggestModal={setVisibleSuggestModal}
+      />
       {/* 메뉴 늘렀을 때 사라져야하므로 */}
       <div
         className={`${styles.subContainer} ${showNav ? styles.showNavBar : ""}`}

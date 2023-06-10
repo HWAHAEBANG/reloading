@@ -119,12 +119,11 @@ export default function Access() {
                 fontFamily: "PixelCaps",
                 fontSize: "21.5px",
                 lineHeight: "0px",
+                letterSpacing: "-0.5px",
               }}
               startDelay={5000}
-              // cursorColor={"#03e9f4"}
               text='NICE TO MEET YOU'
               typeSpeed={20}
-              // scrollArea={myAppRef}
             />
           ) : (
             <TypeWriterEffect

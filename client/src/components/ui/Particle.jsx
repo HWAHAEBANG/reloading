@@ -1,27 +1,65 @@
-// Particle.jsx
-import React, { useEffect, useRef } from "react";
-import styles from "./Background.module.css";
+import Particles from "react-particles";
+import { loadFull } from "tsparticles";
+
+import React, { useCallback } from "react";
 
 export default function Particle() {
-  const particleRef = useRef(null);
-
-  useEffect(() => {
-    const particle = particleRef.current;
-    const w = document.documentElement.clientWidth;
-    const h = document.documentElement.clientHeight;
-    const rndw = Math.floor(Math.random() * w) + 1;
-    const rndh = Math.floor(Math.random() * h) + 1;
-    const widthpt = Math.floor(Math.random() * 8) + 3;
-    const opty = Math.floor(Math.random() * 5) + 2;
-    const anima = Math.floor(Math.random() * 12) + 8;
-    particle.style.marginLeft = rndw + "px";
-    particle.style.marginTop = rndh + "px";
-    particle.style.width = widthpt + "px";
-    particle.style.height = widthpt + "px";
-    particle.style.background = "white";
-    particle.style.opacity = opty;
-    particle.style.animation = `move ${anima}s ease-in infinite `;
+  const particlesInit = useCallback(async (engine) => {
+    console.log(engine);
+    // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(engine);
   }, []);
 
-  return <div className={styles.particle} ref={particleRef}></div>;
+  const particlesLoaded = useCallback(async (container) => {
+    await console.log(container);
+  }, []);
+
+  return (
+    <Particles
+      id='tsparticles'
+      init={particlesInit}
+      loaded={particlesLoaded}
+      options={{
+        fpsLimit: 40,
+        particles: {
+          number: {
+            value: 200,
+            density: {
+              enable: true,
+            },
+          },
+          color: {
+            value: ["#FFFFFF", "#757676", "#f1f1f1", "#005766", "#66cdaa"],
+          },
+          opacity: {
+            value: { min: 0.1, max: 0.5 },
+          },
+          size: {
+            value: { min: 1, max: 3 },
+          },
+          move: {
+            enable: true,
+            speed: 3,
+            random: false,
+          },
+        },
+        interactivity: {
+          detectsOn: "window",
+          events: {
+            onClick: {
+              enable: true,
+              // mode: ClickMode.push,
+            },
+            resize: true,
+          },
+        },
+        background: {
+          image:
+            "linear-gradient(229deg,rgba(0, 0, 0, 1) 0%,rgba(33, 36, 37, 1) 100%)",
+        },
+      }}
+    />
+  );
 }

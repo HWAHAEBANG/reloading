@@ -37,7 +37,7 @@ export default function TopicNews() {
     if (!selectedKeyword) return;
     axios
       .get(
-        `http://localhost:5000/topicNews?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/topicNews?keyword=${selectedKeyword}&selectedSort=${selectedSort}`,
         {
           withCredentials: true,
         }

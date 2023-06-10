@@ -23,13 +23,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/allCharts`, {
-        method: "GET",
-        withCredentials: true,
-        params: {
-          userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
-        },
-      })
+      .get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts`,
+        {
+          method: "GET",
+          withCredentials: true,
+          params: {
+            userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
+          },
+        }
+      )
       .then((response) => {
         if (response.data.length === 0) {
           return;
@@ -68,47 +71,41 @@ export default function Dashboard() {
   return (
     <div className={styles.gridContainer}>
       <div
-        id='hai'
+        id='amountAndPrice'
         onClick={enter}
-        to='/allCharts/hai'
-        className={`${styles.box} ${styles.box1}`}
+        // to='/allCharts/amountAndPrice'
+        className={`${styles.box} ${styles.box6}`}
       >
-        <Hai />
+        <AmountAndPrice />
       </div>
-      <div
-        id='spiderWeb'
-        onClick={enter}
-        to='/allCharts/spiderWeb'
-        className={`${styles.box} ${styles.box2}`}
-      >
-        <SpiderWeb />
-      </div>
-      <div
-        id='gauge'
-        onClick={enter}
-        to='/allCharts/gauge'
-        className={`${styles.box} ${styles.box3}`}
-      >
-        <Gauge />
-      </div>
-      {/* <div to='/allCharts' className={`${styles.box} ${styles.box4}`}>
-        Box 4
-      </div> */}
       <div
         id='pir'
         onClick={enter}
-        to='/allCharts/pir'
+        // to='/allCharts/pir'
         className={`${styles.box} ${styles.box5}`}
       >
         <Pir />
       </div>
       <div
-        id='amountAndPrice'
+        id='hai'
         onClick={enter}
-        to='/allCharts/amountAndPrice'
-        className={`${styles.box} ${styles.box6}`}
+        // to='/allCharts/hai'
+        className={`${styles.box} ${styles.box1}`}
       >
-        <AmountAndPrice />
+        <Hai />
+      </div>
+
+      {/* <div to='/allCharts' className={`${styles.box} ${styles.box4}`}>
+        Box 4
+      </div> */}
+
+      <div
+        id='spiderWeb'
+        onClick={enter}
+        // to='/allCharts/spiderWeb'
+        className={`${styles.box} ${styles.box2}`}
+      >
+        <SpiderWeb />
       </div>
       <div
         id='signal'
@@ -121,7 +118,7 @@ export default function Dashboard() {
       <div
         id='priceChangeRate'
         onClick={enter}
-        to='/allCharts/priceChangeRate'
+        // to='/allCharts/priceChangeRate'
         className={`${styles.box} ${styles.box8}`}
       >
         <PriceChangeRate />
@@ -129,7 +126,7 @@ export default function Dashboard() {
       <div
         id='unsoldHouse'
         onClick={enter}
-        to='/allCharts/unsoldHouse'
+        // to='/allCharts/unsoldHouse'
         className={`${styles.box} ${styles.box9}`}
       >
         <UnsoldHouse />
@@ -137,10 +134,19 @@ export default function Dashboard() {
       <div
         id='jeonsePriceRatio'
         onClick={enter}
-        to='/allCharts/jeonsePriceRatio'
+        // to='/allCharts/jeonsePriceRatio'
         className={`${styles.box} ${styles.box10}`}
       >
         <JeonsePriceRatio />
+      </div>
+
+      <div
+        id='gauge'
+        onClick={enter}
+        // to='/allCharts/gauge'
+        className={`${styles.box} ${styles.box3}`}
+      >
+        <Gauge />
       </div>
     </div>
   );

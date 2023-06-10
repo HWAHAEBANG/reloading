@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./Notification.module.css";
 import axios from "axios";
 import { MdFiberNew } from "react-icons/md";
@@ -41,15 +41,24 @@ export default function Notification() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/notification/notification`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/notification/dataUpdateLog`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/notification/releaseNote`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/notification/notification`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/notification/dataUpdateLog`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/notification/releaseNote`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
       .then((responses) => {
         const notificationResponse = responses[0];
@@ -104,14 +113,106 @@ export default function Notification() {
         // setLoading(false);
       });
   }, []);
+  //글짜 길 시 흐르기 효과 ========================================================================================
+  const notiTextRefs = useRef([]);
+  const updateTextRefs = useRef([]);
+  const releaseTextRefs = useRef([]);
 
+  useEffect(() => {
+    if (!notificationList) return;
+
+    if (notiTextRefs.current.length === notificationList.length) {
+      notiTextRefs.current.forEach((textRef, index) => {
+        const textElement = textRef;
+        if (textElement && textElement.scrollWidth > textElement.clientWidth) {
+          // const distance = textElement.scrollWidth - textElement.clientWidth;
+          // const duration = distance * 10; // 움직이는 시간 조정 (크면 빠르게, 작으면 느리게)
+          textElement.style.animation = `scrollTextAnimation${index} 10000ms linear infinite`;
+          //==============
+          // CSS에 애니메이션 정의
+          const animationStyle = `
+          @keyframes scrollTextAnimation${index} {
+            0% { transform: translateX(0); }
+            30% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+          }
+          `;
+          // 스타일 태그에 애니메이션 스타일 추가
+          const styleTag = document.createElement("style");
+          styleTag.innerHTML = animationStyle;
+          document.head.appendChild(styleTag);
+          //==============
+        }
+      });
+    }
+  }, [notificationList]);
+
+  useEffect(() => {
+    if (!dataUpdateLogList) return;
+
+    if (updateTextRefs.current.length === dataUpdateLogList.length) {
+      updateTextRefs.current.forEach((textRef, index) => {
+        const textElement = textRef;
+        if (textElement && textElement.scrollWidth > textElement.clientWidth) {
+          // const distance = textElement.scrollWidth - textElement.clientWidth;
+          // const duration = distance * 10; // 움직이는 시간 조정 (크면 빠르게, 작으면 느리게)
+          textElement.style.animation = `scrollTextAnimation${index} 10000ms linear infinite`;
+          //==============
+          // CSS에 애니메이션 정의
+          const animationStyle = `
+          @keyframes scrollTextAnimation${index} {
+            0% { transform: translateX(0); }
+            30% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+          }
+          `;
+          // 스타일 태그에 애니메이션 스타일 추가
+          const styleTag = document.createElement("style");
+          styleTag.innerHTML = animationStyle;
+          document.head.appendChild(styleTag);
+          //==============
+        }
+      });
+    }
+  }, [dataUpdateLogList]);
+
+  useEffect(() => {
+    if (!releaseNoteList) return;
+
+    if (releaseTextRefs.current.length === releaseNoteList.length) {
+      releaseTextRefs.current.forEach((textRef, index) => {
+        const textElement = textRef;
+        if (textElement && textElement.scrollWidth > textElement.clientWidth) {
+          // const distance = textElement.scrollWidth - textElement.clientWidth;
+          // const duration = distance * 10; // 움직이는 시간 조정 (크면 빠르게, 작으면 느리게)
+          textElement.style.animation = `scrollTextAnimation${index} 10000ms linear infinite`;
+          //==============
+          // CSS에 애니메이션 정의
+          const animationStyle = `
+          @keyframes scrollTextAnimation${index} {
+            0% { transform: translateX(0); }
+            30% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+          }
+          `;
+          // 스타일 태그에 애니메이션 스타일 추가
+          const styleTag = document.createElement("style");
+          styleTag.innerHTML = animationStyle;
+          document.head.appendChild(styleTag);
+          //==============
+        }
+      });
+    }
+  }, [releaseNoteList]);
+
+  //====================================================================================================
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
         <div className={styles.topArea}>
           <div className={styles.title}>NOTIFICATION</div>
         </div>
-        <div className={styles.contentsArea}>
+        <div className={`${styles.contentsArea} scrollBar`}>
           <p className={styles.explainArea}>
             <span>RE:LOADING</span>은 다양한 데이터의 특성에 따라{" "}
             <span>주기적으로 업데이트</span>를 진행하여{" "}
@@ -125,7 +226,14 @@ export default function Notification() {
           </p>
           <div className={styles.boardArea}>
             <div className={styles.notificationBox}>
-              <p className={styles.subTitle}>공지사항</p>
+              <p className={styles.subTitle}>
+                <img
+                  src={process.env.PUBLIC_URL + "/image/favicon.png"}
+                  alt='fav'
+                  className={styles.favicon}
+                />
+                공지사항
+              </p>
               <div className={`${styles.listContainer} scrollBar`}>
                 <div className={styles.listContainerInner}>
                   {notificationList &&
@@ -138,17 +246,23 @@ export default function Notification() {
                           }
                         >
                           <span>{item.no}</span>
-                          <span>
-                            {item.title}
-                            <span className={styles.newContainer}>
-                              {/*박스 안커지게 하면서 위치 잡아주기 위해존재 */}
-                              {item.no === notificationList.length ? ( // 가장 최근 게시물만.
-                                <MdFiberNew className={styles.new} />
-                              ) : (
-                                ""
-                              )}
+                          <div className={styles.contentTitle}>
+                            <span
+                              ref={(el) =>
+                                (notiTextRefs.current[item.no - 1] = el)
+                              }
+                            >
+                              {item.title}{" "}
+                              <span className={styles.newContainer}>
+                                {/*박스 안커지게 하면서 위치 잡아주기 위해존재 */}
+                                {item.no === notificationList.length ? ( // 가장 최근 게시물만.
+                                  <MdFiberNew className={styles.new} />
+                                ) : (
+                                  ""
+                                )}
+                              </span>
                             </span>
-                          </span>
+                          </div>
                           <span>{item.author}</span>
                           <span>{item.created_at.split("T")[0]}</span>
                         </div>
@@ -172,7 +286,15 @@ export default function Notification() {
               </div>
             </div>
             <div className={styles.dataUpdateBox}>
-              <p className={styles.subTitle}>데이터 업데이트 이력</p>
+              <p className={styles.subTitle}>
+                {" "}
+                <img
+                  src={process.env.PUBLIC_URL + "/image/favicon.png"}
+                  alt='fav'
+                  className={styles.favicon}
+                />
+                데이터 업데이트 이력
+              </p>
               <div className={`${styles.listContainer} scrollBar`}>
                 <div className={styles.listContainerInner}>
                   {dataUpdateLogList &&
@@ -185,17 +307,23 @@ export default function Notification() {
                           }
                         >
                           <span>{item.no}</span>
-                          <span>
-                            {item.date} 업데이트
-                            <span className={styles.newContainer}>
-                              {/*박스 안커지게 하면서 위치 잡아주기 위해존재 */}
-                              {item.no === dataUpdateLogList.length ? ( // 가장 최근 게시물만.
-                                <MdFiberNew className={styles.new} />
-                              ) : (
-                                ""
-                              )}
+                          <div className={styles.contentTitle}>
+                            <span
+                              ref={(el) =>
+                                (updateTextRefs.current[item.no - 1] = el)
+                              }
+                            >
+                              {item.date} 업데이트
+                              <span className={styles.newContainer}>
+                                {/*박스 안커지게 하면서 위치 잡아주기 위해존재 */}
+                                {item.no === dataUpdateLogList.length ? ( // 가장 최근 게시물만.
+                                  <MdFiberNew className={styles.new} />
+                                ) : (
+                                  ""
+                                )}
+                              </span>
                             </span>
-                          </span>
+                          </div>
                           <span> 관리자</span>
                         </div>
                         {dataUpdateLogPostBodyVisible[item.no - 1] ? (
@@ -216,7 +344,15 @@ export default function Notification() {
             </div>
 
             <div className={styles.releaseNoteBox}>
-              <p className={styles.subTitle}>릴리즈 노트</p>
+              <p className={styles.subTitle}>
+                {" "}
+                <img
+                  src={process.env.PUBLIC_URL + "/image/favicon.png"}
+                  alt='fav'
+                  className={styles.favicon}
+                />
+                릴리즈 노트
+              </p>
               <div className={`${styles.listContainer} scrollBar`}>
                 <div className={styles.listContainerInner}>
                   {releaseNoteList &&
@@ -229,17 +365,23 @@ export default function Notification() {
                           }
                         >
                           <span>{item.version}</span>
-                          <span>
-                            {item.title}
-                            <span className={styles.newContainer}>
-                              {/*박스 안커지게 하면서 위치 잡아주기 위해존재 */}
-                              {item.no === dataUpdateLogList.length ? ( // 가장 최근 게시물만.
-                                <MdFiberNew className={styles.new} />
-                              ) : (
-                                ""
-                              )}
+                          <div className={styles.contentTitle}>
+                            <span
+                              ref={(el) =>
+                                (releaseTextRefs.current[item.no - 1] = el)
+                              }
+                            >
+                              {item.title}
+                              <span className={styles.newContainer}>
+                                {/*박스 안커지게 하면서 위치 잡아주기 위해존재 */}
+                                {item.no === dataUpdateLogList.length ? ( // 가장 최근 게시물만.
+                                  <MdFiberNew className={styles.new} />
+                                ) : (
+                                  ""
+                                )}
+                              </span>
                             </span>
-                          </span>
+                          </div>
                           <span> {item.author}</span>
                           <span>{item.date.split("T")[0]}</span>
                         </div>

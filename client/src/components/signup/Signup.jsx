@@ -400,14 +400,17 @@ export default function Signup() {
   //test zone ==========================================================
   const dupIdToggle = () => {
     axios
-      .post(`http://localhost:5000/users/idCheck`, {
-        // url: "http://localhost:5000/users/idCheck", // 안되는뎅
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputId: inputValue.id, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/idCheck`,
+        {
+          // url: "/users/idCheck", // 안되는뎅
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputId: inputValue.id, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+          },
+        }
+      )
       .then((response) => {
         alert("이미 사용중인 아이디 입니다.");
         setInputValue({
@@ -456,14 +459,17 @@ export default function Signup() {
 
   const dupNicknameToggle = () => {
     axios
-      .post(`http://localhost:5000/users/nicknameCheck`, {
-        // url: "http://localhost:5000/users/nickCheck", // 안되는뎅
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputNickname: inputValue.nickname, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/nicknameCheck`,
+        {
+          // url: "/users/nickCheck", // 안되는뎅
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputNickname: inputValue.nickname, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+          },
+        }
+      )
       .then((response) => {
         alert("이미 사용중인 닉네임 입니다.");
         setInputValue({
@@ -513,13 +519,16 @@ export default function Signup() {
   const handleSubmit = () => {
     setLoading(true);
     axios
-      .post(`http://localhost:5000/users/signup`, {
-        method: "POST",
-        withCredentials: true,
-        data: {
-          inputValue: inputValue, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-        },
-      })
+      .post(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/signup`,
+        {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            inputValue: inputValue, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+          },
+        }
+      )
       .then((response) => {
         setLoading(false);
         alert("가입이 성공적으로 완료되었습니다.");

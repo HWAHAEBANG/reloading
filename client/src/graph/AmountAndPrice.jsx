@@ -72,21 +72,30 @@ export default function AmountAndPrice() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(`http://localhost:5000/allCharts/transactionVolumeSalesSeoul`, {
-        withCredentials: true,
-      }),
       axios.get(
-        `http://localhost:5000/allCharts/transactionVolumeJeonseSeoul`,
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/transactionVolumeSalesSeoul`,
         {
           withCredentials: true,
         }
       ),
-      axios.get(`http://localhost:5000/allCharts/housePriceIndexSeoul`, {
-        withCredentials: true,
-      }),
-      axios.get(`http://localhost:5000/allCharts/JeonsePriceIndexSeoul`, {
-        withCredentials: true,
-      }),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/transactionVolumeJeonseSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/housePriceIndexSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
+      axios.get(
+        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/JeonsePriceIndexSeoul`,
+        {
+          withCredentials: true,
+        }
+      ),
     ])
       .then((responses) => {
         const transactionVolumeSalesSeoulResponse = responses[0];

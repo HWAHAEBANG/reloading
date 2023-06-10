@@ -189,13 +189,17 @@
     transform: scale(0.8);
   }
 
+  .suggestBtn {
+    display: none;
+  }
+
   .logoutBtn {
     display: none;
   }
 
-  /* .logoBox {
-    width: 300px;
-  } */
+  .visitCntBox {
+    display: none;
+  }
 }
 
 /* =============================================== */

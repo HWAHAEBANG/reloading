@@ -471,11 +471,27 @@
     top: 0;
   }
   .logoArea .text:before {
-    left: 0.5px;
+    left: 0.1px;
   }
 
   .logoArea .text:after {
-    left: 0.5px;
+    left: 0.1px;
+  }
+
+  .logoArea .text:before {
+    left: 3px;
+    /* text-shadow: -2px 0 red; */
+    animation: glitch-3 2s linear infinite reverse;
+    /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+      0 0 100px #03e9f4; */
+  }
+
+  .logoArea .text:after {
+    left: -3px;
+    /* text-shadow: -2px 0 blue; */
+    animation: glitch-4 2s linear infinite reverse;
+    /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+      0 0 100px #03e9f4; */
   }
 
   .logoArea .subText {
@@ -653,5 +669,135 @@
   }
   100% {
     clip: rect(83px, auto, 40px, 30px);
+  }
+}
+@keyframes glitch-3 {
+  0% {
+    clip: rect(66px, auto, 50.5px, 7.5px);
+  }
+  5% {
+    clip: rect(8.5px, auto, 47px, 3.75px);
+  }
+  10% {
+    clip: rect(20px, auto, 33px, 3.75px);
+  }
+  15% {
+    clip: rect(43.5px, auto, 41px, 3.75px);
+  }
+  20% {
+    clip: rect(68.5px, auto, 30.5px, 3.75px);
+  }
+  25% {
+    clip: rect(17px, auto, 7px, 3.75px);
+  }
+  30% {
+    clip: rect(66.5px, auto, 37px, 3.75px);
+  }
+  35% {
+    clip: rect(38px, auto, 53.5px, 3.75px);
+  }
+  40% {
+    clip: rect(29.5px, auto, 65px, 3.75px);
+  }
+  45% {
+    clip: rect(14.5px, auto, 42px, 3.75px);
+  }
+  50% {
+    clip: rect(11px, auto, 33.5px, 3.75px);
+  }
+  55% {
+    clip: rect(33.5px, auto, 31px, 3.75px);
+  }
+  60% {
+    clip: rect(5px, auto, 52.5px, 3.75px);
+  }
+  65% {
+    clip: rect(39px, auto, 57.5px, 3.75px);
+  }
+  70% {
+    clip: rect(52.5px, auto, 6.5px, 3.75px);
+  }
+  75% {
+    clip: rect(7.5px, auto, 37.5px, 3.75px);
+  }
+  80% {
+    clip: rect(33px, auto, 19.5px, 3.75px);
+  }
+  85% {
+    clip: rect(66.5px, auto, 36.5px, 3.75px);
+  }
+  90% {
+    clip: rect(18px, auto, 64px, 3.75px);
+  }
+  95% {
+    clip: rect(34px, auto, 51.5px, 3.75px);
+  }
+  100% {
+    clip: rect(7px, auto, 50px, 3.75px);
+  }
+}
+@keyframes glitch-4 {
+  0% {
+    clip: rect(64.5px, auto, 18px, 3.75px);
+  }
+  5% {
+    clip: rect(18px, auto, 2px, 3.75px);
+  }
+  10% {
+    clip: rect(42.5px, auto, 33px, 3.75px);
+  }
+  15% {
+    clip: rect(45.5px, auto, 45.5px, 3.75px);
+  }
+  20% {
+    clip: rect(74px, auto, 69px, 3.75px);
+  }
+  25% {
+    clip: rect(19px, auto, 61px, 3.75px);
+  }
+  30% {
+    clip: rect(34.5px, auto, 27px, 3.75px);
+  }
+  35% {
+    clip: rect(49px, auto, 35.5px, 3.75px);
+  }
+  40% {
+    clip: rect(73px, auto, 17px, 3.75px);
+  }
+  45% {
+    clip: rect(67px, auto, 21.5px, 3.75px);
+  }
+  50% {
+    clip: rect(51px, auto, 40px, 3.75px);
+  }
+  55% {
+    clip: rect(59.5px, auto, 22px, 3.75px);
+  }
+  60% {
+    clip: rect(53px, auto, 49.5px, 3.75px);
+  }
+  65% {
+    clip: rect(70.5px, auto, 37px, 3.75px);
+  }
+  70% {
+    clip: rect(10px, auto, 39px, 3.75px);
+  }
+  75% {
+    clip: rect(66.5px, auto, 39.5px, 3.75px);
+  }
+  80% {
+    clip: rect(39px, auto, 26px, 3.75px);
+  }
+  85% {
+    clip: rect(17.5px, auto, 19.5px, 3.75px);
+  }
+  90% {
+    clip: rect(33.5px, auto, 35px, 3.75px);
+  }
+  95% {
+    clip: rect(35.5px, auto, 51.5px, 3.75px);
+  }
+  100% {
+    clip: rect(41.5px, auto, 20px, 3.75px);
   }
 }
