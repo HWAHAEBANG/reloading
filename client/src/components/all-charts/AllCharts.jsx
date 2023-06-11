@@ -15,16 +15,13 @@ export default function AllCharts() {
   const [chartsData, setChartsData] = useState();
   useEffect(() => {
     axios
-      .get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts`,
-        {
-          method: "GET",
-          withCredentials: true,
-          params: {
-            userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
-          },
-        }
-      )
+      .get(`http://localhost:5000/api/allCharts`, {
+        method: "GET",
+        withCredentials: true,
+        params: {
+          userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
+        },
+      })
       .then((response) => {
         if (response.data.length === 0) {
           return;

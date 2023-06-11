@@ -16,16 +16,13 @@ export default function ChartCard({
     navigate(`/allCharts/${id}`, { state: { data: data } });
 
     axios
-      .put(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/viewCount`,
-        {
-          method: "PUT",
-          withCredentials: true,
-          data: {
-            chartId: id,
-          },
-        }
-      )
+      .put(`http://localhost:5000/api/allCharts/viewCount`, {
+        method: "PUT",
+        withCredentials: true,
+        data: {
+          chartId: id,
+        },
+      })
       .then((response) => {})
       .catch((error) => {
         console.log("에러코드", error.response.status, error.response.data);
@@ -64,17 +61,14 @@ export default function ChartCard({
     e.stopPropagation();
     if (userInfo.userInfo.id) {
       axios
-        .post(
-          `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/myCharts/add`,
-          {
-            method: "POST",
-            withCredentials: true,
-            data: {
-              userId: userInfo.userInfo.id,
-              chartId: id,
-            },
-          }
-        )
+        .post(`http://localhost:5000/api/myCharts/add`, {
+          method: "POST",
+          withCredentials: true,
+          data: {
+            userId: userInfo.userInfo.id,
+            chartId: id,
+          },
+        })
         .then((response) => {
           setHeart(true);
           toggle();

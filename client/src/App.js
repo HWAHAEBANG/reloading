@@ -14,7 +14,6 @@ import DataUpdateLogPopup from "./components/popups/DataUpdateLogPopup";
 import FirstVisitPopup from "./components/popups/FirstVisitPopup";
 import { useSelector } from "react-redux";
 import SuggestModal from "./components/popups/SuggestModal";
-import Particle from "./components/ui/Particle";
 
 function App() {
   const [showNav, setShowNav] = useState(false); // for Nav Button

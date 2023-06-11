@@ -37,17 +37,14 @@ export default function ChartDetail() {
     const url = new URL(window.location.href);
     const urlPathName = url.pathname.split("/")[2];
     axios
-      .get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/chartDetail`,
-        {
-          method: "GET",
-          withCredentials: true,
-          params: {
-            // userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
-            urlPathName: urlPathName,
-          },
-        }
-      )
+      .get(`http://localhost:5000/api/allCharts/chartDetail`, {
+        method: "GET",
+        withCredentials: true,
+        params: {
+          // userId: userInfo.userInfo.id, // 클라이언트에서 현재 로그인 중인 회원의 ID 변수를 전달
+          urlPathName: urlPathName,
+        },
+      })
       .then((response) => {
         setChartsData(response.data[0]);
       })

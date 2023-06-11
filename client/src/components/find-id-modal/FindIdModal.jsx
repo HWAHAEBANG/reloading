@@ -29,16 +29,13 @@ export default function FindIdModal({ setModalToggle }) {
   const handleSend = () => {
     setLoading(true);
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/sendFindIdEmail`,
-        {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            inputEmail: inputEmail,
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/sendFindIdEmail`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputEmail: inputEmail,
+        },
+      })
       .then(() => {
         alert("메일이 전송되었습니다. 메일함을 확인해주세요");
         setLoading(false);

@@ -8,6 +8,7 @@ import axios from "axios";
 import RingLoader from "react-spinners/RingLoader";
 import VerifyEmailModal from "../verify-mail-modal/VerifyEmailModal";
 import useSound from "use-sound";
+import AvatarEditorModal from "./AvatarEditorModal";
 
 export default function Signup() {
   const [move] = useSound("/sounds/move.wav", { volume: 1 });
@@ -400,17 +401,14 @@ export default function Signup() {
   //test zone ==========================================================
   const dupIdToggle = () => {
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/idCheck`,
-        {
-          // url: "/users/idCheck", // 안되는뎅
-          method: "POST",
-          withCredentials: true,
-          data: {
-            inputId: inputValue.id, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/idCheck`, {
+        // url: "/users/idCheck", // 안되는뎅
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputId: inputValue.id, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
       .then((response) => {
         alert("이미 사용중인 아이디 입니다.");
         setInputValue({
@@ -459,17 +457,14 @@ export default function Signup() {
 
   const dupNicknameToggle = () => {
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/nicknameCheck`,
-        {
-          // url: "/users/nickCheck", // 안되는뎅
-          method: "POST",
-          withCredentials: true,
-          data: {
-            inputNickname: inputValue.nickname, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/nicknameCheck`, {
+        // url: "/users/nickCheck", // 안되는뎅
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputNickname: inputValue.nickname, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
       .then((response) => {
         alert("이미 사용중인 닉네임 입니다.");
         setInputValue({
@@ -519,16 +514,13 @@ export default function Signup() {
   const handleSubmit = () => {
     setLoading(true);
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/signup`,
-        {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            inputValue: inputValue, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/signup`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          inputValue: inputValue, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+        },
+      })
       .then((response) => {
         setLoading(false);
         alert("가입이 성공적으로 완료되었습니다.");
@@ -827,16 +819,17 @@ export default function Signup() {
                   readOnly
                   disabled
                 />
-                <label htmlFor='file'>
-                  {/* 파일 선택 버튼 역할 */}
-                  <span>파일 찾기</span>
-                </label>
-                <input // 실제로 업로드를 해주는 input 택그
+                {/* <label htmlFor='file'> */}
+                {/* 파일 선택 버튼 역할 */}
+                {/* <span>파일 찾기</span>
+                </label> */}
+                {/* <input // 실제로 업로드를 해주는 input 택그
                   type='file'
                   id='file'
                   onChange={getImgUrl}
                   name='profileImage'
-                />
+                /> */}
+                {/* 모달 컨포넌트는 하단에 있음 */}
               </div>
               {/* test ============================== */}
             </div>
@@ -876,6 +869,10 @@ export default function Signup() {
             Already have an account? <Link to='/users/login'>Login</Link>
           </p>
         </div>
+        <AvatarEditorModal
+          setInputValue={setInputValue}
+          setUploadLoading={setUploadLoading}
+        />
       </div>
     </div>
   );

@@ -51,24 +51,15 @@ export default function Hai() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/hai`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/housePriceIndexSeoul`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/baseRateKorea`,
-        {
-          withCredentials: true,
-        }
-      ),
+      axios.get(`http://localhost:5000/api/allCharts/hai`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/api/allCharts/housePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/api/allCharts/baseRateKorea`, {
+        withCredentials: true,
+      }),
     ])
       .then((responses) => {
         const haiResponse = responses[0];

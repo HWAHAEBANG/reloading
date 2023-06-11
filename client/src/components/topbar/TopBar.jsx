@@ -38,15 +38,12 @@ export default function TopBar({
 
   const logout = () => {
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/logout`,
-        {
-          withCredentials: true,
-          data: {
-            presentId: userInfo.userInfo.id,
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/logout`, {
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
       .then((response) => {
         dispatch(logoutAction());
         dispatch(clearUserInfoAction());

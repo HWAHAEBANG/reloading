@@ -34,33 +34,24 @@ export default function Gauge() {
 
   useEffect(() => {
     Promise.all([
+      axios.get(`http://localhost:5000/api/allCharts/hai`, {
+        withCredentials: true,
+      }),
+
+      axios.get(`http://localhost:5000/api/allCharts/pir`, {
+        withCredentials: true,
+      }),
+
       axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/hai`,
+        `http://localhost:5000/api/allCharts/transactionVolumeSalesSeoul`,
         {
           withCredentials: true,
         }
       ),
 
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/pir`,
-        {
-          withCredentials: true,
-        }
-      ),
-
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/transactionVolumeSalesSeoul`,
-        {
-          withCredentials: true,
-        }
-      ),
-
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/housePriceIndexSeoul`,
-        {
-          withCredentials: true,
-        }
-      ),
+      axios.get(`http://localhost:5000/api/allCharts/housePriceIndexSeoul`, {
+        withCredentials: true,
+      }),
     ])
 
       .then((responses) => {

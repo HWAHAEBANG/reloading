@@ -38,16 +38,13 @@ export default function SuggestModal({ onClose }) {
     if (result) {
       setLoading(true);
       axios
-        .post(
-          "http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/sendSuggest",
-          {
-            withCredentials: true,
-            data: {
-              text: text, // 생략 가능하지만 혼동 방지를 위해서 비생략.
-              presentUserInfo: userInfo.userInfo,
-            },
-          }
-        )
+        .post("http://localhost:5000/api/users/sendSuggest", {
+          withCredentials: true,
+          data: {
+            text: text, // 생략 가능하지만 혼동 방지를 위해서 비생략.
+            presentUserInfo: userInfo.userInfo,
+          },
+        })
         .then((Response) => {
           alert("전송이 완료되었습니다. 소증한 의견 진심으로 감사드립니다.");
           setLoading(false);

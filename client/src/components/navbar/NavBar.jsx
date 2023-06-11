@@ -62,16 +62,13 @@ export default function NavBar({
 
   const logout = () => {
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/logout`,
-        {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            presentId: userInfo.userInfo.id,
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/logout`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
       .then((Response) => {
         dispatch(logoutAction());
         dispatch(clearUserInfoAction());
@@ -85,16 +82,13 @@ export default function NavBar({
 
   const handleClickEmailUnactive = () => {
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/emailServiceDisabled`,
-        {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            presentId: userInfo.userInfo.id,
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/emailServiceDisabled`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
       .then((Response) => {
         setToggleEmailBtn(false);
         alert("이메일 알림 서비스가 비활성화 되었습니다.");
@@ -104,16 +98,13 @@ export default function NavBar({
 
   const handleClickEmailActive = () => {
     axios
-      .post(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/emailServiceEnabled`,
-        {
-          method: "POST",
-          withCredentials: true,
-          data: {
-            presentId: userInfo.userInfo.id,
-          },
-        }
-      )
+      .post(`http://localhost:5000/api/users/emailServiceEnabled`, {
+        method: "POST",
+        withCredentials: true,
+        data: {
+          presentId: userInfo.userInfo.id,
+        },
+      })
       .then((Response) => {
         setToggleEmailBtn(true);
         alert(
@@ -126,12 +117,9 @@ export default function NavBar({
   const [visitorCnt, setVisitorCnt] = useState();
   useEffect(() => {
     axios
-      .get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/users/visitorCnt`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:5000/api/users/visitorCnt`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setVisitorCnt(response.data);
       })

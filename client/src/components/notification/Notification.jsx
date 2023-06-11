@@ -41,24 +41,15 @@ export default function Notification() {
 
   useEffect(() => {
     Promise.all([
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/notification/notification`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/notification/dataUpdateLog`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/notification/releaseNote`,
-        {
-          withCredentials: true,
-        }
-      ),
+      axios.get(`http://localhost:5000/api/notification/notification`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/api/notification/dataUpdateLog`, {
+        withCredentials: true,
+      }),
+      axios.get(`http://localhost:5000/api/notification/releaseNote`, {
+        withCredentials: true,
+      }),
     ])
       .then((responses) => {
         const notificationResponse = responses[0];

@@ -34,20 +34,17 @@ export default function UnsoldHouse() {
 
   useEffect(() => {
     Promise.all([
+      axios.get(`http://localhost:5000/api/allCharts/unsoldHouse`, {
+        withCredentials: true,
+      }),
       axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/unsoldHouse`,
+        `http://localhost:5000/api/allCharts/housePriceIndexAroundSeoul`,
         {
           withCredentials: true,
         }
       ),
       axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/housePriceIndexAroundSeoul`,
-        {
-          withCredentials: true,
-        }
-      ),
-      axios.get(
-        `http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com/api/allCharts/JeonsePriceIndexAroundSeoul`,
+        `http://localhost:5000/api/allCharts/JeonsePriceIndexAroundSeoul`,
         {
           withCredentials: true,
         }

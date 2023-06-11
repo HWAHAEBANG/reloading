@@ -23,6 +23,7 @@ app.use(
       "http://localhost:3000",
       "https://api.cloudinary.com/v1_1/dh6tdcdyj/image/upload",
       "http://Reloading-env.eba-7nrbgs4x.ap-northeast-2.elasticbeanstalk.com",
+      "http://localhost:5000",
     ],
     methods: ["GET", "POST"], // 사용할 메서드
     credentials: true, // 사용자와 클라이언트 서버간에 쿠키를 사용해서 통신을 할 것이기 떄문에.
@@ -51,12 +52,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 서버를 켜놨다는 이유로 내 PC에 있는 모든 파일을 막 접속을 하거나 한다면 굉장히 위험하므로.
 app.use(express.static("build"));
 
-// app.use(
-//   /^\/(aboutUs|allCharts|myCharts|topicNews|notification)/,
-//   express.static("build")
-// );
+app.use(
+  /^\/(aboutUs|allCharts|myCharts|topicNews|notification)/,
+  express.static("build")
+);
 
-// app.use("/allCharts/*", express.static("build"));
+app.use("/allCharts/*", express.static("build"));
 
 app.get("/", (req, res) => {
   // res.sendFile(__dirname, "/build/index.html");
@@ -67,8 +68,8 @@ app.get("/", (req, res) => {
 
 // page ===================================
 
-const ABOUT_US = require("./router/aboutUS.js");
-app.use("/api/aboutUS", authMiddleware, ABOUT_US);
+const ABOUT_US = require("./router/aboutUs.js");
+app.use("/api/aboutUs", authMiddleware, ABOUT_US);
 
 const ALL_CHARTS = require("./router/allCharts.js");
 app.use("/api/allCharts", authMiddleware, ALL_CHARTS);
