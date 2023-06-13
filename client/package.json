@@ -24,6 +24,7 @@
     "react-spinners": "^0.13.8",
     "react-three-fiber": "^6.0.13",
     "react-typewriter-effect": "^1.1.0",
+    "react-youtube": "^10.1.0",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "three": "^0.151.3",

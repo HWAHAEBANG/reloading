@@ -10,7 +10,7 @@ darkUnica(Highcharts);
 highchartsMore(Highcharts);
 
 export default function SpiderWebDemo() {
-  const [mock, setMock] = useState([50000, 10000, 11000, 49000, 60000, 43000]);
+  const [mock, setMock] = useState([50, 60, 11, 49, 60, 43]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,18 +44,19 @@ export default function SpiderWebDemo() {
       x: -20,
       y: -20,
     },
-    // subtitle: {
-    //   text: "중심에서 멀수록 투자 적기",
-    //   x: 0,
-    // },
+    subtitle: {
+      text: "본 차트의 내용은 실제 데이터와 무관함",
+      x: 0,
+      y: 2,
+    },
     pane: {
-      size: "96%",
+      size: "95%",
     },
     xAxis: {
       categories: [
         "매매 거래량",
-        "PIR",
-        "HAI",
+        "PIR 지수",
+        "HAI 지수",
         "주간 매매가 변동율",
         "전세가율",
         "미분양",
@@ -71,7 +72,8 @@ export default function SpiderWebDemo() {
     tooltip: {
       shared: true,
       pointFormat:
-        "<span style='color:{series.color}'>{series.name}: <b>${point.y:,.0f}</b><br/>",
+        "<span style='color:{series.color}'>{series.name}: <b>{point.y:0f}%</b><br/>",
+      // "<span style='color:{series.color}'>{series.name}: <b>{point.y:,.0f}%</b><br/>",
     },
     legend: {
       enabled: false,
@@ -82,7 +84,7 @@ export default function SpiderWebDemo() {
     },
     series: [
       {
-        name: "Allocated Budget",
+        name: "진행률",
         data: mock,
         pointPlacement: "on",
       },
@@ -97,12 +99,12 @@ export default function SpiderWebDemo() {
   return <div id='polar-container'></div>;
 }
 
-const ARR1 = [10000, 47000, 11000, 49000, 12000, 43000];
-const ARR2 = [16000, 39000, 17000, 38000, 18000, 34000];
-const ARR3 = [23000, 31000, 22000, 29000, 24000, 26000];
-const ARR4 = [32000, 14000, 33000, 12000, 34000, 10000];
-const ARR5 = [46000, 19000, 45000, 20000, 44000, 22000];
-const ARR6 = [39000, 27000, 38000, 29000, 37000, 32000];
-const ARR7 = [50000, 15000, 49000, 13000, 48000, 11000];
+const ARR1 = [10, 47, 11, 49, 12, 43];
+const ARR2 = [16, 39, 17, 38, 18, 34];
+const ARR3 = [23, 31, 22, 29, 24, 26];
+const ARR4 = [32, 14, 33, 12, 34, 10];
+const ARR5 = [46, 19, 45, 20, 44, 22];
+const ARR6 = [39, 27, 38, 29, 37, 32];
+const ARR7 = [50, 15, 49, 13, 48, 11];
 
 const MOCK_DATA_LIST = [ARR1, ARR2, ARR3, ARR4, ARR5, ARR6, ARR7];

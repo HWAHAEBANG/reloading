@@ -10,6 +10,7 @@ import { loginAction, setUserInfoAction } from "../../redux";
 import VerifyEmailModal from "../verify-mail-modal/VerifyEmailModal";
 import RingLoader from "react-spinners/RingLoader";
 import useSound from "use-sound";
+import AvatarEditorModal from "../signup/AvatarEditorModal";
 
 export default function EditUserInfo() {
   const userInfo = useSelector((state) => state.userInfo);
@@ -73,13 +74,13 @@ export default function EditUserInfo() {
   // 시진파일 URL get
   const [uploadLoading, setUploadLoading] = useState(false);
 
-  const getImgUrl = (e) => {
-    setUploadLoading(true);
-    uploadImage(e.target.files && e.target.files[0]).then((url) => {
-      setInputValue((prevState) => ({ ...prevState, profileImage: url }));
-      setUploadLoading(false);
-    });
-  };
+  // const getImgUrl = (e) => {
+  //   setUploadLoading(true);
+  //   uploadImage(e.target.files && e.target.files[0]).then((url) => {
+  //     setInputValue((prevState) => ({ ...prevState, profileImage: url }));
+  //     setUploadLoading(false);
+  //   });
+  // };
 
   // 정규식 모음 객체
   const inputRegexs = {
@@ -715,6 +716,8 @@ export default function EditUserInfo() {
     }
   }, [selectedSort]);
 
+  const [showEditorModal, setShowEditorModal] = useState(false);
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
@@ -1021,8 +1024,14 @@ export default function EditUserInfo() {
                   readOnly
                   disabled
                 />
+                <button
+                  className={styles.dupBtn}
+                  onClick={() => setShowEditorModal(true)}
+                >
+                  사진 선택
+                </button>
                 {/* 파일 선택 버튼 역할 */}
-                <label htmlFor='file'>
+                {/* <label htmlFor='file'>
                   <span>파일 찾기</span>
                 </label>
                 {inputValue.authenticationStatus ? (
@@ -1034,7 +1043,7 @@ export default function EditUserInfo() {
                   />
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
               {/* test ============================== */}
             </div>
@@ -1073,6 +1082,15 @@ export default function EditUserInfo() {
             변경을 취소하시겠습니까? <Link to='/'> 홈으로 돌아가기</Link>
           </p>
         </div>
+        {showEditorModal ? (
+          <AvatarEditorModal
+            onClose={setShowEditorModal}
+            setInputValue={setInputValue}
+            setUploadLoading={setUploadLoading}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

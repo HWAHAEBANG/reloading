@@ -46,13 +46,13 @@ export default function Signup() {
   // 시진파일 URL get
   const [uploadLoading, setUploadLoading] = useState(false);
 
-  const getImgUrl = (e) => {
-    setUploadLoading(true);
-    uploadImage(e.target.files && e.target.files[0]).then((url) => {
-      setInputValue((prevState) => ({ ...prevState, profileImage: url }));
-      setUploadLoading(false);
-    });
-  };
+  // const getImgUrl = (e) => {
+  //   setUploadLoading(true);
+  //   uploadImage(e.target.files && e.target.files[0]).then((url) => {
+  //     setInputValue((prevState) => ({ ...prevState, profileImage: url }));
+  //     setUploadLoading(false);
+  //   });
+  // };
 
   // 정규식 모음 객체
   const inputRegexs = {
@@ -581,6 +581,8 @@ export default function Signup() {
     move();
   };
 
+  const [showEditorModal, setShowEditorModal] = useState(false);
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
@@ -617,7 +619,10 @@ export default function Signup() {
         </div>
         <div className={styles.inputArea}>
           <h1 className={styles.title}>Welcome to RE:ROADING</h1>
-          <h2 className={styles.subTitle}>Creat your accout</h2>
+          <h2 className={styles.subTitle}>
+            RE:ROADING은 알림서비스에 필요한 정보 외 개인정보를 수집하지
+            않습니다.
+          </h2>
           <div className={styles.inputSection}>
             <div className={styles.wholeBox}>
               <div className={styles.itemNameBox}>
@@ -819,6 +824,12 @@ export default function Signup() {
                   readOnly
                   disabled
                 />
+                <button
+                  className={styles.dupBtn}
+                  onClick={() => setShowEditorModal(true)}
+                >
+                  사진 선택
+                </button>
                 {/* <label htmlFor='file'> */}
                 {/* 파일 선택 버튼 역할 */}
                 {/* <span>파일 찾기</span>
@@ -869,10 +880,15 @@ export default function Signup() {
             Already have an account? <Link to='/users/login'>Login</Link>
           </p>
         </div>
-        <AvatarEditorModal
-          setInputValue={setInputValue}
-          setUploadLoading={setUploadLoading}
-        />
+        {showEditorModal ? (
+          <AvatarEditorModal
+            onClose={setShowEditorModal}
+            setInputValue={setInputValue}
+            setUploadLoading={setUploadLoading}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

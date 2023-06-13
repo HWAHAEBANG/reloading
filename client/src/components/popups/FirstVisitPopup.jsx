@@ -29,8 +29,8 @@ export default function FirstVisitPopup({ onClose }) {
           파악할 수 있도록 돕는 웹서비스입니다.
           <br />
           <br />
-          <span>RE:LOADING</span> 의 모든 데이터는 공신력있는{" "}
-          <span>각종 정부 사이트</span> 또는 <span>공신력있는 플랫폼</span>
+          <span>RE:LOADING</span> 의 모든 데이터는 <span>각종 정부 사이트</span>{" "}
+          또는 <span>공신력있는 플랫폼</span>
           들로부터 제공받음으로써 <span>높은 정확성</span>을 보장하며,{" "}
           <span>일일 단위 업데이트</span>를 통해 <span>최신성을 유지</span>
           합니다.

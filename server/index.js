@@ -57,6 +57,7 @@ app.use(
   express.static("build")
 );
 
+app.use("/users/*", express.static("build"));
 app.use("/allCharts/*", express.static("build"));
 
 app.get("/", (req, res) => {

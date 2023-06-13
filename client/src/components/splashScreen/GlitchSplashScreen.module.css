@@ -423,11 +423,227 @@
 /* 테블릿 세로 (해상도 768px ~ 1023px)*/
 @media all and (min-width: 768px) and (max-width: 1023px) {
   /*스타일입력*/
+  .logoArea {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* animation: fade-in-out 5s; */
+    /* opacity: 0; */
+    opacity: 1;
+    /* background-color: red; */
+    margin-bottom: 20px;
+  }
+  /* ================= */
+  .box {
+    /* text-align: center; */
+    width: 400px;
+  }
+
+  .logoArea .text {
+    position: relative;
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+    transform: scale(2);
+  }
+  .logoArea .text:before,
+  .logoArea .text:after {
+    padding: 34px 0; /* 효과 상하 안 맞을 때 이거 수정 */
+    color: white;
+    content: "RE:LOADING";
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    background: black;
+    overflow: hidden;
+    top: 0;
+  }
+  .logoArea .text:before {
+    left: 0.1px;
+  }
+
+  .logoArea .text:after {
+    left: 0.1px;
+  }
+
+  .logoArea .text:before {
+    left: 3px;
+    /* text-shadow: -2px 0 red; */
+    /* animation: glitch-3 2s linear infinite reverse; */
+    animation: none;
+    /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+      0 0 100px #03e9f4; */
+  }
+
+  .logoArea .text:after {
+    left: -3px;
+    /* text-shadow: -2px 0 blue; */
+    /* animation: glitch-4 2s linear infinite reverse; */
+    animation: none;
+    /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+      0 0 100px #03e9f4; */
+  }
+
+  .logoArea .subText {
+    margin-top: -20px;
+    font-size: 10px;
+    transform: scale(1);
+  }
+  .loginArea {
+    transform: scale(0.6);
+    margin-top: -20px;
+    /* background-color: aliceblue; */
+  }
+
+  /* ====================================================================== */
+  .confirmId {
+    display: block;
+    background: none;
+    padding: 5px 10px;
+    color: mediumaquamarine;
+    border: 1px solid mediumaquamarine;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-bottom: 30px;
+    font-size: 10px;
+  }
+
+  .confirmId:hover {
+    background-color: mediumaquamarine;
+    color: #000000;
+  }
+
+  .confirmPw {
+    display: block;
+    background: none;
+    padding: 5px 10px;
+    color: mediumaquamarine;
+    border: 1px solid mediumaquamarine;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-bottom: 30px;
+    font-size: 10px;
+  }
+
+  .confirmPw:hover {
+    background-color: mediumaquamarine;
+    color: #000000;
+  }
 }
 
 /* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/
 @media all and (min-width: 480px) and (max-width: 767px) {
   /*스타일입력*/
+  .logoArea {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* animation: fade-in-out 5s; */
+    /* opacity: 0; */
+    opacity: 1;
+    /* background-color: red; */
+    margin-bottom: 20px;
+  }
+  /* ================= */
+  .box {
+    /* text-align: center; */
+    width: 400px;
+  }
+
+  .logoArea .text {
+    position: relative;
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+    transform: scale(2);
+  }
+  .logoArea .text:before,
+  .logoArea .text:after {
+    padding: 34px 0; /* 효과 상하 안 맞을 때 이거 수정 */
+    color: white;
+    content: "RE:LOADING";
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    background: black;
+    overflow: hidden;
+    top: 0;
+  }
+  .logoArea .text:before {
+    left: 0.1px;
+  }
+
+  .logoArea .text:after {
+    left: 0.1px;
+  }
+
+  .logoArea .text:before {
+    left: 3px;
+    /* text-shadow: -2px 0 red; */
+    /* animation: glitch-3 2s linear infinite reverse; */
+    animation: none;
+    /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+      0 0 100px #03e9f4; */
+  }
+
+  .logoArea .text:after {
+    left: -3px;
+    /* text-shadow: -2px 0 blue; */
+    /* animation: glitch-4 2s linear infinite reverse; */
+    animation: none;
+    /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+      0 0 100px #03e9f4; */
+  }
+
+  .logoArea .subText {
+    margin-top: -20px;
+    font-size: 10px;
+    transform: scale(1);
+  }
+  .loginArea {
+    transform: scale(0.6);
+    margin-top: -20px;
+    /* background-color: aliceblue; */
+  }
+
+  /* ====================================================================== */
+  .confirmId {
+    display: block;
+    background: none;
+    padding: 5px 10px;
+    color: mediumaquamarine;
+    border: 1px solid mediumaquamarine;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-bottom: 30px;
+    font-size: 10px;
+  }
+
+  .confirmId:hover {
+    background-color: mediumaquamarine;
+    color: #000000;
+  }
+
+  .confirmPw {
+    display: block;
+    background: none;
+    padding: 5px 10px;
+    color: mediumaquamarine;
+    border: 1px solid mediumaquamarine;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-bottom: 30px;
+    font-size: 10px;
+  }
+
+  .confirmPw:hover {
+    background-color: mediumaquamarine;
+    color: #000000;
+  }
 }
 
 /* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
@@ -481,7 +697,8 @@
   .logoArea .text:before {
     left: 3px;
     /* text-shadow: -2px 0 red; */
-    animation: glitch-3 2s linear infinite reverse;
+    /* animation: glitch-3 2s linear infinite reverse; */
+    animation: none;
     /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
       0 0 100px #03e9f4; */
   }
@@ -489,7 +706,8 @@
   .logoArea .text:after {
     left: -3px;
     /* text-shadow: -2px 0 blue; */
-    animation: glitch-4 2s linear infinite reverse;
+    /* animation: glitch-4 2s linear infinite reverse; */
+    animation: none;
     /* text-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
       0 0 100px #03e9f4; */
   }

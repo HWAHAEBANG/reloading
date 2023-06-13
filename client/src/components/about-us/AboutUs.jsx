@@ -7,7 +7,7 @@ export default function AboutUs() {
   const { ref: page1Ref, inView: page1IsVisible /* entry */ } = useInView();
   const { ref: page2Ref, inView: page2IsVisible /* entry */ } = useInView();
   const { ref: page3Ref, inView: page3IsVisible /* entry */ } = useInView();
-  console.log("확인", page3IsVisible);
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
@@ -38,13 +38,16 @@ export default function AboutUs() {
                   부동산 시장에서 한 차례의 폭등장이 끝이나고, 하락장에
                   접어들었습니다. <br />
                   부동산 시장이 긴 싸이클을 가지고 등락을 반복하듯, 반등의
-                  기회는 또 다시 돌아올 것입니다.
+                  기회는 또 다시 돌아올 것 입니다.
                   <br />
                   <span>"Reloading"</span>은 우리 말로 <span>"재장전"</span>을
-                  의미합니다.
+                  의미합니다. <br />
+                  재장전이 되어있는 사람만이 돌아오는 기회를 잡을 수 있을 것
+                  입니다.
                   <br />
-                  <span>RE:LOADING</span>은 부동산 시장의 시황을 진단할 수 있는
-                  모든 데이터를 시각화하여 제공합니다.
+                  <span>RE:LOADING</span>은 부동산 시장의 상황을 진단할 수 있는
+                  다양한 데이터를 분석하고 시각화하여 제공함으로써 재장전을
+                  지원하겠습니다.
                 </p>
                 <p
                   className={`${styles.postScript1} ${
@@ -120,7 +123,7 @@ export default function AboutUs() {
                   }`}
                 >
                   시장은 예측할 수 없다. <br />
-                  예견하지 말라!
+                  예견하지 말라.
                 </p>
                 <p
                   className={`${styles.text3} ${

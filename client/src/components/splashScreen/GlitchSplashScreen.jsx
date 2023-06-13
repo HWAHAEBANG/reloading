@@ -184,7 +184,7 @@ export default function GlitchSplashScreen() {
         <div className={styles.box}>
           <h2 className={styles.text}>RE LOADING</h2>
           <h3 className={styles.subText}>
-            <span>R</span>eal <span>E</span>state Market Price Wactchtower
+            <span>R</span>eal <span>E</span>state Market Price Watchtower
           </h3>
         </div>
       </div>
@@ -319,7 +319,7 @@ export default function GlitchSplashScreen() {
           }
           onClick={handleSubmitPw}
         >
-          confirm PW
+          확인
         </button>
       ) : (
         <button
@@ -332,7 +332,7 @@ export default function GlitchSplashScreen() {
           }
           onClick={handleSubmitId}
         >
-          confirm ID
+          확인
         </button>
       )}
       <div className={styles.linkContainer}>

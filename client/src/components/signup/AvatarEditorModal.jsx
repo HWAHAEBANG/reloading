@@ -15,18 +15,54 @@ const ORIENTATION_TO_ANGLE = {
   8: -90,
 };
 
-export default function AvatarEditorModal({ setUploadLoading, setInputValue }) {
+export default function AvatarEditorModal({
+  onClose,
+  setUploadLoading,
+  setInputValue,
+}) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
 
-  console.log({ 크롭: crop, 줌: zoom, 로테이션: rotation });
-
   const [imageSrc, setImageSrc] = useState(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    console.log(croppedArea, croppedAreaPixels);
+    // console.log(croppedArea, croppedAreaPixels);
+    setCroppedAreaPixels(croppedAreaPixels);
   }, []);
+
+  // 저장하는 코드로 변형
+  const showCroppedImage = useCallback(async () => {
+    if (!imageSrc) return;
+    try {
+      onClose(false);
+      setUploadLoading(true);
+      const croppedImage = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        rotation
+      );
+      // console.log("donee", { croppedImage });
+      // setCroppedImage(croppedImage); // 불필요
+      const fileName = "uploaded_image.jpg"; // 업로드할 파일 이름
+      const file = await convertBlobUrlToFile(croppedImage, fileName);
+      const getUrl = await uploadImage(file);
+      setInputValue((prevState) => ({ ...prevState, profileImage: getUrl }));
+      setUploadLoading(false);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [imageSrc, croppedAreaPixels, rotation]);
+
+  // Blob URL을 File 객체로 변환하는 함수
+  function convertBlobUrlToFile(blobUrl, fileName) {
+    return fetch(blobUrl)
+      .then((response) => response.blob())
+      .then((blob) => new File([blob], fileName));
+  }
+
   //==========================================================================================
   const onFileChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -57,29 +93,17 @@ export default function AvatarEditorModal({ setUploadLoading, setInputValue }) {
   }
 
   //==========================================================================================
+  const [maskColorBlack, setMaskColorBlack] = useState(true);
   return (
     <div className={styles.background}>
       <div className={styles.modal}>
         <div className={styles.inner}>
           <p className={styles.title}>사이즈 조절</p>
           <p className={styles.helpText}>
-            사진을 드래그하여 위치 조절이 가능합니다.
+            사진을 <span>드래그하여 위치 조절</span>이 가능합니다.
+            <br />
+            가이드 마스크에 따라 얼굴을 맞추시면 가장 좋습니다.
           </p>
-          {/* ================================================================================================== */}
-          <div className={styles.cropperContainer}>
-            <Cropper
-              image={imageSrc}
-              crop={crop}
-              zoom={zoom}
-              rotation={rotation}
-              aspect={4 / 4}
-              onCropChange={setCrop}
-              onCropComplete={onCropComplete}
-              onZoomChange={setZoom}
-              onRotationChange={setRotation}
-            />
-          </div>
-          {/* ================================================================================================== */}
           {/* 커스텀 input file 태그 ============================== */}
           <div className={styles.filebox}>
             <label htmlFor='file'>
@@ -95,6 +119,46 @@ export default function AvatarEditorModal({ setUploadLoading, setInputValue }) {
             {/* 모달 컨포넌트는 하단에 있음 */}
           </div>
           {/* test ============================== */}
+          <div className={styles.cropperSection}>
+            <div className={styles.cropperContainer}>
+              {/* ================================================================================================== */}
+              <Cropper
+                image={imageSrc}
+                crop={crop}
+                zoom={zoom}
+                rotation={rotation}
+                aspect={3 / 4}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+                onZoomChange={setZoom}
+                onRotationChange={setRotation}
+              />
+              {/* ================================================================================================== */}
+            </div>
+            {maskColorBlack ? (
+              <>
+                <div className={styles.whiteGuideHead}></div>
+                <div className={styles.whiteGuideBody}></div>
+              </>
+            ) : (
+              <>
+                <div className={styles.blackGuideHead}></div>
+                <div className={styles.blackGuideBody}></div>
+              </>
+            )}
+          </div>
+
+          <p>
+            가이드 마스크 색상 &nbsp;&nbsp;
+            <input
+              type='checkbox'
+              defaultChecked
+              onChange={() => {
+                setMaskColorBlack((prev) => !prev);
+              }}
+            />
+          </p>
+
           <div className={styles.controler}>
             <p>확대/축소</p>
             <input
@@ -123,15 +187,12 @@ export default function AvatarEditorModal({ setUploadLoading, setInputValue }) {
               onChange={(e) => setRotation(e.target.value)}
             />
           </div>
+          <img src={croppedImage} alt='' />
           <div className={styles.btnList}>
-            <button
-              className={styles.btn} /*  onClick={() => onClose(false)} */
-            >
+            <button className={styles.btn} onClick={showCroppedImage}>
               저장
             </button>
-            <button
-              className={styles.btn} /*  onClick={() => onClose(false)} */
-            >
+            <button className={styles.btn} onClick={() => onClose(false)}>
               닫기
             </button>
           </div>

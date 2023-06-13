@@ -187,11 +187,60 @@
 /* 테블릿 세로 (해상도 768px ~ 1023px)*/
 @media all and (min-width: 768px) and (max-width: 1023px) {
   /*스타일입력*/
+  .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 270px;
+    padding-top: 20px;
+  }
+
+  .subContainer {
+    overflow: scroll;
+  }
+
+  .desciptionArea {
+    height: 1000px;
+    flex-direction: column;
+  }
+
+  .descriptionSection {
+    width: 100%;
+  }
+
+  .youtubeSection {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/
 @media all and (min-width: 480px) and (max-width: 767px) {
   /*스타일입력*/
+  /*스타일입력*/
+  .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 270px;
+    padding-top: 20px;
+  }
+
+  .subContainer {
+    overflow: scroll;
+  }
+
+  .desciptionArea {
+    height: 1000px;
+    flex-direction: column;
+  }
+
+  .descriptionSection {
+    width: 100%;
+  }
+
+  .youtubeSection {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/
@@ -206,7 +255,7 @@
     overflow: scroll;
     display: flex;
     flex-direction: column;
-    gap: 100px;
+    gap: 70px;
     /* background-color: blue; */
   }
 
@@ -215,6 +264,7 @@
     gap: 20px;
     width: 100%;
     height: auto;
+    padding: 0;
   }
 
   .youtubeSection {

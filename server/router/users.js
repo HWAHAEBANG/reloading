@@ -425,7 +425,7 @@ router.post("/sendEmail", (req, res) => {
               <tr>
               <td style="text-align: center; background-color: #f5f5f5; padding-bottom: 50px; border-radius: 10px;">
               <img src="https://res.cloudinary.com/dh6tdcdyj/image/upload/v1685938086/logoBg_lmdhiz.png" alt="로고 이미지" style=" border-radius: 10px; margin-bottom:30px">
-                  <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">다음 인증코드를 사이트의 입력란이 입력해주세요.</p>
+                  <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">다음 인증코드를 사이트의 입력란에 입력해주세요.</p>
                   <p>인증코드 : <span style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">${verificationCode}</span></p>
                   <p style="font-size:20px; line-height:50px; color: #148888; font-weight:900;">본 인증 코드는 발급 기준 10분뒤 만기됩니다.</p>
                   <br/>

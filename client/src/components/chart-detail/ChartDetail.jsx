@@ -3,6 +3,8 @@ import styles from "./ChartDetail.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoInformationCircleSharp, IoArrowBackCircle } from "react-icons/io5";
 import axios from "axios";
+import VideoPlayer from "./VideoPlayer";
+import YouTube from "react-youtube";
 
 const Pir = lazy(() => import("../../graph/Pir"));
 const Hai = lazy(() => import("../../graph/Hai"));
@@ -114,14 +116,28 @@ export default function ChartDetail() {
               {chartsData.youtubeUrl ? (
                 <div className={styles.youtubeSection}>
                   {chartsData.youtubeUrl ? (
-                    <iframe
-                      id='player'
-                      type='text/html'
-                      width='100%'
-                      height='100%'
-                      src={`https://www.youtube.com/embed/${chartsData.youtubeUrl}?start=${chartsData.startSecond}`}
-                      frameBorder='0'
-                      title={chartsData.title}
+                    // <iframe
+                    //   id='player'
+                    //   type='text/html'
+                    //   width='100%'
+                    //   height='100%'
+                    //   src={`https://www.youtube.com/embed/${chartsData.youtubeUrl}?start=${chartsData.startSecond}`}
+                    //   frameBorder='0'
+                    //   title={chartsData.title}
+                    //   allowfullscreen
+                    // />
+                    // <VideoPlayer chartsData={chartsData} />
+                    <YouTube
+                      style={{ width: "100%", height: "100%" }}
+                      videoId={chartsData.youtubeUrl}
+                      opts={{
+                        width: "100%",
+                        height: "100%",
+                        playerVars: {
+                          start: chartsData.startSecond, // chartsData에서 시작 시간 가져오기
+                        },
+                      }}
+                      onReady={(event) => event.target.playVideo()}
                     />
                   ) : (
                     ""
@@ -135,7 +151,7 @@ export default function ChartDetail() {
           <div className={styles.sourceArea}>
             <IoInformationCircleSharp className={styles.sourceIcon} />
             <div className={styles.sourceBox}>
-              <p>데이터별 출처 & 업데이트 일자</p>
+              <p>데이터별 출처</p>
               {chartsData &&
                 JSON.parse(chartsData.dataSources).map((dataSourse, index) => (
                   <p key={index}>{dataSourse}</p>

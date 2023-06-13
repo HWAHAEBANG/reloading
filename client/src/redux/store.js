@@ -3,10 +3,12 @@ import rootReducer from "./rootReducer";
 
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // localStorage를 사용할 경우
+import storageSession from "redux-persist/lib/storage/session"; // sessionStorage를 사용할 경우
 
 const persistConfig = {
   key: "root",
-  storage: storage,
+  // storage: storage,
+  storage: storageSession,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

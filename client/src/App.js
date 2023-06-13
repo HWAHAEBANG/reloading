@@ -63,9 +63,9 @@ function App() {
             (item) => item.created_at.split("T")[0] === today
           )
         );
-        console.log("서버시간", new Date());
-        console.log("확", notificationResponse.data.data);
-        console.log("인", dataUpdateLogResponse.data.data);
+        // console.log("서버시간", new Date());
+        // console.log("확", notificationResponse.data.data);
+        // console.log("인", dataUpdateLogResponse.data.data);
         // 추가 작업을 수행할 수 있습니다.
         // setLoading(false);
       })
